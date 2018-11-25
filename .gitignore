@@ -1,0 +1,10 @@
+# dependencies
+/vendor/
+/composer.lock
+
+# tests
+/composer.phar
+/output/
+
+
+

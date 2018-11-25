@@ -74,7 +74,7 @@ $filterCollection->addFilter(new RequiredFileFilter(
     'README.md'
 ));
 
-$options->setFilter($filter);
+$options->setFilter($filterCollection);
 $projects = $client->find($options);
 ```
 

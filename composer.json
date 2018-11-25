@@ -2,6 +2,7 @@
     "name": "mborne/remote-git",
     "type": "library",
     "description": "A lightweight PHP client providing a consistent way to find hosted and self-hosted git repositories (github, gitlab,...)",
+    "license": "MIT",
     "authors": [
         {
             "name": "Mickaël BORNE",

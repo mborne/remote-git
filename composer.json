@@ -17,9 +17,6 @@
             "MBO\\RemoteGit\\Tests\\": "tests"
         }
     },
-    "bin": [
-        "bin/satis-gitlab"
-    ],
     "require": {
         "psr/log": "~1.0",
         "guzzlehttp/guzzle": "~6.0"

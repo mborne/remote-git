@@ -52,6 +52,8 @@ class GitlabClientTest extends TestCase {
         $projects = $client->find($findOptions);
         $projectsByName = array();
         foreach ( $projects as $project ){
+            $this->assertInstanceOf(GitlabProject::class,$project);
+            $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
         /* check project found */

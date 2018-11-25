@@ -8,6 +8,7 @@ use \GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Gogs\GogsClient;
 
 
 /**
@@ -51,7 +52,9 @@ class ClientFactory {
         if ( $options->hasToken() ){
             if ( GitlabClient::class === $clientClass ){
                 $guzzleOptions['headers']['Private-Token'] = $options->getToken();
-            }else if ( GithubClient::class === $clientClass ){
+            }else if ( 
+                GithubClient::class === $clientClass || GogsClient::class === $clientClass
+            ){
                 $guzzleOptions['headers']['Authorization'] = 'token '.$options->getToken();
             }
         }
@@ -72,7 +75,9 @@ class ClientFactory {
         $hostname = parse_url($url, PHP_URL_HOST);
         if ( 'api.github.com' === $hostname || 'github.com' === $hostname ){
             return GithubClient::class;
-        }else{
+        }else if ( strpos($hostname, 'gogs') !== false ) {
+            return GogsClient::class;
+        } else {
             return GitlabClient::class;
         }
     }

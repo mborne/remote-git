@@ -25,4 +25,15 @@ class TestCase extends BaseTestCase {
         return $project;
     }
 
+    /**
+     * Ensure that getter works for project
+     */
+    protected function assertGettersWorks(ProjectInterface $project){
+        $this->assertNotEmpty($project->getId());
+        $this->assertNotEmpty($project->getName());
+        $this->assertNotEmpty($project->getDefaultBranch());
+        $this->assertNotEmpty($project->getHttpUrl());
+        $this->assertNotEmpty($project->getRawMetadata());
+    }
+
 } 

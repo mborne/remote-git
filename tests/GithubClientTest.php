@@ -55,6 +55,7 @@ class GithubClientTest extends TestCase {
         $projectsByName = array();
         foreach ( $projects as $project ){
             $this->assertInstanceOf(GithubProject::class,$project);
+            $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
 

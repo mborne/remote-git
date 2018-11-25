@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/mborne/remote-git.svg)](https://travis-ci.org/mborne/remote-git)
 
-**WARNING : EXTRACTION WORK FROM [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) in progress (see [issue-24](https://github.com/mborne/satis-gitlab/issues/24))**
-
 ## Description
 
 A lightweight client providing a consistent way to find hosted and self-hosted git repositories (github, gitlab,...)

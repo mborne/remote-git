@@ -7,6 +7,7 @@ use \GuzzleHttp\Client as GuzzleHttpClient;
 
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
+use MBO\RemoteGit\Helper\LoggerHelper;
 
 
 /**
@@ -25,8 +26,10 @@ class ClientFactory {
      */
     public static function createClient(
         ClientOptions $options,
-        LoggerInterface $logger
+        LoggerInterface $logger = null
     ) {
+        $logger = LoggerHelper::handleNull($logger);
+
         $clientClass = self::detectClientClass($options->getUrl());
 
         /* common http options */

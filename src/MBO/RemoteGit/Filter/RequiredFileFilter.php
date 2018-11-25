@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ClientInterface as GitClientInterface;
+use MBO\RemoteGit\Helper\LoggerHelper;
 
 
 /**
@@ -29,12 +30,12 @@ class RequiredFileFilter implements ProjectFilterInterface {
     public function __construct(
         GitClientInterface $gitClient,
         $filePath,
-        LoggerInterface $logger
+        LoggerInterface $logger = null
     )
     {
         $this->gitClient = $gitClient;
         $this->filePath  = $filePath;
-        $this->logger    = $logger;
+        $this->logger    = LoggerHelper::handleNull($logger);
     }
 
     /**

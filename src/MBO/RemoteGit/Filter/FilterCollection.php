@@ -7,6 +7,7 @@ use Psr\Log\NullLogger;
 
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\Helper\LoggerHelper;
 
 /**
  * Compose a list of filter to simplify command line integration
@@ -30,7 +31,7 @@ class FilterCollection implements ProjectFilterInterface {
      */
     public function __construct(LoggerInterface $logger = null ){
         $this->filters = array();
-        $this->logger = is_null($logger) ? new NullLogger() : $logger;
+        $this->logger = LoggerHelper::handleNull($logger);
     }
 
     /**

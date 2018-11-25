@@ -87,6 +87,8 @@ The original development has been realized in [mborne/satis-gitlab](https://gith
 ## Dependencies
 
 * [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)
+* [psr/log](https://packagist.org/packages/psr/log)
+
 
 ## Requirements
 

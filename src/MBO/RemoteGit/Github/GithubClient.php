@@ -9,6 +9,7 @@ use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\Helper\LoggerHelper;
 
 
 /**
@@ -45,10 +46,10 @@ class GithubClient implements ClientInterface {
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
-        LoggerInterface $logger
+        LoggerInterface $logger = null
     ){
         $this->httpClient = $httpClient ;
-        $this->logger = $logger ;
+        $this->logger = LoggerHelper::handleNull($logger) ;
     }
 
     /*

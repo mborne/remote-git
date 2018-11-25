@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ClientInterface as GitClientInterface;
+use MBO\RemoteGit\Helper\LoggerHelper;
 
 
 /**
@@ -41,10 +42,13 @@ class ComposerProjectFilter implements ProjectFilterInterface {
      * @param GitClientInterface $gitClient
      * @param LoggerInterface $logger
      */
-    public function __construct(GitClientInterface $gitClient, LoggerInterface $logger)
+    public function __construct(
+        GitClientInterface $gitClient, 
+        LoggerInterface $logger = null
+    )
     {
         $this->gitClient = $gitClient;
-        $this->logger = $logger;
+        $this->logger = LoggerHelper::handleNull($logger);
     }
     
     /**

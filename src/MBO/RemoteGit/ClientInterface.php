@@ -11,6 +11,13 @@ namespace MBO\RemoteGit;
 interface ClientInterface {
 
     /**
+     * Get client type
+     *
+     * @return string
+     */
+    public function getType();
+
+    /**
      * Find projects throw API
      * 
      * @return ProjectInterface[]

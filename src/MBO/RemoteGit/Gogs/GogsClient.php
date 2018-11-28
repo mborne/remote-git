@@ -10,7 +10,7 @@ use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
-
+use MBO\RemoteGit\Http\TokenType;
 
 /**
  * 
@@ -20,6 +20,9 @@ use MBO\RemoteGit\Helper\LoggerHelper;
  * 
  */
 class GogsClient implements ClientInterface {
+
+    const TYPE       = 'gogs';
+    const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
 
     const DEFAULT_PER_PAGE = 1000;
 
@@ -44,6 +47,13 @@ class GogsClient implements ClientInterface {
     ){
         $this->httpClient = $httpClient ;
         $this->logger = LoggerHelper::handleNull($logger) ;
+    }
+
+    /*
+     * @{inheritDoc}
+     */
+    public function getType(){
+        return self::TYPE ;
     }
 
     /*

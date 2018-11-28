@@ -10,6 +10,7 @@ use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Http\TokenType;
 
 
 /**
@@ -24,6 +25,9 @@ use MBO\RemoteGit\Helper\LoggerHelper;
  *  
  */
 class GitlabClient implements ClientInterface {
+
+    const TYPE = 'gitlab';
+    const TOKEN_TYPE = TokenType::PRIVATE_TOKEN;    
 
     const DEFAULT_PER_PAGE = 50;
     const MAX_PAGES = 10000;
@@ -51,6 +55,13 @@ class GitlabClient implements ClientInterface {
         $this->logger = LoggerHelper::handleNull($logger) ;
     }
 
+    /*
+     * @{inheritDoc}
+     */
+    public function getType(){
+        return self::TYPE ;
+    }
+    
     /*
      * @{inheritDoc}
      */

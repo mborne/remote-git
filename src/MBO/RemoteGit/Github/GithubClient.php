@@ -10,6 +10,7 @@ use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Http\TokenType;
 
 
 /**
@@ -25,6 +26,9 @@ use MBO\RemoteGit\Helper\LoggerHelper;
  * 
  */
 class GithubClient implements ClientInterface {
+
+    const TYPE       = 'github';
+    const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
 
     const DEFAULT_PER_PAGE = 100;
     const MAX_PAGES = 10000;
@@ -50,6 +54,13 @@ class GithubClient implements ClientInterface {
     ){
         $this->httpClient = $httpClient ;
         $this->logger = LoggerHelper::handleNull($logger) ;
+    }
+
+    /*
+     * @{inheritDoc}
+     */
+    public function getType(){
+        return self::TYPE ;
     }
 
     /*

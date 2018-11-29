@@ -43,7 +43,7 @@ class GithubClientTest extends TestCase {
     /**
      * Ensure client can find mborne's projects
      */
-    public function testUserRepositories(){
+    public function testUserAndOrgsRepositories(){
         /* create client */
         $client = $this->createGithubClient();
         $this->assertInstanceOf(GithubClient::class,$client);
@@ -51,6 +51,7 @@ class GithubClientTest extends TestCase {
         /* search projects */
         $options = new FindOptions();
         $options->setUsers(array('mborne'));
+        $options->setOrganizations(array('IGNF'));
         $projects = $client->find($options);
         $projectsByName = array();
         foreach ( $projects as $project ){
@@ -58,6 +59,11 @@ class GithubClientTest extends TestCase {
             $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
+
+        $this->assertArrayHasKey(
+            'IGNF/validator',
+            $projectsByName
+        );
 
         /* check project found */
         $this->assertArrayHasKey(

@@ -31,7 +31,8 @@ class TestCase extends BaseTestCase {
     protected function assertGettersWorks(ProjectInterface $project){
         $this->assertNotEmpty($project->getId());
         $this->assertNotEmpty($project->getName());
-        $this->assertNotEmpty($project->getDefaultBranch());
+        // should not crash (can be null or empty)
+        $project->getDefaultBranch();
         $this->assertNotEmpty($project->getHttpUrl());
         $this->assertNotEmpty($project->getRawMetadata());
     }

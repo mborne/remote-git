@@ -5,7 +5,7 @@ namespace MBO\RemoteGit\Gitlab;
 use Psr\Log\LoggerInterface;
 use \GuzzleHttp\Client as GuzzleHttpClient;
 
-use MBO\RemoteGit\ClientInterface;
+use MBO\RemoteGit\AbstractClient;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
@@ -24,23 +24,13 @@ use MBO\RemoteGit\Http\TokenType;
  * @author mborne
  *  
  */
-class GitlabClient implements ClientInterface {
+class GitlabClient extends AbstractClient {
 
     const TYPE = 'gitlab';
     const TOKEN_TYPE = TokenType::PRIVATE_TOKEN;    
 
     const DEFAULT_PER_PAGE = 50;
     const MAX_PAGES = 10000;
-
-    /**
-     * @var GuzzleHttpClient
-     */
-    protected $httpClient;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
 
     /**
      * Constructor with an http client and a logger
@@ -51,17 +41,16 @@ class GitlabClient implements ClientInterface {
         GuzzleHttpClient $httpClient,
         LoggerInterface $logger = null
     ){
-        $this->httpClient = $httpClient ;
-        $this->logger = LoggerHelper::handleNull($logger) ;
+        parent::__construct($httpClient,$logger);
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getType(){
-        return self::TYPE ;
+    protected function createProject(array $rawProject){
+        return new GitlabProject($rawProject);
     }
-    
+
     /*
      * @{inheritDoc}
      */
@@ -154,37 +143,15 @@ class GitlabClient implements ClientInterface {
         for ($page = 1; $page <= self::MAX_PAGES; $page++) {
             $params['page']     = $page;
             $params['per_page'] = self::DEFAULT_PER_PAGE;
-            $uri = $path.'?'.$this->implodeParams($params);
-            $this->logger->debug('GET '.$uri);
-            $response = $this->httpClient->get($uri);
-            $rawProjects = json_decode( (string)$response->getBody(), true ) ;
-            if ( empty($rawProjects) ){
+            
+            $projects = $this->getProjects($path,$params);
+            if ( empty($projects) ){
                 break;
             }
-            foreach ( $rawProjects as $rawProject ){
-                $project = new GitlabProject($rawProject);
-                if ( ! $projectFilter->isAccepted($project) ){
-                    continue;
-                }
-                $result[] = $project;
-            }
+            $result = array_merge($result,$this->filter($projects,$projectFilter));
         }
 
         return $result;
-    }
-
-    /**
-     * Implode params to performs request
-     *
-     * @param array $params key=>value
-     * @return string
-     */
-    private function implodeParams($params){
-        $parts = array();
-        foreach ( $params as $key => $value ){
-            $parts[] = $key.'='.urlencode($value);
-        }
-        return implode('&',$parts);
     }
 
     /*
@@ -198,7 +165,7 @@ class GitlabClient implements ClientInterface {
         // ref : https://docs.gitlab.com/ee/api/repository_files.html#get-raw-file-from-repository
         $uri  = '/api/v4/projects/'.$project->getId().'/repository/files/'.urlencode($filePath).'/raw';
         $uri .= '?ref='.$ref;
-        $this->logger->debug('GET '.$uri);
+        $this->getLogger()->debug('GET '.$uri);
         $response = $this->httpClient->get($uri);
         return (string)$response->getBody();
     }

@@ -14,7 +14,9 @@ use MBO\RemoteGit\Gogs\GogsClient;
 
 
 /**
- * Helper to create clients according to URL
+ * Helper to create clients according to URL.
+ * 
+ * Note that it rely on a static interface on clients (TYPE and TOKEN_TYPE)
  * 
  * @author mborne
  */

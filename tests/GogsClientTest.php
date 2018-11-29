@@ -38,10 +38,49 @@ class GogsClientTest extends TestCase {
         );
     }
 
+
+    /**
+     * Test find by current user
+     */
+    public function testFindByCurrentUser(){
+        /* create client */
+        $client = $this->createGitClient();
+        $this->assertInstanceOf(GogsClient::class,$client);
+
+        /* search projects */
+        $findOptions = new FindOptions();
+        $projects = $client->find($findOptions);
+
+        $this->assertTrue(is_array($projects));
+        $this->assertNotEmpty($projects);
+
+        $projectsByName = array();
+        foreach ( $projects as $project ){
+            $this->assertInstanceOf(GogsProject::class,$project);
+            $this->assertGettersWorks($project);
+            $projectsByName[$project->getName()] = $project;
+        }
+
+        $this->assertArrayHasKey(
+            'docker/docker-php',
+            $projectsByName
+        );
+        $project = $projectsByName['docker/docker-php'];
+        $this->assertContains(
+            'FROM ',
+            $client->getRawFile($project,'Dockerfile','master')
+        );
+        $this->assertContains(
+            'ServerTokens Prod',
+            $client->getRawFile($project,'conf/apache-security.conf','master')
+        );
+    }
+
+
     /**
      * Ensure client can find projects by username and organizations
      */
-    public function testGogsInstance(){
+    public function testFindByUserAndOrgs(){
         /* create client */
         $client = $this->createGitClient();
         $this->assertInstanceOf(GogsClient::class,$client);

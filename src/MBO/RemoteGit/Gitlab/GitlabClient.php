@@ -26,7 +26,7 @@ use MBO\RemoteGit\Http\TokenType;
  */
 class GitlabClient extends AbstractClient {
 
-    const TYPE = 'gitlab';
+    const TYPE = 'gitlab-v4';
     const TOKEN_TYPE = TokenType::PRIVATE_TOKEN;    
 
     const DEFAULT_PER_PAGE = 50;

@@ -145,7 +145,7 @@ class GogsClient extends AbstractClient
         $uri .= '/' . $filePath;
 
         $this->getLogger()->debug('GET ' . $uri);
-        $response = $this->httpClient->get($uri);
+        $response = $this->getHttpClient()->request('GET',$uri);
         return (string)$response->getBody();
     }
 

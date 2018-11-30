@@ -166,7 +166,7 @@ class GitlabClient extends AbstractClient {
         $uri  = '/api/v4/projects/'.$project->getId().'/repository/files/'.urlencode($filePath).'/raw';
         $uri .= '?ref='.$ref;
         $this->getLogger()->debug('GET '.$uri);
-        $response = $this->httpClient->get($uri);
+        $response = $this->httpClient->request('GET',$uri);
         return (string)$response->getBody();
     }
 

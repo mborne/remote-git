@@ -71,7 +71,7 @@ abstract class AbstractClient implements ClientInterface {
     ){
         $uri = $path.'?'.$this->implodeParams($params);
         $this->getLogger()->debug('GET '.$uri);
-        $response = $this->getHttpClient()->get($uri);
+        $response = $this->getHttpClient()->request('GET',$uri);
         $rawProjects = json_decode( (string)$response->getBody(), true ) ;
         $projects = array();
         foreach ( $rawProjects as $rawProject ){

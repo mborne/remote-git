@@ -22,6 +22,10 @@ class TestCase extends BaseTestCase {
             ->method('getName')
             ->willReturn($projectName)
         ;
+        $project->expects($this->any())
+            ->method('getDefaultBranch')
+            ->willReturn('master')
+        ;
         return $project;
     }
 

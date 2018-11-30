@@ -157,7 +157,7 @@ class GithubClient extends AbstractClient {
         );
         $uri .= '?ref='.$ref;
         $this->getLogger()->debug('GET '.$uri);
-        $response = $this->getHttpClient()->get($uri,[
+        $response = $this->getHttpClient()->request('GET',$uri,[
             'headers' => [
                 'Accept' => 'application/vnd.github.v3.raw'
             ]

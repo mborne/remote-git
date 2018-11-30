@@ -15,24 +15,24 @@ It targets use case such as :
 Note that a small set of features is prefered to a rich API integration to allows homogenous access to remote hosting services.
 
 
-## Supported GIT hosting services
+## Features
 
-| Name      | Description                                                              |
-|-----------|--------------------------------------------------------------------------|
-| gitlab-v4 | [gitlab.com](https://about.gitlab.com/) and self hosted gitlab instances |
-| github    | https://github.com                                                       |
-| gogs-v1   | https://gogs.io/                                                         |
-
-## Features
-
-* Auto-detect hosting services type according to hostname
-* Get repositories filtering by
+* List repositories from multiple GIT hosting services filtering by
     * usernames
     * organizations/groups
+* Get raw files from repositories
 * Apply custom filter
     * Project contains a given file (`RequiredFileFilter`)
     * Project is a composer project (`ComposerProjectFilter`)
     * Project name doesn't match a given regexp (`IgnoreRegexpFilter`)
+
+## Supported GIT hosting services
+
+| Type      | Description                                                              |
+|-----------|--------------------------------------------------------------------------|
+| gitlab-v4 | [gitlab.com](https://about.gitlab.com/) and self hosted gitlab instances |
+| github    | https://github.com                                                       |
+| gogs-v1   | https://gogs.io/                                                         |
 
 ## Usage
 

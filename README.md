@@ -4,12 +4,12 @@
 
 ## Description
 
-A lightweight client providing a consistent way to find hosted and self-hosted git repositories (github, gitlab,...)
+A lightweight PHP client providing a consistent access to hosted and self-hosted git repositories (github, gitlab,gogs).
 
 It targets use case such as :
 
-* Backuping repositories from multiple sources
-* Cloning all repositories from multiple sources (self hosted private repositories and public repositories) to performs analysis
+* Backup repositories from multiple sources
+* Perform checks on repositories from multiple sources (self hosted private repositories and public repositories)
 * Generate PHP SATIS configuration according to existing repositories (see [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab))
 
 Note that a small set of features is prefered to a rich API integration to allows homogenous access to remote hosting services.

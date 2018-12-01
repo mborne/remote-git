@@ -52,6 +52,8 @@ class GitlabClientTest extends TestCase {
         $projects = $client->find($findOptions);
         $projectsByName = array();
         foreach ( $projects as $project ){
+            $this->assertInstanceOf(GitlabProject::class,$project);
+            $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
         /* check project found */
@@ -69,6 +71,26 @@ class GitlabClientTest extends TestCase {
         $this->assertContains('mborne@users.noreply.github.com',$composer);
     }
 
+
+    public function testGitlabDotComOrgs(){
+        /* create client */
+        $client = $this->createGitlabClient();
+        $this->assertInstanceOf(GitlabClient::class,$client);
+
+        /* search projects */
+        $findOptions = new FindOptions();
+        $findOptions->setOrganizations(array('gitlab-org'));
+        $projects = $client->find($findOptions);
+        foreach ( $projects as $project ){
+            $this->assertInstanceOf(GitlabProject::class,$project);
+            $this->assertGettersWorks($project);
+            $projectsByName[$project->getName()] = $project;
+        }
+        $this->assertArrayHasKey(
+            'gitlab-org/gitlab-runner',
+            $projectsByName
+        );
+    }
 
     /**
      * Ensure client can find mborne/sample-composer with search

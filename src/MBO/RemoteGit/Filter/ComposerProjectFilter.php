@@ -68,7 +68,7 @@ class ComposerProjectFilter implements ProjectFilterInterface {
      *
      * @return  self
      */ 
-    public function setProjectType(string $projectType)
+    public function setProjectType($projectType)
     {
         $this->projectType = $projectType;
 

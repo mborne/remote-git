@@ -5,11 +5,12 @@ namespace MBO\RemoteGit\Github;
 use Psr\Log\LoggerInterface;
 use \GuzzleHttp\Client as GuzzleHttpClient;
 
-use MBO\RemoteGit\ClientInterface;
+use MBO\RemoteGit\AbstractClient;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Http\TokenType;
 
 
 /**
@@ -24,7 +25,10 @@ use MBO\RemoteGit\Helper\LoggerHelper;
  * @author mborne
  * 
  */
-class GithubClient implements ClientInterface {
+class GithubClient extends AbstractClient {
+
+    const TYPE       = 'github';
+    const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
 
     const DEFAULT_PER_PAGE = 100;
     const MAX_PAGES = 10000;
@@ -50,6 +54,13 @@ class GithubClient implements ClientInterface {
     ){
         $this->httpClient = $httpClient ;
         $this->logger = LoggerHelper::handleNull($logger) ;
+    }
+
+    /*
+     * @{inheritDoc}
+     */
+    protected function createProject(array $rawProject){
+        return new GithubProject($rawProject);
     }
 
     /*
@@ -117,21 +128,15 @@ class GithubClient implements ClientInterface {
     ){
         $result = array();
         for ($page = 1; $page <= self::MAX_PAGES; $page++) {
-            $uri = $path.'?page='.$page.'&per_page='.self::DEFAULT_PER_PAGE;
-
-            $this->logger->debug('GET '.$uri);
-            $response = $this->httpClient->get($uri);
-            $rawProjects = json_decode( (string)$response->getBody(), true ) ;
-            if ( empty($rawProjects) ){
+            $params = array(
+                'page' => $page,
+                'per_page' => self::DEFAULT_PER_PAGE
+            );
+            $projects = $this->getProjects($path,$params);
+            if ( empty($projects) ){
                 break;
             }
-            foreach ( $rawProjects as $rawProject ){
-                $project = new GithubProject($rawProject);
-                if ( ! $projectFilter->isAccepted($project) ){
-                    continue;
-                }
-                $result[] = $project;
-            }
+            $result = array_merge($result,$this->filter($projects,$projectFilter));
         }
         return $result;
     }
@@ -151,8 +156,8 @@ class GithubClient implements ClientInterface {
             $metadata['contents_url']
         );
         $uri .= '?ref='.$ref;
-        $this->logger->debug('GET '.$uri);
-        $response = $this->httpClient->get($uri,[
+        $this->getLogger()->debug('GET '.$uri);
+        $response = $this->getHttpClient()->request('GET',$uri,[
             'headers' => [
                 'Accept' => 'application/vnd.github.v3.raw'
             ]

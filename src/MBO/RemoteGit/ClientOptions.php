@@ -10,6 +10,14 @@ namespace MBO\RemoteGit;
 class ClientOptions {
 
     /**
+     * Allows to force a given client type and avoid
+     * detection based on URL
+     *
+     * @var string
+     */
+    private $type ;
+
+    /**
      * Base URL (ex : https://gitlab.com)
      *
      * @var string
@@ -33,6 +41,39 @@ class ClientOptions {
     public function __construct()
     {
         $this->unsafeSsl = false;
+    }
+
+    /**
+     * True if client type is specificied
+     *
+     * @return boolean
+     */
+    public function hasType(){
+        return ! empty($this->type);
+    }
+
+    /**
+     * Get client type
+     *
+     * @return  string
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set client type
+     *
+     * @param  string $type gitlab,github,gogs,...
+     *
+     * @return  self
+     */ 
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -111,4 +152,5 @@ class ClientOptions {
 
         return $this;
     }
+
 }

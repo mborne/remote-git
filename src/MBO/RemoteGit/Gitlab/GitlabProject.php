@@ -36,6 +36,9 @@ class GitlabProject implements ProjectInterface {
      * @{inheritDoc}
      */
     public function getDefaultBranch(){
+        if (!isset($this->rawMetadata['default_branch'])) {
+            return null;
+        }
         return $this->rawMetadata['default_branch'];
     }
 

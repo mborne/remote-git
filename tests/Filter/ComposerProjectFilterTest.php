@@ -15,7 +15,7 @@ use MBO\RemoteGit\Filter\ComposerProjectFilter;
  * Test ComposerProjectFilter
  */
 class ComposerProjectFilterTest extends TestCase {
-    
+
     /**
      * Test getDescription
      */
@@ -83,6 +83,31 @@ class ComposerProjectFilterTest extends TestCase {
         // filter with type=library
         $filter->setProjectType('library');
         $this->assertFalse($filter->isAccepted($project));
+    }
+
+    /**
+     * Accepted if composer.json exists
+     */
+    public function testComposerJsonAndMultipleTypeFilter(){
+        $project = $this->createMockProject('test');
+
+        $gitClient = $this->getMockBuilder(ClientInterface::class)
+            ->getMock()
+        ;
+        $content = array(
+            'name' => 'something',
+            'type' => 'library'
+        );
+        $gitClient
+            ->expects($this->any())
+            ->method('getRawFile')
+            //->with(['composer.json'])
+            ->willReturn(json_encode($content))
+        ;
+        $filter = new ComposerProjectFilter($gitClient);
+        $this->assertTrue($filter->isAccepted($project));
+        $filter->setProjectType('project,library');
+        $this->assertTrue($filter->isAccepted($project));
     }
 
 

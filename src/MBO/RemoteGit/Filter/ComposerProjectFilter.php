@@ -93,18 +93,23 @@ class ComposerProjectFilter implements ProjectFilterInterface {
     public function isAccepted(ProjectInterface $project)
     {
         try {
+            $branch = $project->getDefaultBranch();
+            if (is_null($branch)) {
+                return false;
+            }
             $json = $this->gitClient->getRawFile(
                 $project,
                 'composer.json',
-                $project->getDefaultBranch()
+                $branch
             );
             $composer = json_decode($json, true);
             if ( empty($this->projectType) ){
                 return true;
             }
-            return isset($composer['type']) 
-                && strtolower($composer['type']) === strtolower($this->projectType)
-            ;
+            $types = array_map('strtolower', explode(',', $this->projectType));
+            return isset($composer['type'])
+                && in_array(strtolower($composer['type']), $types);
+
         }catch(\Exception $e){
             $this->logger->debug(sprintf(
                 '%s (branch %s) : file %s not found',

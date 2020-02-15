@@ -4,62 +4,62 @@ namespace MBO\RemoteGit;
 
 use MBO\RemoteGit\Filter\FilterCollection;
 
-
 /**
  * Find options to filter project listing
- * 
+ *
  * @author mborne
  */
-class FindOptions {
-
+class FindOptions
+{
     /**
      * Filter according to organizations
      *
      * @var string[]
      */
-    private $organizations = array();
+    private $organizations = [];
 
     /**
      * Filter according to user names
      *
      * @var string[]
      */
-    private $users = array();
+    private $users = [];
 
     /**
      * Search string (available only for gitlab prefer the use of organizations and users)
      *
      * @var string
      */
-    private $search ;
+    private $search;
 
     /**
-     * Additional filter that can't be implemented throw 
-     * project listing API parameters 
+     * Additional filter that can't be implemented throw
+     * project listing API parameters
      *
      * @var ProjectFilterInterface
      */
-    private $filter ;
+    private $filter;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->filter = new FilterCollection();
     }
 
     /**
      * True if search is defined
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasSearch(){
-        return ! empty($this->search);
+    public function hasSearch()
+    {
+        return !empty($this->search);
     }
-
 
     /**
      * Get filter according to organizations
      *
-     * @return  string[]
-     */ 
+     * @return string[]
+     */
     public function getOrganizations()
     {
         return $this->organizations;
@@ -68,10 +68,10 @@ class FindOptions {
     /**
      * Set filter according to organizations
      *
-     * @param  string[]  $organizations  Filter according to organizations
+     * @param string[] $organizations Filter according to organizations
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setOrganizations(array $organizations)
     {
         $this->organizations = $organizations;
@@ -79,12 +79,11 @@ class FindOptions {
         return $this;
     }
 
-
     /**
      * Get filter according to user names
      *
-     * @return  string[]
-     */ 
+     * @return string[]
+     */
     public function getUsers()
     {
         return $this->users;
@@ -93,10 +92,10 @@ class FindOptions {
     /**
      * Set filter according to user names
      *
-     * @param  string[]  $users  Filter according to user names
+     * @param string[] $users Filter according to user names
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setUsers(array $users)
     {
         $this->users = $users;
@@ -104,12 +103,11 @@ class FindOptions {
         return $this;
     }
 
-
     /**
      * Get search string (prefer the use of organizations and users)
      *
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getSearch()
     {
         return $this->search;
@@ -118,10 +116,10 @@ class FindOptions {
     /**
      * Set search string (prefer the use of organizations and users)
      *
-     * @param  string  $search  Search string (prefer the use of organizations and users)
+     * @param string $search Search string (prefer the use of organizations and users)
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setSearch($search)
     {
         $this->search = $search;
@@ -129,12 +127,11 @@ class FindOptions {
         return $this;
     }
 
-
     /**
      * Get project listing API parameters
      *
-     * @return  ProjectFilterInterface
-     */ 
+     * @return ProjectFilterInterface
+     */
     public function getFilter()
     {
         return $this->filter;
@@ -143,15 +140,14 @@ class FindOptions {
     /**
      * Set project listing API parameters
      *
-     * @param  ProjectFilterInterface  $filter  project listing API parameters
+     * @param ProjectFilterInterface $filter project listing API parameters
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setFilter(ProjectFilterInterface $filter)
     {
         $this->filter = $filter;
 
         return $this;
     }
-
 }

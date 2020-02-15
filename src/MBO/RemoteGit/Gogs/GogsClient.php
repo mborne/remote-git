@@ -3,25 +3,20 @@
 namespace MBO\RemoteGit\Gogs;
 
 use Psr\Log\LoggerInterface;
-use \GuzzleHttp\Client as GuzzleHttpClient;
-
+use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
-use MBO\RemoteGit\Helper\LoggerHelper;
 use MBO\RemoteGit\Http\TokenType;
 
 /**
- * 
  * Client implementation for gogs
- * 
+ *
  * @author mborne
- * 
  */
 class GogsClient extends AbstractClient
 {
-
     const TYPE = 'gogs-v1';
     const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
 
@@ -36,7 +31,7 @@ class GogsClient extends AbstractClient
     ) {
         parent::__construct($httpClient, $logger);
     }
-    
+
     /*
      * @{inheritDoc}
      */
@@ -56,7 +51,7 @@ class GogsClient extends AbstractClient
             );
         }
 
-        $result = array();
+        $result = [];
         foreach ($options->getUsers() as $user) {
             $result = array_merge($result, $this->findByUser(
                 $user,
@@ -69,13 +64,14 @@ class GogsClient extends AbstractClient
                 $options->getFilter()
             ));
         }
+
         return $result;
     }
 
     /**
      * Find projects for current user
      *
-     * @return void
+     * @return ProjectInterface[]
      */
     protected function findByCurrentUser(
         ProjectFilterInterface $projectFilter
@@ -84,7 +80,7 @@ class GogsClient extends AbstractClient
             $this->getProjects(
                 '/api/v1/user/repos',
                 [
-                    'limit' => self::DEFAULT_PER_PAGE
+                    'limit' => self::DEFAULT_PER_PAGE,
                 ]
             ),
             $projectFilter
@@ -94,7 +90,7 @@ class GogsClient extends AbstractClient
     /**
      * Find projects by username
      *
-     * @return void
+     * @return ProjectInterface[]
      */
     protected function findByUser(
         $user,
@@ -102,9 +98,9 @@ class GogsClient extends AbstractClient
     ) {
         return $this->filter(
             $this->getProjects(
-                '/api/v1/users/' . $user . '/repos',
+                '/api/v1/users/'.$user.'/repos',
                 [
-                    'limit' => self::DEFAULT_PER_PAGE
+                    'limit' => self::DEFAULT_PER_PAGE,
                 ]
             ),
             $projectFilter
@@ -114,7 +110,7 @@ class GogsClient extends AbstractClient
     /**
      * Find projects by username
      *
-     * @return void
+     * @return ProjectInterface[]
      */
     protected function findByOrg(
         $org,
@@ -122,15 +118,14 @@ class GogsClient extends AbstractClient
     ) {
         return $this->filter(
             $this->getProjects(
-                '/api/v1/orgs/' . $org . '/repos',
+                '/api/v1/orgs/'.$org.'/repos',
                 [
-                    'limit' => self::DEFAULT_PER_PAGE
+                    'limit' => self::DEFAULT_PER_PAGE,
                 ]
             ),
             $projectFilter
         );
     }
-
 
     /*
      * @{inheritDoc}
@@ -140,14 +135,13 @@ class GogsClient extends AbstractClient
         $filePath,
         $ref
     ) {
-        $uri = '/api/v1/repos/' . $project->getName() . '/raw/';
+        $uri = '/api/v1/repos/'.$project->getName().'/raw/';
         $uri .= $project->getDefaultBranch();
-        $uri .= '/' . $filePath;
+        $uri .= '/'.$filePath;
 
-        $this->getLogger()->debug('GET ' . $uri);
-        $response = $this->getHttpClient()->request('GET',$uri);
-        return (string)$response->getBody();
+        $this->getLogger()->debug('GET '.$uri);
+        $response = $this->getHttpClient()->request('GET', $uri);
+
+        return (string) $response->getBody();
     }
-
-
 }

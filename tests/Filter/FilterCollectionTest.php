@@ -3,19 +3,17 @@
 namespace MBO\RemoteGit\Tests\Filter;
 
 use MBO\RemoteGit\Tests\TestCase;
-
 use Psr\Log\NullLogger;
-
-use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Filter\FilterCollection;
 
 /**
  * Test FilterCollection
  */
-class FilterCollectionTest extends TestCase {
-
-    public function testEmpty(){
+class FilterCollectionTest extends TestCase
+{
+    public function testEmpty()
+    {
         $filterCollection = new FilterCollection(new NullLogger());
         $project = $this->createMockProject('test');
         $this->assertTrue($filterCollection->isAccepted($project));
@@ -24,10 +22,12 @@ class FilterCollectionTest extends TestCase {
     /**
      * Create a fake project filter returning true or false
      *
-     * @param boolean $accepted
+     * @param bool $accepted
+     *
      * @return ProjectFilterInterface
      */
-    private function createMockFilter($accepted){
+    private function createMockFilter($accepted)
+    {
         $filter = $this->getMockBuilder(ProjectFilterInterface::class)
             ->getMock()
         ;
@@ -35,18 +35,20 @@ class FilterCollectionTest extends TestCase {
             ->method('isAccepted')
             ->willReturn($accepted)
         ;
+
         return $filter;
     }
 
-
-    public function testOneTrue(){
+    public function testOneTrue()
+    {
         $filterCollection = new FilterCollection(new NullLogger());
         $filterCollection->addFilter($this->createMockFilter(true));
         $project = $this->createMockProject('test');
         $this->assertTrue($filterCollection->isAccepted($project));
     }
 
-    public function testOneFalse(){
+    public function testOneFalse()
+    {
         $filterCollection = new FilterCollection(new NullLogger());
         $filterCollection->addFilter($this->createMockFilter(false));
         $project = $this->createMockProject('test');
@@ -56,14 +58,13 @@ class FilterCollectionTest extends TestCase {
     /**
      * Check that isAccepted is unanymous
      */
-    public function testTrueFalseTrue(){
+    public function testTrueFalseTrue()
+    {
         $filterCollection = new FilterCollection(new NullLogger());
-        $filterCollection->addFilter($this->createMockFilter(true));      
+        $filterCollection->addFilter($this->createMockFilter(true));
         $filterCollection->addFilter($this->createMockFilter(false));
-        $filterCollection->addFilter($this->createMockFilter(true));      
+        $filterCollection->addFilter($this->createMockFilter(true));
         $project = $this->createMockProject('test');
         $this->assertFalse($filterCollection->isAccepted($project));
     }
-
 }
-

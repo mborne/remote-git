@@ -3,23 +3,19 @@
 namespace MBO\RemoteGit\Tests\Filter;
 
 use MBO\RemoteGit\Tests\TestCase;
-
-use Psr\Log\NullLogger;
-
 use MBO\RemoteGit\ClientInterface;
-use MBO\RemoteGit\ProjectInterface;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Filter\ComposerProjectFilter;
 
 /**
  * Test ComposerProjectFilter
  */
-class ComposerProjectFilterTest extends TestCase {
-
+class ComposerProjectFilterTest extends TestCase
+{
     /**
      * Test getDescription
      */
-    public function testGetDescription(){
+    public function testGetDescription()
+    {
         $gitClient = $this->getMockBuilder(ClientInterface::class)
             ->getMock()
         ;
@@ -38,7 +34,8 @@ class ComposerProjectFilterTest extends TestCase {
     /**
      * Rejected if composer.json doesn't exists
      */
-    public function testMissingComposerJson(){
+    public function testMissingComposerJson()
+    {
         $project = $this->createMockProject('test');
 
         $gitClient = $this->getMockBuilder(ClientInterface::class)
@@ -47,26 +44,26 @@ class ComposerProjectFilterTest extends TestCase {
         $gitClient
             ->expects($this->once())
             ->method('getRawFile')
-            ->willThrowException(new \Exception("404 not found"))
+            ->willThrowException(new \Exception('404 not found'))
         ;
         $filter = new ComposerProjectFilter($gitClient);
         $this->assertFalse($filter->isAccepted($project));
     }
 
-
     /**
      * Accepted if composer.json exists
      */
-    public function testComposerJsonAndTypeFilter(){
+    public function testComposerJsonAndTypeFilter()
+    {
         $project = $this->createMockProject('test');
 
         $gitClient = $this->getMockBuilder(ClientInterface::class)
             ->getMock()
         ;
-        $content = array(
+        $content = [
             'name' => 'something',
-            'type' => 'project'
-        );
+            'type' => 'project',
+        ];
         $gitClient
             ->expects($this->any())
             ->method('getRawFile')
@@ -88,16 +85,17 @@ class ComposerProjectFilterTest extends TestCase {
     /**
      * Accepted if composer.json exists
      */
-    public function testComposerJsonAndMultipleTypeFilter(){
+    public function testComposerJsonAndMultipleTypeFilter()
+    {
         $project = $this->createMockProject('test');
 
         $gitClient = $this->getMockBuilder(ClientInterface::class)
             ->getMock()
         ;
-        $content = array(
+        $content = [
             'name' => 'something',
-            'type' => 'library'
-        );
+            'type' => 'library',
+        ];
         $gitClient
             ->expects($this->any())
             ->method('getRawFile')
@@ -109,7 +107,4 @@ class ComposerProjectFilterTest extends TestCase {
         $filter->setProjectType('project,library');
         $this->assertTrue($filter->isAccepted($project));
     }
-
-
 }
-

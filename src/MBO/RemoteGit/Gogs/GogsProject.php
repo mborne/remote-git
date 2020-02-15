@@ -6,11 +6,11 @@ use MBO\RemoteGit\ProjectInterface;
 
 /**
  * Project implementation for github
- * 
+ *
  * @author mborne
  */
-class GogsProject implements ProjectInterface {
-
+class GogsProject implements ProjectInterface
+{
     protected $rawMetadata;
 
     public function __construct($rawMetadata)
@@ -21,37 +21,40 @@ class GogsProject implements ProjectInterface {
     /*
      * @{inheritDoc}
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->rawMetadata['id'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->rawMetadata['full_name'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getDefaultBranch(){
+    public function getDefaultBranch()
+    {
         return $this->rawMetadata['default_branch'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getHttpUrl(){
+    public function getHttpUrl()
+    {
         return $this->rawMetadata['clone_url'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getRawMetadata(){
+    public function getRawMetadata()
+    {
         return $this->rawMetadata;
     }
-
-
 }

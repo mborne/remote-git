@@ -3,38 +3,38 @@
 namespace MBO\RemoteGit;
 
 use Psr\Log\LoggerInterface;
-use \GuzzleHttp\Client as GuzzleHttpClient;
-
+use GuzzleHttp\Client as GuzzleHttpClient;
+use MBO\RemoteGit\Exception\ClientNotFoundException;
 use MBO\RemoteGit\Helper\LoggerHelper;
 use MBO\RemoteGit\Http\TokenType;
-
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
-
+use MBO\RemoteGit\Helper\ClientHelper;
 
 /**
  * Helper to create clients according to URL.
- * 
+ *
  * Note that it rely on a static interface on clients (TYPE and TOKEN_TYPE)
- * 
+ *
  * @author mborne
  */
-class ClientFactory {
-
+class ClientFactory
+{
     /**
      * @var ClientFactory
      */
-    private static $instance ;
+    private static $instance;
 
     /**
      * Associates client type to metadata ('className','tokenType')
      *
      * @var array
      */
-    private $types = array();
+    private $types = [];
 
-    private function __construct(){
+    private function __construct()
+    {
         $this->register(GitlabClient::class);
         $this->register(GithubClient::class);
         $this->register(GogsClient::class);
@@ -44,48 +44,57 @@ class ClientFactory {
      * True if type is registred
      *
      * @param string $type
-     * @return boolean
+     *
+     * @return bool
      */
-    public function hasType($type){
+    public function hasType($type)
+    {
         return isset($this->types[$type]);
     }
 
     /**
      * Get supported types
      *
-     * @return array()
+     * @return string[]
      */
-    public function getTypes(){
+    public function getTypes()
+    {
         return array_keys($this->types);
     }
 
     /**
      * Create a client with options
      *
-     * @param ClientOptions $options
      * @param LoggerInterface $logger
+     *
      * @return ClientInterface
      */
     public static function createClient(
         ClientOptions $options,
         LoggerInterface $logger = null
     ) {
-        return self::getInstance()->createGitClient($options,$logger);
+        return self::getInstance()->createGitClient($options, $logger);
     }
 
     /**
-     * Create http client according to given options
+     * Create a client with options
+     *
+     * @param LoggerInterface $logger
+     *
+     * @return ClientInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function createGitClient(
         ClientOptions $options,
         LoggerInterface $logger = null
-    ){
+    ) {
         $logger = LoggerHelper::handleNull($logger);
 
         /* Detect client type from URL if not specified */
-        if ( ! $options->hasType() ){
+        if (!$options->hasType()) {
             $className = self::detectClientClass($options->getUrl());
-            $options->setType( $className::TYPE ) ;
+            $options->setType($className::TYPE);
             $logger->debug(sprintf(
                 'Type %s found for %s',
                 $options->getType(),
@@ -94,107 +103,84 @@ class ClientFactory {
         }
 
         /* Ensure that type exists */
-        if ( ! $this->hasType($options->getType()) ){
-            throw new \Exception(sprintf(
-                "type '%s' not found in [%s]",
-                $options->getType(),
-                implode(',',$this->getTypes())
-            ));
+        if (!$this->hasType($options->getType())) {
+            throw new ClientNotFoundException($options->getType(), $this->getTypes());
         }
 
         /* Force github API URL */
-        if ( GithubClient::TYPE === $options->getType() ){
+        if (GithubClient::TYPE === $options->getType()) {
             $options->setUrl('https://api.github.com');
         }
 
         /* Retrieve type metadata */
-        $metadata = $this->types[ $options->getType() ];
+        $metadata = $this->types[$options->getType()];
         $clientClass = $metadata['className'];
-        $tokenType   = $metadata['tokenType'];
-        
+        $tokenType = $metadata['tokenType'];
+
         /* common http options */
-        $guzzleOptions = array(
+        $guzzleOptions = [
             'base_uri' => $options->getUrl(),
-            'timeout'  => 10.0,
+            'timeout' => 60.0,
             'headers' => TokenType::createHttpHeaders(
                 $tokenType,
                 $options->getToken()
-            )
-        );
+            ),
+        ];
         /* disable SSL checks */
-        if ( $options->isUnsafeSsl() ){
+        if ($options->isUnsafeSsl()) {
             $guzzleOptions['verify'] = false;
         }
 
         /* create http client */
         $httpClient = new GuzzleHttpClient($guzzleOptions);
         /* create git client */
-        return new $clientClass($httpClient,$logger);
+        return new $clientClass($httpClient, $logger);
     }
-
 
     /**
      * Get client class according to URL content
      *
      * @param string $url
+     *
      * @return string
      */
-    public static function detectClientClass($url){
+    public static function detectClientClass($url)
+    {
         $hostname = parse_url($url, PHP_URL_HOST);
-        if ( 'api.github.com' === $hostname || 'github.com' === $hostname ){
+        if ('api.github.com' === $hostname || 'github.com' === $hostname) {
             return GithubClient::class;
-        }else if ( strpos($hostname, 'gogs') !== false ) {
+        } elseif (false !== strpos($hostname, 'gogs')) {
             return GogsClient::class;
-        } else {
-            return GitlabClient::class;
         }
+        /*
+         * fallback to gitlab to ensure comptability with original version
+         * of satis-gitlab
+         */
+        return GitlabClient::class;
     }
 
     /**
      * @return ClientFactory
      */
-    public static function getInstance(){
-        if ( is_null(self::$instance) ){
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
             self::$instance = new ClientFactory();
         }
+
         return self::$instance;
     }
 
     /**
      * Register client type
-     * @param string $clazzName
-     * @return void
+     *
+     * @param string $className
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function register($className){
-        $reflectionClass = new \ReflectionClass($className);
-        if ( ! $reflectionClass->implementsInterface(ClientInterface::class) ){
-            throw new \Exception(sprintf(
-                '%s must implement %s',
-                $className,
-                ClientInterface::class
-            ));
-        }
-        /* retrieve TYPE */
-        $type = $reflectionClass->getConstant('TYPE');
-        if ( empty($type) ){
-            throw new \Exception(sprintf(
-                'Missing const TYPE on %s',
-                $className
-            ));
-        }
-        /* retrieve TOKEN_TYPE */        
-        $tokenType = $reflectionClass->getConstant('TOKEN_TYPE');
-        if ( empty($tokenType) ){
-            throw new \Exception(sprintf(
-                'Missing const TOKEN_TYPE on %s',
-                $className
-            ));
-        }
-        $this->types[$type] = array(
-            'className' => $className,
-            'tokenType' => $tokenType
-        );
+    private function register($className)
+    {
+        $clientProperties = ClientHelper::getStaticProperties($className);
+        $this->types[$clientProperties['typeName']] = $clientProperties;
     }
-
 }
-

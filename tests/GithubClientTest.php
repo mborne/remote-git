@@ -2,29 +2,23 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use MBO\RemoteGit\Tests\TestCase;
-
-use GuzzleHttp\Client as GuzzleHttpClient;
-use MBO\RemoteGit\GitlabClient;
-
 use Psr\Log\NullLogger;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\FindOptions;
-
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Github\GithubProject;
 
-
-class GithubClientTest extends TestCase {
-
+class GithubClientTest extends TestCase
+{
     /**
      * @return GithubClient
      */
-    protected function createGithubClient(){
+    protected function createGithubClient()
+    {
         $token = getenv('SATIS_GITHUB_TOKEN');
-        if ( empty($token) ){
-            $this->markTestSkipped("Missing SATIS_GITHUB_TOKEN for github.com");
+        if (empty($token)) {
+            $this->markTestSkipped('Missing SATIS_GITHUB_TOKEN for github.com');
         }
 
         $clientOptions = new ClientOptions();
@@ -43,19 +37,20 @@ class GithubClientTest extends TestCase {
     /**
      * Ensure client can find mborne's projects
      */
-    public function testUserAndOrgsRepositories(){
+    public function testUserAndOrgsRepositories()
+    {
         /* create client */
         $client = $this->createGithubClient();
-        $this->assertInstanceOf(GithubClient::class,$client);
+        $this->assertInstanceOf(GithubClient::class, $client);
 
         /* search projects */
         $options = new FindOptions();
-        $options->setUsers(array('mborne'));
-        $options->setOrganizations(array('IGNF'));
+        $options->setUsers(['mborne']);
+        $options->setOrganizations(['IGNF']);
         $projects = $client->find($options);
-        $projectsByName = array();
-        foreach ( $projects as $project ){
-            $this->assertInstanceOf(GithubProject::class,$project);
+        $projectsByName = [];
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GithubProject::class, $project);
             $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
@@ -77,32 +72,32 @@ class GithubClientTest extends TestCase {
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com',$composer);
+        $this->assertContains('mborne@users.noreply.github.com', $composer);
 
         $testFileInSubdirectory = $client->getRawFile(
             $project,
             'tests/TestCase.php',
             $project->getDefaultBranch()
         );
-        $this->assertContains('class TestCase',$testFileInSubdirectory);
+        $this->assertContains('class TestCase', $testFileInSubdirectory);
     }
-
 
     /**
      * Ensure client can find mborne's projects with composer.json file
      */
-    public function testFilterFile(){
+    public function testFilterFile()
+    {
         /* create client */
         $client = $this->createGithubClient();
-        $this->assertInstanceOf(GithubClient::class,$client);
+        $this->assertInstanceOf(GithubClient::class, $client);
 
         /* search projects */
         $options = new FindOptions();
-        $options->setUsers(array('mborne'));        
+        $options->setUsers(['mborne']);
         $projects = $client->find($options);
-        $projectsByName = array();
-        foreach ( $projects as $project ){
-            $this->assertInstanceOf(GithubProject::class,$project);
+        $projectsByName = [];
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GithubProject::class, $project);
             $projectsByName[$project->getName()] = $project;
         }
 
@@ -118,15 +113,13 @@ class GithubClientTest extends TestCase {
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com',$composer);
+        $this->assertContains('mborne@users.noreply.github.com', $composer);
 
         $testFileInSubdirectory = $client->getRawFile(
             $project,
             'tests/TestCase.php',
             $project->getDefaultBranch()
         );
-        $this->assertContains('class TestCase',$testFileInSubdirectory);
+        $this->assertContains('class TestCase', $testFileInSubdirectory);
     }
-
-
 }

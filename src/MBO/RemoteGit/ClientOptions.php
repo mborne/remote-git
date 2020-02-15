@@ -4,37 +4,37 @@ namespace MBO\RemoteGit;
 
 /**
  * Git connection options
- * 
+ *
  * @author mborne
  */
-class ClientOptions {
-
+class ClientOptions
+{
     /**
      * Allows to force a given client type and avoid
      * detection based on URL
      *
      * @var string
      */
-    private $type ;
+    private $type;
 
     /**
      * Base URL (ex : https://gitlab.com)
      *
      * @var string
      */
-    private $url ;
+    private $url;
 
     /**
      * Access token
-     * 
+     *
      * @var string
      */
-    private $token ;
+    private $token;
 
     /**
      * Bypass SSL certificate checks for self signed certificates
      *
-     * @var boolean
+     * @var bool
      */
     private $unsafeSsl;
 
@@ -46,17 +46,18 @@ class ClientOptions {
     /**
      * True if client type is specificied
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasType(){
-        return ! empty($this->type);
+    public function hasType()
+    {
+        return !empty($this->type);
     }
 
     /**
      * Get client type
      *
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getType()
     {
         return $this->type;
@@ -65,10 +66,10 @@ class ClientOptions {
     /**
      * Set client type
      *
-     * @param  string $type gitlab,github,gogs,...
+     * @param string $type gitlab,github,gogs,...
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -77,8 +78,8 @@ class ClientOptions {
     }
 
     /**
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getUrl()
     {
         return $this->url;
@@ -87,10 +88,10 @@ class ClientOptions {
     /**
      * Set URL
      *
-     * @param  string  $url
+     * @param string $url
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setUrl($url)
     {
         $this->url = $url;
@@ -101,17 +102,18 @@ class ClientOptions {
     /**
      * Is token defined?
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasToken(){
-        return ! empty($this->token);
+    public function hasToken()
+    {
+        return !empty($this->token);
     }
 
     /**
      * Get access token
      *
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getToken()
     {
         return $this->token;
@@ -120,10 +122,10 @@ class ClientOptions {
     /**
      * Set access token
      *
-     * @param  string  $token  Access token
+     * @param string $token Access token
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setToken($token)
     {
         $this->token = $token;
@@ -132,8 +134,8 @@ class ClientOptions {
     }
 
     /**
-     * @return  boolean
-     */ 
+     * @return bool
+     */
     public function isUnsafeSsl()
     {
         return $this->unsafeSsl;
@@ -142,15 +144,14 @@ class ClientOptions {
     /**
      * Set unsafeSsl
      *
-     * @param  boolean  $unsafeSsl 
+     * @param bool $unsafeSsl
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setUnsafeSsl($unsafeSsl)
     {
         $this->unsafeSsl = $unsafeSsl;
 
         return $this;
     }
-
 }

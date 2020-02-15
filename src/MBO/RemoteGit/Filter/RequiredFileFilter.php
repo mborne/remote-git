@@ -3,20 +3,18 @@
 namespace MBO\RemoteGit\Filter;
 
 use Psr\Log\LoggerInterface;
-
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ClientInterface as GitClientInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
 
-
 /**
  * Accept projects if git repository contains a given file in default branch
- * 
+ *
  * @author mborne
  */
-class RequiredFileFilter implements ProjectFilterInterface {
-
+class RequiredFileFilter implements ProjectFilterInterface
+{
     /**
      * @var GitClientInterface
      */
@@ -27,27 +25,32 @@ class RequiredFileFilter implements ProjectFilterInterface {
      */
     protected $filePath;
 
+    /**
+     * @param string          $filePath
+     * @param LoggerInterface $logger
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __construct(
         GitClientInterface $gitClient,
         $filePath,
         LoggerInterface $logger = null
-    )
-    {
+    ) {
         $this->gitClient = $gitClient;
-        $this->filePath  = $filePath;
-        $this->logger    = LoggerHelper::handleNull($logger);
+        $this->filePath = $filePath;
+        $this->logger = LoggerHelper::handleNull($logger);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getDescription(){
-        return sprintf("File '%s' should exist in default branch",$this->filePath);
+    public function getDescription()
+    {
+        return sprintf("File '%s' should exist in default branch", $this->filePath);
     }
 
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isAccepted(ProjectInterface $project)
     {
@@ -57,16 +60,17 @@ class RequiredFileFilter implements ProjectFilterInterface {
                 $this->filePath,
                 $project->getDefaultBranch()
             );
+
             return true;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->debug(sprintf(
                 '%s (branch %s) : file %s not found',
                 $project->getName(),
                 $project->getDefaultBranch(),
                 $this->filePath
             ));
+
             return false;
         }
     }
-
 }

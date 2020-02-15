@@ -3,18 +3,19 @@
 namespace MBO\RemoteGit\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-
 use MBO\RemoteGit\ProjectInterface;
 
-class TestCase extends BaseTestCase {
-
+class TestCase extends BaseTestCase
+{
     /**
      * Create a fake project with a given name
      *
      * @param string $projectName
+     *
      * @return ProjectInterface
      */
-    protected function createMockProject($projectName){
+    protected function createMockProject($projectName)
+    {
         $project = $this->getMockBuilder(ProjectInterface::class)
             ->getMock()
         ;
@@ -26,13 +27,15 @@ class TestCase extends BaseTestCase {
             ->method('getDefaultBranch')
             ->willReturn('master')
         ;
+
         return $project;
     }
 
     /**
      * Ensure that getter works for project
      */
-    protected function assertGettersWorks(ProjectInterface $project){
+    protected function assertGettersWorks(ProjectInterface $project)
+    {
         $this->assertNotEmpty($project->getId());
         $this->assertNotEmpty($project->getName());
         // should not crash (can be null or empty)
@@ -40,5 +43,4 @@ class TestCase extends BaseTestCase {
         $this->assertNotEmpty($project->getHttpUrl());
         $this->assertNotEmpty($project->getRawMetadata());
     }
-
-} 
+}

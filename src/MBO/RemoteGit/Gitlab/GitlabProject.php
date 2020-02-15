@@ -6,11 +6,11 @@ use MBO\RemoteGit\ProjectInterface;
 
 /**
  * Common project properties between different git project host (gitlab, github, etc.)
- * 
+ *
  * @author mborne
  */
-class GitlabProject implements ProjectInterface {
-
+class GitlabProject implements ProjectInterface
+{
     protected $rawMetadata;
 
     public function __construct($rawMetadata)
@@ -21,40 +21,44 @@ class GitlabProject implements ProjectInterface {
     /*
      * @{inheritDoc}
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->rawMetadata['id'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->rawMetadata['path_with_namespace'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getDefaultBranch(){
+    public function getDefaultBranch()
+    {
         if (!isset($this->rawMetadata['default_branch'])) {
             return null;
         }
+
         return $this->rawMetadata['default_branch'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getHttpUrl(){
+    public function getHttpUrl()
+    {
         return $this->rawMetadata['http_url_to_repo'];
     }
 
     /*
      * @{inheritDoc}
      */
-    public function getRawMetadata(){
+    public function getRawMetadata()
+    {
         return $this->rawMetadata;
     }
-
-
 }

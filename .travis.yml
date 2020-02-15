@@ -10,7 +10,7 @@ php:
   - 7.3
 
 matrix:
-  # composer update should be required only for PHP 5.6 version
+  # composer update should be required only for PHP 5.6 version
   include:
       - php: 5.6
         env: deps=update
@@ -24,4 +24,6 @@ before_script:
   - if [ "$deps" == "update" ]; then composer update --prefer-dist; fi
   - if [ "$deps" != "update" ]; then composer install --prefer-dist; fi
 
-script: vendor/bin/phpunit -c phpunit.xml.dist
+install: make
+
+script: make test

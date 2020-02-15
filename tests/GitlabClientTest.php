@@ -2,27 +2,23 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use MBO\RemoteGit\Tests\TestCase;
-
-use GuzzleHttp\Client as GuzzleHttpClient;
-
 use Psr\Log\NullLogger;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\FindOptions;
-
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gitlab\GitlabProject;
 
-class GitlabClientTest extends TestCase {
-
+class GitlabClientTest extends TestCase
+{
     /**
      * @return GitlabClient
      */
-    protected function createGitlabClient(){
+    protected function createGitlabClient()
+    {
         $gitlabToken = getenv('SATIS_GITLAB_TOKEN');
-        if ( empty($gitlabToken) ){
-            $this->markTestSkipped("Missing SATIS_GITLAB_TOKEN for gitlab.com");
+        if (empty($gitlabToken)) {
+            $this->markTestSkipped('Missing SATIS_GITLAB_TOKEN for gitlab.com');
         }
 
         $clientOptions = new ClientOptions();
@@ -41,18 +37,19 @@ class GitlabClientTest extends TestCase {
     /**
      * Ensure client can find mborne/sample-composer by username
      */
-    public function testGitlabDotComByUser(){
+    public function testGitlabDotComByUser()
+    {
         /* create client */
         $client = $this->createGitlabClient();
-        $this->assertInstanceOf(GitlabClient::class,$client);
+        $this->assertInstanceOf(GitlabClient::class, $client);
 
         /* search projects */
         $findOptions = new FindOptions();
-        $findOptions->setUsers(array('mborne'));
+        $findOptions->setUsers(['mborne']);
         $projects = $client->find($findOptions);
-        $projectsByName = array();
-        foreach ( $projects as $project ){
-            $this->assertInstanceOf(GitlabProject::class,$project);
+        $projectsByName = [];
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GitlabProject::class, $project);
             $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
@@ -68,21 +65,21 @@ class GitlabClientTest extends TestCase {
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com',$composer);
+        $this->assertContains('mborne@users.noreply.github.com', $composer);
     }
 
-
-    public function testGitlabDotComOrgs(){
+    public function testGitlabDotComOrgs()
+    {
         /* create client */
         $client = $this->createGitlabClient();
-        $this->assertInstanceOf(GitlabClient::class,$client);
+        $this->assertInstanceOf(GitlabClient::class, $client);
 
         /* search projects */
         $findOptions = new FindOptions();
-        $findOptions->setOrganizations(array('gitlab-org'));
+        $findOptions->setOrganizations(['gitlab-org']);
         $projects = $client->find($findOptions);
-        foreach ( $projects as $project ){
-            $this->assertInstanceOf(GitlabProject::class,$project);
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GitlabProject::class, $project);
             $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
@@ -95,17 +92,18 @@ class GitlabClientTest extends TestCase {
     /**
      * Ensure client can find mborne/sample-composer with search
      */
-    public function testGitlabDotComSearch(){
+    public function testGitlabDotComSearch()
+    {
         /* create client */
         $client = $this->createGitlabClient();
-        $this->assertInstanceOf(GitlabClient::class,$client);
+        $this->assertInstanceOf(GitlabClient::class, $client);
 
         /* search projects */
         $findOptions = new FindOptions();
         $findOptions->setSearch('sample-composer');
         $projects = $client->find($findOptions);
-        $projectsByName = array();
-        foreach ( $projects as $project ){
+        $projectsByName = [];
+        foreach ($projects as $project) {
             $projectsByName[$project->getName()] = $project;
         }
         /* check project found */
@@ -120,7 +118,6 @@ class GitlabClientTest extends TestCase {
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com',$composer);
+        $this->assertContains('mborne@users.noreply.github.com', $composer);
     }
-
 }

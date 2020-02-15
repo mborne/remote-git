@@ -2,11 +2,6 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use MBO\RemoteGit\Tests\TestCase;
-
-use GuzzleHttp\Client as GuzzleHttpClient;
-
-use Psr\Log\NullLogger;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\FindOptions;
@@ -14,16 +9,16 @@ use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Gogs\GogsProject;
 
-
-class GogsClientTest extends TestCase {
-
+class GogsClientTest extends TestCase
+{
     /**
      * @return ClientInterface
      */
-    protected function createGitClient(){
+    protected function createGitClient()
+    {
         $gitlabToken = getenv('SATIS_GOGS_TOKEN');
-        if ( empty($gitlabToken) ){
-            $this->markTestSkipped("Missing SATIS_GOGS_TOKEN for gogs.quadtreeworld.net");
+        if (empty($gitlabToken)) {
+            $this->markTestSkipped('Missing SATIS_GOGS_TOKEN for gogs.quadtreeworld.net');
         }
 
         $clientOptions = new ClientOptions();
@@ -38,14 +33,14 @@ class GogsClientTest extends TestCase {
         );
     }
 
-
     /**
      * Test find by current user
      */
-    public function testFindByCurrentUser(){
+    public function testFindByCurrentUser()
+    {
         /* create client */
         $client = $this->createGitClient();
-        $this->assertInstanceOf(GogsClient::class,$client);
+        $this->assertInstanceOf(GogsClient::class, $client);
 
         /* search projects */
         $findOptions = new FindOptions();
@@ -54,9 +49,9 @@ class GogsClientTest extends TestCase {
         $this->assertTrue(is_array($projects));
         $this->assertNotEmpty($projects);
 
-        $projectsByName = array();
-        foreach ( $projects as $project ){
-            $this->assertInstanceOf(GogsProject::class,$project);
+        $projectsByName = [];
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GogsProject::class, $project);
             $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
@@ -68,35 +63,35 @@ class GogsClientTest extends TestCase {
         $project = $projectsByName['docker/docker-php'];
         $this->assertContains(
             'FROM ',
-            $client->getRawFile($project,'Dockerfile','master')
+            $client->getRawFile($project, 'Dockerfile', 'master')
         );
         $this->assertContains(
             'ServerTokens Prod',
-            $client->getRawFile($project,'conf/apache-security.conf','master')
+            $client->getRawFile($project, 'conf/apache-security.conf', 'master')
         );
     }
-
 
     /**
      * Ensure client can find projects by username and organizations
      */
-    public function testFindByUserAndOrgs(){
+    public function testFindByUserAndOrgs()
+    {
         /* create client */
         $client = $this->createGitClient();
-        $this->assertInstanceOf(GogsClient::class,$client);
+        $this->assertInstanceOf(GogsClient::class, $client);
 
         /* search projects */
         $findOptions = new FindOptions();
-        $findOptions->setUsers(array('mborne'));
-        $findOptions->setOrganizations(array('docker'));
+        $findOptions->setUsers(['mborne']);
+        $findOptions->setOrganizations(['docker']);
         $projects = $client->find($findOptions);
 
         $this->assertTrue(is_array($projects));
         $this->assertNotEmpty($projects);
 
-        $projectsByName = array();
-        foreach ( $projects as $project ){
-            $this->assertInstanceOf(GogsProject::class,$project);
+        $projectsByName = [];
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GogsProject::class, $project);
             $this->assertGettersWorks($project);
             $projectsByName[$project->getName()] = $project;
         }
@@ -108,13 +103,11 @@ class GogsClientTest extends TestCase {
         $project = $projectsByName['docker/docker-php'];
         $this->assertContains(
             'FROM ',
-            $client->getRawFile($project,'Dockerfile','master')
+            $client->getRawFile($project, 'Dockerfile', 'master')
         );
         $this->assertContains(
             'ServerTokens Prod',
-            $client->getRawFile($project,'conf/apache-security.conf','master')
+            $client->getRawFile($project, 'conf/apache-security.conf', 'master')
         );
     }
-
-
 }

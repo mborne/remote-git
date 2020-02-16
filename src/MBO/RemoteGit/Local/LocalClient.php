@@ -6,16 +6,20 @@ use Psr\Log\LoggerInterface;
 use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\ProjectInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Client for a local folder containing a project hierarchy
  */
-class LocalClient implements ClientInterface {
+class LocalClient implements ClientInterface
+{
+    const TYPE = 'local';
+    const TOKEN_TYPE = TokenType::NONE;
 
     /**
      * Path to the root folder
+     *
      * @var string
      */
     private $rootPath;
@@ -26,24 +30,29 @@ class LocalClient implements ClientInterface {
     private $logger;
 
     /**
-     * @param string $rootPath
+     * Create a LocalClient for a folder containing a hierarchy of git repositories
+     *
+     * @param string          $rootPath
      * @param LoggerInterface $logger
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct($rootPath, LoggerInterface $logger = null)
     {
         $this->rootPath = realpath($rootPath);
-        $this->logger   = LoggerHelper::handleNull($logger);
+        $this->logger = LoggerHelper::handleNull($logger);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function find(FindOptions $options){
+    public function find(FindOptions $options)
+    {
         $projects = [];
 
         $projectFolders = [];
-        $this->findProjectFolders($this->rootPath,$projectFolders);
-        foreach ( $projectFolders as $projectFolder ){
+        $this->findProjectFolders($this->rootPath, $projectFolders);
+        foreach ($projectFolders as $projectFolder) {
             $project = $this->createLocalProject($projectFolder);
             // TODO filters
             $projects[] = $project;
@@ -56,24 +65,27 @@ class LocalClient implements ClientInterface {
      * Create a LocalProject retreiving metadata from absolute path to project
      *
      * @param string $projectFolder
+     *
      * @return LocalProject
      */
-    public function createLocalProject($projectFolder){
+    public function createLocalProject($projectFolder)
+    {
         /* relativize path and remove .git for bare repositories */
-        $fullName = substr($projectFolder,strlen($this->rootPath)+1);
-        $isBare   = false ;
-        if ( '.git' === substr($projectFolder, -4 ) ){
+        $fullName = substr($projectFolder, strlen($this->rootPath) + 1);
+        $isBare = false;
+        if ('.git' === substr($projectFolder, -4)) {
             $isBare = true;
-            $fullName = substr($fullName,0,strlen($fullName)-4);
+            $fullName = substr($fullName, 0, strlen($fullName) - 4);
         }
         // TODO remove trailing .git for bare repositories
         $rawMetadata = [
             'id' => sha1($projectFolder),
-            'is_bare'   => $isBare,
+            'is_bare' => $isBare,
             'full_path' => $projectFolder,
             'full_name' => $fullName,
-            'head_branch' => 'master' // TODO
+            'head_branch' => 'master', // TODO
         ];
+
         return new LocalProject($rawMetadata);
     }
 
@@ -84,50 +96,58 @@ class LocalClient implements ClientInterface {
      * folders
      *
      * @param string $parentPath absolute path to a given folder
-     * @param array $projectFolders
+     *
      * @return string[]
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    protected function findProjectFolders($parentPath,array &$projectFolders){
+    protected function findProjectFolders($parentPath, array &$projectFolders)
+    {
         $this->logger->info("look for .git folder in $parentPath ...");
         $items = scandir($parentPath);
-        foreach ( $items as $item ){
-            if ( '.' === $item || '..' === $item ){
+        foreach ($items as $item) {
+            if ('.' === $item || '..' === $item) {
                 continue;
             }
             $itemPath = $parentPath.DIRECTORY_SEPARATOR.$item;
-            if ( ! is_dir($itemPath) ){
+            if (!is_dir($itemPath)) {
                 continue;
             }
-            if ( '.git' === $item ){
+            if ('.git' === $item) {
                 /* non bare repository containing a .git directory */
                 $projectFolders[] = $parentPath;
-            }elseif ( '.git' === substr($parentPath, -4) ){
+            } elseif ('.git' === substr($parentPath, -4)) {
                 /* bare repository with folder name ending with .git */
                 $projectFolders[] = $parentPath;
-            }else{
+            } else {
                 /* recursive search */
-                $this->findProjectFolders($itemPath,$projectFolders);
+                $this->findProjectFolders($itemPath, $projectFolders);
             }
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
         $ref
-    ){
-        $cmd  = sprintf(
+    ) {
+        $cmd = sprintf(
             'cd %s ; git show %s:%s',
             escapeshellarg($project->getHttpUrl()),
             escapeshellarg($ref),
             escapeshellarg($filePath)
         );
+        $this->logger->info(sprintf(
+            'getRawFile(%s,%s,%s) : %s',
+            escapeshellarg($project->getHttpUrl()),
+            escapeshellarg($ref),
+            escapeshellarg($filePath),
+            $cmd
+        ));
+
         return shell_exec($cmd);
     }
-
-
 }
-

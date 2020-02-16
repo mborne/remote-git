@@ -19,7 +19,7 @@ check-rules: vendor
 fix-style: vendor
 	@echo "-- Fixing coding style using php-cs-fixer..."
 	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES)
-	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES)
+	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES)
 
 
 .PHONY: check-style

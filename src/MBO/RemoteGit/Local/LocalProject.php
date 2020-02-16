@@ -7,8 +7,8 @@ use MBO\RemoteGit\ProjectInterface;
 /**
  * Project corresponding to a local git folder
  */
-class LocalProject implements ProjectInterface {
-
+class LocalProject implements ProjectInterface
+{
     /**
      * @var string[]
      */
@@ -20,38 +20,42 @@ class LocalProject implements ProjectInterface {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->rawMetadata['id'];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->rawMetadata['full_name'];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getDefaultBranch(){
+    public function getDefaultBranch()
+    {
         return $this->rawMetadata['head_branch'];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getHttpUrl(){
+    public function getHttpUrl()
+    {
         return $this->rawMetadata['full_path'];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getRawMetadata(){
+    public function getRawMetadata()
+    {
         return $this->rawMetadata;
     }
-
 }

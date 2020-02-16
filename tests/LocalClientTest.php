@@ -20,7 +20,7 @@ class LocalClientTest extends TestCase
     public static function setUpBeforeClass()
     {
         $fs = new Filesystem();
-        if ( $fs->exists(self::TEMP_DIR) ){
+        if ($fs->exists(self::TEMP_DIR)) {
             return;
         }
         $fs->mkdir(self::TEMP_DIR);
@@ -31,6 +31,7 @@ class LocalClientTest extends TestCase
 
     /**
      * Create a LocalClient for sample test directory
+     *
      * @return LocalClient
      */
     protected function createLocalClient()
@@ -43,14 +44,11 @@ class LocalClientTest extends TestCase
             ->setUrl($rootPath)
         ;
 
-        return new LocalClient($rootPath,new NullLogger());
-        // TODO adapt ClientFactory to check protocol
-
         /* create client */
-        // return ClientFactory::createClient(
-        //     $clientOptions,
-        //     new NullLogger()
-        // );
+        return ClientFactory::createClient(
+            $clientOptions,
+            new NullLogger()
+        );
     }
 
     /**
@@ -58,7 +56,8 @@ class LocalClientTest extends TestCase
      *
      * @return LocalProject[]
      */
-    protected function findAllProjects(){
+    protected function findAllProjects()
+    {
         /* create client */
         $client = $this->createLocalClient();
         $this->assertInstanceOf(LocalClient::class, $client);
@@ -85,33 +84,35 @@ class LocalClientTest extends TestCase
         $this->assertArrayHasKey(
             'mborne/remote-git',
             $projectsByName,
-            'Found : '.json_encode(array_keys($projectsByName),JSON_UNESCAPED_SLASHES)
+            'Found : '.json_encode(array_keys($projectsByName), JSON_UNESCAPED_SLASHES)
         );
     }
 
     /**
      * Check that raw file content can be retreived from non bare repository
      */
-    public function testGetRawFileFromNonBareRepository(){
+    public function testGetRawFileFromNonBareRepository()
+    {
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/remote-git');
-        $readmeContent = $client->getRawFile($project,'README.md',$project->getDefaultBranch());
-        $this->assertContains('# mborne/remote-git',$readmeContent);
+        $readmeContent = $client->getRawFile($project, 'README.md', $project->getDefaultBranch());
+        $this->assertContains('# mborne/remote-git', $readmeContent);
 
-        $testCaseContent = $client->getRawFile($project,'tests/TestCase.php',$project->getDefaultBranch());
-        $this->assertContains('class TestCase',$testCaseContent);
+        $testCaseContent = $client->getRawFile($project, 'tests/TestCase.php', $project->getDefaultBranch());
+        $this->assertContains('class TestCase', $testCaseContent);
     }
 
     /**
      * Check that raw file content can be retreived from bare repository
      */
-    public function testGetRawFileFromBareRepository(){
+    public function testGetRawFileFromBareRepository()
+    {
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/satis-gitlab.git');
-        $readmeContent = $client->getRawFile($project,'composer.json',$project->getDefaultBranch());
-        $this->assertContains('symfony/console',$readmeContent);
+        $readmeContent = $client->getRawFile($project, 'composer.json', $project->getDefaultBranch());
+        $this->assertContains('symfony/console', $readmeContent);
 
-        $testCaseContent = $client->getRawFile($project,'tests/TestCase.php',$project->getDefaultBranch());
-        $this->assertContains('class TestCase',$testCaseContent);
+        $testCaseContent = $client->getRawFile($project, 'tests/TestCase.php', $project->getDefaultBranch());
+        $this->assertContains('class TestCase', $testCaseContent);
     }
 }

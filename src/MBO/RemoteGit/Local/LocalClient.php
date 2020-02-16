@@ -54,7 +54,9 @@ class LocalClient implements ClientInterface
         $this->findProjectFolders($this->rootPath, $projectFolders);
         foreach ($projectFolders as $projectFolder) {
             $project = $this->createLocalProject($projectFolder);
-            // TODO filters
+            if ( ! $options->getFilter()->isAccepted($project) ){
+                continue;
+            }
             $projects[] = $project;
         }
 
@@ -103,7 +105,7 @@ class LocalClient implements ClientInterface
      */
     protected function findProjectFolders($parentPath, array &$projectFolders)
     {
-        $this->logger->info("look for .git folder in $parentPath ...");
+        $this->logger->debug("Checking if $parentPath is a git repository ...");
         $items = scandir($parentPath);
         foreach ($items as $item) {
             if ('.' === $item || '..' === $item) {
@@ -115,11 +117,13 @@ class LocalClient implements ClientInterface
             }
             if ('.git' === $item) {
                 /* non bare repository containing a .git directory */
+                $this->logger->info(sprintf("Git repository found : %s",$parentPath));
                 $projectFolders[] = $parentPath;
-            } elseif ('.git' === substr($parentPath, -4)) {
+            } elseif ('.git' === substr($itemPath, -4)) {
                 /* bare repository with folder name ending with .git */
-                $projectFolders[] = $parentPath;
-            } else {
+                $this->logger->info(sprintf("Git bare repository found : %s",$itemPath));
+                $projectFolders[] = $itemPath;
+            } else{
                 /* recursive search */
                 $this->findProjectFolders($itemPath, $projectFolders);
             }

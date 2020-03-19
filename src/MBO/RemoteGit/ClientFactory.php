@@ -11,6 +11,7 @@ use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Helper\ClientHelper;
+use MBO\RemoteGit\Local\LocalClient;
 
 /**
  * Helper to create clients according to URL.
@@ -38,6 +39,7 @@ class ClientFactory
         $this->register(GitlabClient::class);
         $this->register(GithubClient::class);
         $this->register(GogsClient::class);
+        $this->register(LocalClient::class);
     }
 
     /**
@@ -107,6 +109,11 @@ class ClientFactory
             throw new ClientNotFoundException($options->getType(), $this->getTypes());
         }
 
+        /* Handle LocalClient */
+        if (LocalClient::TYPE === $options->getType()) {
+            return new LocalClient($options->getUrl(), $logger);
+        }
+
         /* Force github API URL */
         if (GithubClient::TYPE === $options->getType()) {
             $options->setUrl('https://api.github.com');
@@ -146,6 +153,11 @@ class ClientFactory
      */
     public static function detectClientClass($url)
     {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if (!in_array($scheme, ['http', 'https'])) {
+            return LocalClient::class;
+        }
+
         $hostname = parse_url($url, PHP_URL_HOST);
         if ('api.github.com' === $hostname || 'github.com' === $hostname) {
             return GithubClient::class;

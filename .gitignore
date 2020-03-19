@@ -6,7 +6,8 @@
 /composer.phar
 /output/
 
-# temp files
+# dev and temp files
 .php_cs.cache
+/.vscode
 
 

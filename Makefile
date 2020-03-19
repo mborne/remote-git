@@ -1,4 +1,5 @@
 PHP_CS_RULES=@Symfony,-ordered_imports,-phpdoc_summary
+PHP_MD_RULES=cleancode,codesize,controversial,design,naming,unusedcode
 
 .PHONY: test
 test: check-style check-rules
@@ -11,14 +12,14 @@ test: check-style check-rules
 .PHONY: check-rules
 check-rules: vendor
 	@echo "-- Checking coding rules using phpmd (see @SuppressWarning to bypass control)"
-	vendor/bin/phpmd src text cleancode,codesize,controversial,design,naming,unusedcode
+	vendor/bin/phpmd src text $(PHP_MD_RULES)
 
 
 .PHONY: fix-style
 fix-style: vendor
 	@echo "-- Fixing coding style using php-cs-fixer..."
 	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES)
-	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES)
+	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES)
 
 
 .PHONY: check-style

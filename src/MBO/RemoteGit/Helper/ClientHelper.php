@@ -15,7 +15,7 @@ class ClientHelper
     /**
      * Retrieve TYPE and TOKEN_TYPE from client class
      *
-     * @param string $className
+     * @param class-string $className
      *
      * @return string[]
      */

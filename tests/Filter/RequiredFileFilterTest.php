@@ -13,6 +13,8 @@ class RequiredFileFilterTest extends TestCase
 {
     /**
      * Rejected if composer.json doesn't exists
+     *
+     * @return void
      */
     public function testRequiredFileMissing()
     {
@@ -32,6 +34,8 @@ class RequiredFileFilterTest extends TestCase
 
     /**
      * Accepted if composer.json exists
+     *
+     * @return void
      */
     public function testRequiredFilePresent()
     {

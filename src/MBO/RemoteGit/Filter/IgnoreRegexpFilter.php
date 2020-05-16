@@ -17,6 +17,9 @@ class IgnoreRegexpFilter implements ProjectFilterInterface
      */
     protected $ignoreRegexp;
 
+    /**
+     * @param string $ignoreRegexp
+     */
     public function __construct($ignoreRegexp)
     {
         assert(!empty($ignoreRegexp));
@@ -28,7 +31,7 @@ class IgnoreRegexpFilter implements ProjectFilterInterface
      */
     public function getDescription()
     {
-        return 'project name should not match /'.$this->ignoreRegexp + '/';
+        return 'project name should not match /'.$this->ignoreRegexp.'/';
     }
 
     /**

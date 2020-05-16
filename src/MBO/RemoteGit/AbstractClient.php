@@ -56,12 +56,17 @@ abstract class AbstractClient implements ClientInterface
     /**
      * Create a project according to JSON metadata provided by an API
      *
+     * @param array<string,mixed> $rawProject
+     *
      * @return ProjectInterface
      */
     abstract protected function createProject(array $rawProject);
 
     /**
      * Get projets for a given path with parameters
+     *
+     * @param string              $path
+     * @param array<string,mixed> $params
      *
      * @return ProjectInterface[]
      */
@@ -84,11 +89,11 @@ abstract class AbstractClient implements ClientInterface
     /**
      * Implode params to performs request
      *
-     * @param array $params key=>value
+     * @param array<string,string> $params key=>value
      *
      * @return string
      */
-    protected function implodeParams($params)
+    protected function implodeParams(array $params)
     {
         $parts = [];
         foreach ($params as $key => $value) {

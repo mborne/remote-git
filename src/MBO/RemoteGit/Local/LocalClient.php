@@ -39,7 +39,9 @@ class LocalClient implements ClientInterface
      */
     public function __construct($rootPath, LoggerInterface $logger = null)
     {
-        $this->rootPath = realpath($rootPath);
+        $absolutePath = realpath($rootPath);
+        assert(!is_bool($absolutePath));
+        $this->rootPath = $absolutePath;
         $this->logger = LoggerHelper::handleNull($logger);
     }
 
@@ -97,9 +99,10 @@ class LocalClient implements ClientInterface
      * TODO use something like "git rev-parse --git-dir" to validate
      * folders
      *
-     * @param string $parentPath absolute path to a given folder
+     * @param string   $parentPath     absolute path to a given folder
+     * @param string[] $projectFolders
      *
-     * @return string[]
+     * @return void
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
@@ -107,6 +110,7 @@ class LocalClient implements ClientInterface
     {
         $this->logger->debug("Checking if $parentPath is a git repository ...");
         $items = scandir($parentPath);
+        assert(!is_bool($items));
         foreach ($items as $item) {
             if ('.' === $item || '..' === $item) {
                 continue;

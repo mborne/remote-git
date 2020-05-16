@@ -10,10 +10,13 @@ use MBO\RemoteGit\ProjectInterface;
 class LocalProject implements ProjectInterface
 {
     /**
-     * @var string[]
+     * @var array<string,mixed>
      */
     protected $rawMetadata;
 
+    /**
+     * @param array<string,mixed> $rawMetadata
+     */
     public function __construct(array $rawMetadata)
     {
         $this->rawMetadata = $rawMetadata;

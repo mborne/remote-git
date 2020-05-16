@@ -7,6 +7,9 @@ use MBO\RemoteGit\Http\TokenType;
 
 class TokenTypeTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testCreateHttpHeaders()
     {
         // empty headers for null token

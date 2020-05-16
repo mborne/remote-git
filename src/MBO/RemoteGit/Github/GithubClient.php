@@ -44,8 +44,8 @@ class GithubClient extends AbstractClient
     /**
      * Constructor with an http client and a logger
      *
-     * @param $httpClient http client
-     * @param $logger
+     * @param GuzzleHttpClient $httpClient http client
+     * @param LoggerInterface  $logger
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -93,6 +93,8 @@ class GithubClient extends AbstractClient
     /**
      * Find projects by username
      *
+     * @param string $user
+     *
      * @return ProjectInterface[]
      */
     protected function findByUser(
@@ -107,6 +109,8 @@ class GithubClient extends AbstractClient
 
     /**
      * Find projects by username
+     *
+     * @param string $org
      *
      * @return ProjectInterface[]
      */

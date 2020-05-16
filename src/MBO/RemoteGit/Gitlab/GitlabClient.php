@@ -31,8 +31,8 @@ class GitlabClient extends AbstractClient
     /**
      * Constructor with an http client and a logger
      *
-     * @param $httpClient http client
-     * @param $logger
+     * @param GuzzleHttpClient $httpClient http client
+     * @param LoggerInterface  $logger
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
@@ -79,6 +79,8 @@ class GitlabClient extends AbstractClient
     /**
      * Find projects by username
      *
+     * @param string $user
+     *
      * @return ProjectInterface[]
      */
     protected function findByUser(
@@ -94,6 +96,8 @@ class GitlabClient extends AbstractClient
 
     /**
      * Find projects by group
+     *
+     * @param string $group
      *
      * @return ProjectInterface[]
      */
@@ -131,8 +135,8 @@ class GitlabClient extends AbstractClient
     /**
      * Fetch all pages for a given path with query params
      *
-     * @param string $path   ex : "/api/v4/projects"
-     * @param array  $params ex : array('search'=>'sample-composer')
+     * @param string               $path   ex : "/api/v4/projects"
+     * @param array<string,string> $params ex : array('search'=>'sample-composer')
      *
      * @return ProjectInterface[]
      */

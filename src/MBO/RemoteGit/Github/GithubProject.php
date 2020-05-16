@@ -11,8 +11,14 @@ use MBO\RemoteGit\ProjectInterface;
  */
 class GithubProject implements ProjectInterface
 {
+    /**
+     * @var array<string,mixed>
+     */
     protected $rawMetadata;
 
+    /**
+     * @param array<string,mixed> $rawMetadata
+     */
     public function __construct($rawMetadata)
     {
         $this->rawMetadata = $rawMetadata;

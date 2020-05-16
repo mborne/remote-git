@@ -90,6 +90,8 @@ class GogsClient extends AbstractClient
     /**
      * Find projects by username
      *
+     * @param string $user
+     *
      * @return ProjectInterface[]
      */
     protected function findByUser(
@@ -109,6 +111,8 @@ class GogsClient extends AbstractClient
 
     /**
      * Find projects by username
+     *
+     * @param string $org
      *
      * @return ProjectInterface[]
      */

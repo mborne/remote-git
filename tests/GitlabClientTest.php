@@ -5,6 +5,7 @@ namespace MBO\RemoteGit\Tests;
 use Psr\Log\NullLogger;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gitlab\GitlabProject;
@@ -12,7 +13,7 @@ use MBO\RemoteGit\Gitlab\GitlabProject;
 class GitlabClientTest extends TestCase
 {
     /**
-     * @return GitlabClient
+     * @return ClientInterface
      */
     protected function createGitlabClient()
     {
@@ -36,6 +37,8 @@ class GitlabClientTest extends TestCase
 
     /**
      * Ensure client can find mborne/sample-composer by username
+     *
+     * @return void
      */
     public function testGitlabDotComByUser()
     {
@@ -68,6 +71,9 @@ class GitlabClientTest extends TestCase
         $this->assertContains('mborne@users.noreply.github.com', $composer);
     }
 
+    /**
+     * @return void
+     */
     public function testGitlabDotComOrgs()
     {
         /* create client */
@@ -78,6 +84,7 @@ class GitlabClientTest extends TestCase
         $findOptions = new FindOptions();
         $findOptions->setOrganizations(['gitlab-org']);
         $projects = $client->find($findOptions);
+        $projectsByName = [];
         foreach ($projects as $project) {
             $this->assertInstanceOf(GitlabProject::class, $project);
             $this->assertGettersWorks($project);
@@ -91,6 +98,8 @@ class GitlabClientTest extends TestCase
 
     /**
      * Ensure client can find mborne/sample-composer with search
+     *
+     * @return void
      */
     public function testGitlabDotComSearch()
     {

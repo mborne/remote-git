@@ -35,6 +35,8 @@ class GogsClientTest extends TestCase
 
     /**
      * Test find by current user
+     *
+     * @return void
      */
     public function testFindByCurrentUser()
     {
@@ -73,6 +75,8 @@ class GogsClientTest extends TestCase
 
     /**
      * Ensure client can find projects by username and organizations
+     *
+     * @return void
      */
     public function testFindByUserAndOrgs()
     {

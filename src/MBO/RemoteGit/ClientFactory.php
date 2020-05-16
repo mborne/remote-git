@@ -30,7 +30,7 @@ class ClientFactory
     /**
      * Associates client type to metadata ('className','tokenType')
      *
-     * @var array
+     * @var array<string,mixed>
      */
     private $types = [];
 
@@ -159,6 +159,7 @@ class ClientFactory
         }
 
         $hostname = parse_url($url, PHP_URL_HOST);
+        assert(!is_bool($hostname));
         if ('api.github.com' === $hostname || 'github.com' === $hostname) {
             return GithubClient::class;
         } elseif (false !== strpos($hostname, 'gogs')) {
@@ -176,7 +177,7 @@ class ClientFactory
      */
     public static function getInstance()
     {
-        if (is_null(self::$instance)) {
+        if (null == self::$instance) {
             self::$instance = new ClientFactory();
         }
 
@@ -186,9 +187,11 @@ class ClientFactory
     /**
      * Register client type
      *
-     * @param string $className
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
+     *
+     * @param class-string $className
+     *
+     * @return void
      */
     private function register($className)
     {

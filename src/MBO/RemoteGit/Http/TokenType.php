@@ -16,8 +16,10 @@ class TokenType
      *
      * @param string $tokenType
      * @param string $token
+     *
+     * @return array<string,string>
      */
-    public static function createHttpHeaders($tokenType, $token)
+    public static function createHttpHeaders($tokenType, $token = null)
     {
         if (empty($token)) {
             return [];

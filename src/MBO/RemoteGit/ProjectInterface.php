@@ -26,7 +26,7 @@ interface ProjectInterface
     /**
      * Get default branch
      *
-     * @return string
+     * @return string|null
      */
     public function getDefaultBranch();
 
@@ -40,7 +40,7 @@ interface ProjectInterface
     /**
      * Get hosting service specific properties
      *
-     * @return array
+     * @return array<string,mixed>
      */
     public function getRawMetadata();
 }

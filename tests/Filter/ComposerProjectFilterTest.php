@@ -13,6 +13,8 @@ class ComposerProjectFilterTest extends TestCase
 {
     /**
      * Test getDescription
+     *
+     * @return void
      */
     public function testGetDescription()
     {
@@ -33,6 +35,8 @@ class ComposerProjectFilterTest extends TestCase
 
     /**
      * Rejected if composer.json doesn't exists
+     *
+     * @return void
      */
     public function testMissingComposerJson()
     {
@@ -52,6 +56,8 @@ class ComposerProjectFilterTest extends TestCase
 
     /**
      * Accepted if composer.json exists
+     *
+     * @return void
      */
     public function testComposerJsonAndTypeFilter()
     {
@@ -84,6 +90,8 @@ class ComposerProjectFilterTest extends TestCase
 
     /**
      * Accepted if composer.json exists
+     *
+     * @return void
      */
     public function testComposerJsonAndMultipleTypeFilter()
     {

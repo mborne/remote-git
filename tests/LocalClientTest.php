@@ -16,6 +16,8 @@ class LocalClientTest extends TestCase
 
     /**
      * Clone some projects in /tmp/remote-git-test to perform functional tests
+     *
+     * @return void
      */
     public static function setUpBeforeClass()
     {
@@ -38,17 +40,23 @@ class LocalClientTest extends TestCase
     {
         // folder containing mborne/remote-git and mborne/satis-gitlab
         $rootPath = realpath(self::TEMP_DIR);
+        $this->assertIsString($rootPath);
 
         $clientOptions = new ClientOptions();
         $clientOptions
             ->setUrl($rootPath)
         ;
 
-        /* create client */
-        return ClientFactory::createClient(
+        /**
+         * @var LocalClient
+         */
+        $client = ClientFactory::createClient(
             $clientOptions,
             new NullLogger()
         );
+        $this->assertInstanceOf(LocalClient::class, $client);
+
+        return $client;
     }
 
     /**
@@ -77,6 +85,8 @@ class LocalClientTest extends TestCase
 
     /**
      * Ensure that mborne/remote-git and mborne/satis-gitlab are found
+     *
+     * @return void
      */
     public function testFindAll()
     {
@@ -90,6 +100,8 @@ class LocalClientTest extends TestCase
 
     /**
      * Check that raw file content can be retreived from non bare repository
+     *
+     * @return void
      */
     public function testGetRawFileFromNonBareRepository()
     {
@@ -104,6 +116,8 @@ class LocalClientTest extends TestCase
 
     /**
      * Check that raw file content can be retreived from bare repository
+     *
+     * @return void
      */
     public function testGetRawFileFromBareRepository()
     {

@@ -13,6 +13,8 @@ test: check-style check-rules
 check-rules: vendor
 	@echo "-- Checking coding rules using phpmd (see @SuppressWarning to bypass control)"
 	vendor/bin/phpmd src text $(PHP_MD_RULES)
+	@echo "-- Checking coding rules using phpstan"
+	vendor/bin/phpstan analyse -c phpstan.neon
 
 
 .PHONY: fix-style

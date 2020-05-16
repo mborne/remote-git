@@ -33,6 +33,8 @@ class TestCase extends BaseTestCase
 
     /**
      * Ensure that getter works for project
+     *
+     * @return void
      */
     protected function assertGettersWorks(ProjectInterface $project)
     {

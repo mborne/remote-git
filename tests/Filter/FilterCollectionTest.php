@@ -12,6 +12,9 @@ use MBO\RemoteGit\Filter\FilterCollection;
  */
 class FilterCollectionTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testEmpty()
     {
         $filterCollection = new FilterCollection(new NullLogger());
@@ -39,6 +42,9 @@ class FilterCollectionTest extends TestCase
         return $filter;
     }
 
+    /**
+     * @return void
+     */
     public function testOneTrue()
     {
         $filterCollection = new FilterCollection(new NullLogger());
@@ -47,6 +53,9 @@ class FilterCollectionTest extends TestCase
         $this->assertTrue($filterCollection->isAccepted($project));
     }
 
+    /**
+     * @return void
+     */
     public function testOneFalse()
     {
         $filterCollection = new FilterCollection(new NullLogger());
@@ -57,6 +66,8 @@ class FilterCollectionTest extends TestCase
 
     /**
      * Check that isAccepted is unanymous
+     *
+     * @return void
      */
     public function testTrueFalseTrue()
     {

@@ -5,6 +5,7 @@ namespace MBO\RemoteGit\Tests;
 use Psr\Log\NullLogger;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Github\GithubProject;
@@ -12,7 +13,7 @@ use MBO\RemoteGit\Github\GithubProject;
 class GithubClientTest extends TestCase
 {
     /**
-     * @return GithubClient
+     * @return ClientInterface
      */
     protected function createGithubClient()
     {
@@ -36,6 +37,8 @@ class GithubClientTest extends TestCase
 
     /**
      * Ensure client can find mborne's projects
+     *
+     * @return void
      */
     public function testUserAndOrgsRepositories()
     {
@@ -84,6 +87,8 @@ class GithubClientTest extends TestCase
 
     /**
      * Ensure client can find mborne's projects with composer.json file
+     *
+     * @return void
      */
     public function testFilterFile()
     {

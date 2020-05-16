@@ -20,9 +20,9 @@ interface ClientInterface
     /**
      * Get raw file
      *
-     * @param string $projectId ex : 123456
-     * @param string $filePath  ex : composer.json
-     * @param string $ref       ex : master
+     * @param ProjectInterface $project  ex : 123456
+     * @param string           $filePath ex : composer.json
+     * @param string           $ref      ex : master
      *
      * @return string
      */

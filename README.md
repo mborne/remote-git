@@ -26,6 +26,12 @@ Note that a small set of features is prefered to a rich API integration to allow
     * Project is a composer project (`ComposerProjectFilter`)
     * Project name doesn't match a given regexp (`IgnoreRegexpFilter`)
 
+## Use cases
+
+The original development has been realized in [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) repository to **generate a config file referencing git repositories**.
+
+This module is also used by [mborne/git-manager](https://github.com/mborne/git-manager#git-manager) to **backup and analyse git repositories** (for example that following files are present : README.md, LICENSE,...)
+
 ## Requirements
 
 * PHP >= 7.4
@@ -99,12 +105,6 @@ $filterCollection->addFilter(new RequiredFileFilter(
 $options->setFilter($filterCollection);
 $projects = $client->find($options);
 ```
-
-
-## History
-
-The original development has been realized in [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) repository.
-
 
 ## Dependencies
 

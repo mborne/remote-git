@@ -16,9 +16,9 @@ class GitlabClientTest extends TestCase
      */
     protected function createGitlabClient()
     {
-        $gitlabToken = getenv('SATIS_GITLAB_TOKEN');
+        $gitlabToken = getenv('GITLAB_TOKEN');
         if (empty($gitlabToken)) {
-            $this->markTestSkipped('Missing SATIS_GITLAB_TOKEN for gitlab.com');
+            $this->markTestSkipped('Missing GITLAB_TOKEN for gitlab.com');
         }
 
         $clientOptions = new ClientOptions();

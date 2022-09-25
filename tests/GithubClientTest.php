@@ -143,6 +143,7 @@ class GithubClientTest extends TestCase
         foreach ($projects as $project) {
             $this->assertInstanceOf(GithubProject::class, $project);
             $this->assertGettersWorks($project);
+            $this->assertStringStartsWith('mborne/', $project->getName());
             $projectsByName[$project->getName()] = $project;
         }
 

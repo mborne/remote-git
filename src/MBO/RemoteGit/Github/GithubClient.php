@@ -91,7 +91,10 @@ class GithubClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by username.
+     *
+     * @see https://docs.github.com/en/rest/repos/repos#list-repositories-for-the-authenticated-user
+     * @see https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user
      *
      * @return ProjectInterface[]
      */
@@ -99,8 +102,21 @@ class GithubClient extends AbstractClient
         $user,
         ProjectFilterInterface $projectFilter
     ) {
+        /*
+         * Use /user/repos?affiliation=owner for special user _me_
+         */
+        if ('_me_' == $user) {
+            return $this->fetchAllPages(
+                '/user/repos',
+                $projectFilter,
+                [
+                    'affiliation' => 'owner',
+                ]
+            );
+        }
+
         return $this->fetchAllPages(
-            ('_me_' == $user) ? '/user/repos' : '/users/'.$user.'/repos',
+            '/users/'.$user.'/repos',
             $projectFilter
         );
     }
@@ -129,14 +145,15 @@ class GithubClient extends AbstractClient
      */
     private function fetchAllPages(
         $path,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
+        $extraParams = []
     ) {
         $result = [];
         for ($page = 1; $page <= self::MAX_PAGES; ++$page) {
-            $params = [
+            $params = array_merge($extraParams, [
                 'page' => $page,
                 'per_page' => self::DEFAULT_PER_PAGE,
-            ];
+            ]);
             $projects = $this->getProjects($path, $params);
             if (empty($projects)) {
                 break;

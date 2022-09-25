@@ -55,12 +55,11 @@ class GithubClientTest extends TestCase
             $projectsByName[$project->getName()] = $project;
         }
 
+        /* check project found */
         $this->assertArrayHasKey(
             'IGNF/validator',
             $projectsByName
         );
-
-        /* check project found */
         $this->assertArrayHasKey(
             'mborne/satis-gitlab',
             $projectsByName
@@ -122,4 +121,38 @@ class GithubClientTest extends TestCase
         );
         $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
     }
+
+
+
+    /**
+     * Ensure client can find mborne's projects using _me_
+     */
+    public function testFakeUserMe()
+    {
+        $client = $this->createGithubClient();
+        $this->assertInstanceOf(GithubClient::class, $client);
+
+        /* search projects */
+        $options = new FindOptions();
+        $options->setUsers(['_me_']);
+        $projects = $client->find($options);
+        $projectsByName = [];
+        foreach ($projects as $project) {
+            $this->assertInstanceOf(GithubProject::class, $project);
+            $this->assertGettersWorks($project);
+            $projectsByName[$project->getName()] = $project;
+        }
+
+        // check public project
+        $this->assertArrayHasKey(
+            'mborne/remote-git',
+            $projectsByName
+        );
+        // check private project
+        $this->assertArrayHasKey(
+            'mborne/tp-pattern-geometry-correction',
+            $projectsByName
+        );
+    }
+
 }

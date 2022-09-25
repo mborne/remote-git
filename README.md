@@ -1,6 +1,6 @@
 # mborne/remote-git
 
-[![Build Status](https://travis-ci.org/mborne/remote-git.svg)](https://travis-ci.org/mborne/remote-git)
+[![CI](https://github.com/mborne/remote-git/actions/workflows/ci.yml/badge.svg)](https://github.com/mborne/remote-git/actions/workflows/ci.yml)
 
 ## Description
 
@@ -29,10 +29,10 @@ Note that a small set of features is prefered to a rich API integration to allow
 ## Supported GIT hosting services
 
 | Type      | Description                                                              |
-|-----------|--------------------------------------------------------------------------|
+| --------- | ------------------------------------------------------------------------ |
 | gitlab-v4 | [gitlab.com](https://about.gitlab.com/) and self hosted gitlab instances |
-| github    | https://github.com                                                       |
-| gogs-v1   | https://gogs.io/                                                         |
+| github    | [github.com](https://github.com)                                         |
+| gogs-v1   | [Gogs](https://gogs.io/) or [Gitea](https://gitea.io/)                   |
 
 ## Usage
 

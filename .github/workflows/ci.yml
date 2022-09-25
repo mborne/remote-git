@@ -1,4 +1,4 @@
-name: PHP Composer
+name: CI
 
 on:
   push:
@@ -12,23 +12,25 @@ permissions:
 jobs:
   build:
 
+    strategy:
+      matrix:
+        php-version: [5.6, 7.4]
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup PHP
+    - name: "Setup PHP ${{ matrix.php-version }}"
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: ${{ matrix.php-version }}
         #coverage: xdebug2
         coverage: xdebug
         tools: php-cs-fixer, phpunit
 
-    # General warnings :
-    # - Defining autoload.psr-4 with an empty namespace prefix is a bad idea for performance
-    #- name: Validate composer.json and composer.lock
-    #  run: composer validate --strict
+    - name: Validate composer.json
+      run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache

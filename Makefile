@@ -4,7 +4,7 @@ PHP_MD_RULES=cleancode,codesize,controversial,design,naming,unusedcode
 .PHONY: test
 test: check-style check-rules
 	@echo "-- Running phpunit... See output/index.html "
-	vendor/bin/phpunit -c phpunit.xml.dist \
+	XDEBUG_MODE=coverage vendor/bin/phpunit -c phpunit.xml.dist \
 		--log-junit output/junit-report.xml \
 		--coverage-clover output/clover.xml \
 		--coverage-html output/coverage
@@ -28,10 +28,5 @@ check-style: vendor
 	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES) -v --dry-run --diff --using-cache=no
 	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES) -v --dry-run --diff --using-cache=no
 
-# to ensure that vendors are downloaded...
-vendor: composer.phar
-	php composer.phar install
-
-composer.phar:
-	curl -s https://getcomposer.org/installer | php
-	chmod +x composer.phar
+vendor:
+	composer install

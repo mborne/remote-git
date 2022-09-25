@@ -10,7 +10,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {"": "src/"}
+        "psr-4": {"MBO\\RemoteGit\\": "src/MBO/RemoteGit/"}
     },
     "autoload-dev": {
         "psr-4": {

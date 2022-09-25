@@ -7,9 +7,9 @@ namespace MBO\RemoteGit\Http;
  */
 class TokenType
 {
-    const NONE = 'none';
-    const PRIVATE_TOKEN = 'Private-Token: {token}';
-    const AUTHORIZATION_TOKEN = 'Authorization: token {token}';
+    public const NONE = 'none';
+    public const PRIVATE_TOKEN = 'Private-Token: {token}';
+    public const AUTHORIZATION_TOKEN = 'Authorization: token {token}';
 
     /**
      * Create HTTP headers according to a tokenType

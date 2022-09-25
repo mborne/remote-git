@@ -14,8 +14,8 @@ use MBO\RemoteGit\ProjectInterface;
  */
 class LocalClient implements ClientInterface
 {
-    const TYPE = 'local';
-    const TOKEN_TYPE = TokenType::NONE;
+    public const TYPE = 'local';
+    public const TOKEN_TYPE = TokenType::NONE;
 
     /**
      * Path to the root folder

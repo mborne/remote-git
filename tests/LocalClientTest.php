@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class LocalClientTest extends TestCase
 {
-    const TEMP_DIR = '/tmp/remote-git-test';
+    public const TEMP_DIR = '/tmp/remote-git-test';
 
     /**
      * Clone some projects in /tmp/remote-git-test to perform functional tests

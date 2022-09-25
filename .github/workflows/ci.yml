@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  repository-projects: read
 
 jobs:
   build:

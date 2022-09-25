@@ -127,6 +127,11 @@ class GithubClientTest extends TestCase
      */
     public function testFakeUserMe()
     {
+        $ci = getenv('CI');
+        if (empty($ci)) {
+            $this->markTestSkipped('https://api.github.com/user/repos usage is forbidden in actions ("Resource not accessible by integration")');
+        }
+
         $client = $this->createGithubClient();
         $this->assertInstanceOf(GithubClient::class, $client);
 

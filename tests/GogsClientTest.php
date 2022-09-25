@@ -18,13 +18,14 @@ class GogsClientTest extends TestCase
     {
         $gitlabToken = getenv('SATIS_GOGS_TOKEN');
         if (empty($gitlabToken)) {
-            $this->markTestSkipped('Missing SATIS_GOGS_TOKEN for gogs.quadtreeworld.net');
+            $this->markTestSkipped('Missing SATIS_GOGS_TOKEN for codes.quadtreeworld.net');
         }
 
         $clientOptions = new ClientOptions();
         $clientOptions
-            ->setUrl('https://gogs.quadtreeworld.net')
+            ->setUrl('https://codes.quadtreeworld.net')
             ->setToken($gitlabToken)
+            ->setType(GogsClient::TYPE)
         ;
 
         /* create client */

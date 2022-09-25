@@ -29,10 +29,10 @@ Note that a small set of features is prefered to a rich API integration to allow
 ## Supported GIT hosting services
 
 | Type      | Description                                                              |
-|-----------|--------------------------------------------------------------------------|
+| --------- | ------------------------------------------------------------------------ |
 | gitlab-v4 | [gitlab.com](https://about.gitlab.com/) and self hosted gitlab instances |
-| github    | https://github.com                                                       |
-| gogs-v1   | https://gogs.io/                                                         |
+| github    | [github.com](https://github.com)                                         |
+| gogs-v1   | [Gogs](https://gogs.io/) or [Gitea](https://gitea.io/)                   |
 
 ## Usage
 

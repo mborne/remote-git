@@ -26,6 +26,10 @@ Note that a small set of features is prefered to a rich API integration to allow
     * Project is a composer project (`ComposerProjectFilter`)
     * Project name doesn't match a given regexp (`IgnoreRegexpFilter`)
 
+## Requirements
+
+* PHP >= 7.4
+
 ## Supported GIT hosting services
 
 | Type      | Description                                                              |
@@ -107,10 +111,6 @@ The original development has been realized in [mborne/satis-gitlab](https://gith
 * [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)
 * [psr/log](https://packagist.org/packages/psr/log)
 
-
-## Requirements
-
-* GITLAB API v4
 
 ## License
 

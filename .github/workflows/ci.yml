@@ -17,6 +17,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        #coverage: xdebug2
+        coverage: xdebug
+        tools: php-cs-fixer, phpunit
+
     # General warnings :
     # - Defining autoload.psr-4 with an empty namespace prefix is a bad idea for performance
     #- name: Validate composer.json and composer.lock

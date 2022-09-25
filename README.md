@@ -1,6 +1,6 @@
 # mborne/remote-git
 
-[![Build Status](https://travis-ci.org/mborne/remote-git.svg)](https://travis-ci.org/mborne/remote-git)
+[![CI](https://github.com/mborne/remote-git/actions/workflows/ci.yml/badge.svg)](https://github.com/mborne/remote-git/actions/workflows/ci.yml)
 
 ## Description
 

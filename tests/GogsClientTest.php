@@ -62,11 +62,11 @@ class GogsClientTest extends TestCase
             $projectsByName
         );
         $project = $projectsByName['docker/docker-php'];
-        $this->assertContains(
+        $this->assertStringContainsString(
             'FROM ',
             $client->getRawFile($project, 'Dockerfile', 'master')
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ServerTokens Prod',
             $client->getRawFile($project, 'conf/apache-security.conf', 'master')
         );
@@ -102,11 +102,11 @@ class GogsClientTest extends TestCase
             $projectsByName
         );
         $project = $projectsByName['docker/docker-php'];
-        $this->assertContains(
+        $this->assertStringContainsString(
             'FROM ',
             $client->getRawFile($project, 'Dockerfile', 'master')
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ServerTokens Prod',
             $client->getRawFile($project, 'conf/apache-security.conf', 'master')
         );

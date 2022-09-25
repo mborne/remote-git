@@ -67,6 +67,7 @@ $client = ClientFactory::createClient(
 
 ```php
 $options = new FindOptions();
+// Use '_me_' on github to include private repositories
 $options->setUsers(array('mborne'));
 $options->setOrganizations(array('symfony','FriendsOfSymfony'));
 $projects = $client->find($options);

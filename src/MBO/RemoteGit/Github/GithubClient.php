@@ -100,7 +100,7 @@ class GithubClient extends AbstractClient
         ProjectFilterInterface $projectFilter
     ) {
         return $this->fetchAllPages(
-            '/users/'.$user.'/repos',
+            ('_me_' == $user) ? '/user/repos' : '/users/'.$user.'/repos',
             $projectFilter
         );
     }

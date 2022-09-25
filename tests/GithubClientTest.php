@@ -122,8 +122,6 @@ class GithubClientTest extends TestCase
         $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
     }
 
-
-
     /**
      * Ensure client can find mborne's projects using _me_
      */
@@ -154,5 +152,4 @@ class GithubClientTest extends TestCase
             $projectsByName
         );
     }
-
 }

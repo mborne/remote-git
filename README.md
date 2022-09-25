@@ -1,6 +1,6 @@
 # mborne/remote-git
 
-[![CI](https://github.com/mborne/remote-git/actions/workflows/ci.yml/badge.svg)](https://github.com/mborne/remote-git/actions/workflows/ci.yml)
+[![CI](https://github.com/mborne/remote-git/actions/workflows/ci.yml/badge.svg)](https://github.com/mborne/remote-git/actions/workflows/ci.yml) [![Coverage Status](https://coveralls.io/repos/github/mborne/remote-git/badge.svg?branch=master)](https://coveralls.io/github/mborne/remote-git?branch=master)
 
 ## Description
 

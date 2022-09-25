@@ -16,9 +16,9 @@ class GithubClientTest extends TestCase
      */
     protected function createGithubClient()
     {
-        $token = getenv('SATIS_GITHUB_TOKEN');
+        $token = getenv('GITHUB_TOKEN');
         if (empty($token)) {
-            $this->markTestSkipped('Missing SATIS_GITHUB_TOKEN for github.com');
+            $this->markTestSkipped('Missing GITHUB_TOKEN for github.com');
         }
 
         $clientOptions = new ClientOptions();

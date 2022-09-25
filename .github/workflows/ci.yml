@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "issue_*" ]
   pull_request:
     branches: [ "master" ]
 
@@ -46,3 +46,6 @@ jobs:
 
     - name: Run tests
       run: make test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}

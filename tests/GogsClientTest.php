@@ -16,9 +16,9 @@ class GogsClientTest extends TestCase
      */
     protected function createGitClient()
     {
-        $gitlabToken = getenv('SATIS_GOGS_TOKEN');
+        $gitlabToken = getenv('GOGS_TOKEN');
         if (empty($gitlabToken)) {
-            $this->markTestSkipped('Missing SATIS_GOGS_TOKEN for codes.quadtreeworld.net');
+            $this->markTestSkipped('Missing GOGS_TOKEN for codes.quadtreeworld.net');
         }
 
         $clientOptions = new ClientOptions();

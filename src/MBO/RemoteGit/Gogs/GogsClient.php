@@ -17,10 +17,10 @@ use MBO\RemoteGit\Http\TokenType;
  */
 class GogsClient extends AbstractClient
 {
-    const TYPE = 'gogs-v1';
-    const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
+    public const TYPE = 'gogs-v1';
+    public const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
 
-    const DEFAULT_PER_PAGE = 1000;
+    public const DEFAULT_PER_PAGE = 1000;
 
     /*
      * @{inheritDoc}

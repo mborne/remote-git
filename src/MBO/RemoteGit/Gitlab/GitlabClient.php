@@ -22,11 +22,11 @@ use MBO\RemoteGit\Http\TokenType;
  */
 class GitlabClient extends AbstractClient
 {
-    const TYPE = 'gitlab-v4';
-    const TOKEN_TYPE = TokenType::PRIVATE_TOKEN;
+    public const TYPE = 'gitlab-v4';
+    public const TOKEN_TYPE = TokenType::PRIVATE_TOKEN;
 
-    const DEFAULT_PER_PAGE = 50;
-    const MAX_PAGES = 10000;
+    public const DEFAULT_PER_PAGE = 50;
+    public const MAX_PAGES = 10000;
 
     /**
      * Constructor with an http client and a logger

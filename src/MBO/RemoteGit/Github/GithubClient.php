@@ -25,11 +25,11 @@ use MBO\RemoteGit\Http\TokenType;
  */
 class GithubClient extends AbstractClient
 {
-    const TYPE = 'github';
-    const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
+    public const TYPE = 'github';
+    public const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
 
-    const DEFAULT_PER_PAGE = 100;
-    const MAX_PAGES = 10000;
+    public const DEFAULT_PER_PAGE = 100;
+    public const MAX_PAGES = 10000;
 
     /**
      * @var GuzzleHttpClient

@@ -12,12 +12,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class LocalClientTest extends TestCase
 {
-    const TEMP_DIR = '/tmp/remote-git-test';
+    public const TEMP_DIR = '/tmp/remote-git-test';
 
     /**
      * Clone some projects in /tmp/remote-git-test to perform functional tests
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $fs = new Filesystem();
         if ($fs->exists(self::TEMP_DIR)) {
@@ -96,10 +96,10 @@ class LocalClientTest extends TestCase
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/remote-git');
         $readmeContent = $client->getRawFile($project, 'README.md', $project->getDefaultBranch());
-        $this->assertContains('# mborne/remote-git', $readmeContent);
+        $this->assertStringContainsString('# mborne/remote-git', $readmeContent);
 
         $testCaseContent = $client->getRawFile($project, 'tests/TestCase.php', $project->getDefaultBranch());
-        $this->assertContains('class TestCase', $testCaseContent);
+        $this->assertStringContainsString('class TestCase', $testCaseContent);
     }
 
     /**
@@ -110,9 +110,9 @@ class LocalClientTest extends TestCase
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/satis-gitlab.git');
         $readmeContent = $client->getRawFile($project, 'composer.json', $project->getDefaultBranch());
-        $this->assertContains('symfony/console', $readmeContent);
+        $this->assertStringContainsString('symfony/console', $readmeContent);
 
         $testCaseContent = $client->getRawFile($project, 'tests/TestCase.php', $project->getDefaultBranch());
-        $this->assertContains('class TestCase', $testCaseContent);
+        $this->assertStringContainsString('class TestCase', $testCaseContent);
     }
 }

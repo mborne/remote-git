@@ -65,7 +65,7 @@ class GitlabClientTest extends TestCase
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com', $composer);
+        $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
     }
 
     public function testGitlabDotComOrgs()
@@ -118,6 +118,6 @@ class GitlabClientTest extends TestCase
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com', $composer);
+        $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
     }
 }

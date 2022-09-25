@@ -72,14 +72,14 @@ class GithubClientTest extends TestCase
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com', $composer);
+        $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
 
         $testFileInSubdirectory = $client->getRawFile(
             $project,
             'tests/TestCase.php',
             $project->getDefaultBranch()
         );
-        $this->assertContains('class TestCase', $testFileInSubdirectory);
+        $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
     }
 
     /**
@@ -113,13 +113,13 @@ class GithubClientTest extends TestCase
             'composer.json',
             $project->getDefaultBranch()
         );
-        $this->assertContains('mborne@users.noreply.github.com', $composer);
+        $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
 
         $testFileInSubdirectory = $client->getRawFile(
             $project,
             'tests/TestCase.php',
             $project->getDefaultBranch()
         );
-        $this->assertContains('class TestCase', $testFileInSubdirectory);
+        $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
     }
 }

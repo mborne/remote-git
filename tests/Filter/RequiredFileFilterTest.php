@@ -44,7 +44,7 @@ class RequiredFileFilterTest extends TestCase
         $gitClient
             ->expects($this->any())
             ->method('getRawFile')
-            //->with(['composer.json'])
+            // ->with(['composer.json'])
             ->willReturn(json_encode($content))
         ;
         $filter = new RequiredFileFilter($gitClient, 'README.md');

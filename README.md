@@ -4,16 +4,15 @@
 
 ## Description
 
-A lightweight PHP client providing a consistent access to hosted and self-hosted git repositories (github, gitlab,gogs).
+A lightweight PHP client providing a consistent access to hosted and self-hosted git repositories (github, gitlab, gogs and gitea).
 
-It targets use case such as :
+## Use cases
 
-* Backup repositories from multiple sources
-* Perform checks on repositories from multiple sources (self hosted private repositories and public repositories)
-* Generate PHP SATIS configuration according to existing repositories (see [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab))
+Note that a small set of features is prefered here to a rich API integration to allow homogenous access to remote hosting services.
 
-Note that a small set of features is prefered to a rich API integration to allows homogenous access to remote hosting services.
+The original development has been realized in [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) repository to **generate a config file referencing git repositories**.
 
+This module is also used by [mborne/git-manager](https://github.com/mborne/git-manager#git-manager) to **backup and analyse git repositories** (for example that following files are present : README.md, LICENSE,...)
 
 ## Features
 
@@ -25,12 +24,6 @@ Note that a small set of features is prefered to a rich API integration to allow
     * Project contains a given file (`RequiredFileFilter`)
     * Project is a composer project (`ComposerProjectFilter`)
     * Project name doesn't match a given regexp (`IgnoreRegexpFilter`)
-
-## Use cases
-
-The original development has been realized in [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) repository to **generate a config file referencing git repositories**.
-
-This module is also used by [mborne/git-manager](https://github.com/mborne/git-manager#git-manager) to **backup and analyse git repositories** (for example that following files are present : README.md, LICENSE,...)
 
 ## Requirements
 
@@ -121,10 +114,12 @@ mborne/remote-git is licensed under the MIT License - see the [LICENSE](LICENSE)
 ## Testing
 
 ```bash
-export SATIS_GITLAB_TOKEN=AnyGitlabToken
-export SATIS_GITHUB_TOKEN=AnyGithubToken
+export GITLAB_TOKEN=AnyGitlabToken
+export GITHUB_TOKEN=AnyGithubToken
 
 make test
 ```
 
 Note that an HTML coverage report is generated to `output/coverage/index.html`
+
+

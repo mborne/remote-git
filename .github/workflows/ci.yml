@@ -26,8 +26,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-version }}
         coverage: xdebug2
-        #coverage: xdebug
-        tools: php-cs-fixer, phpunit
+        #tools: php-cs-fixer, phpunit
 
     - name: Validate composer.json
       run: composer validate --strict

@@ -9,6 +9,9 @@ use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Gogs\GogsProject;
 
+/**
+ * Test GogsClient with https://codes.quadtreeworld.net which is a gitea instance.
+ */
 class GogsClientTest extends TestCase
 {
     /**
@@ -16,9 +19,9 @@ class GogsClientTest extends TestCase
      */
     protected function createGitClient()
     {
-        $gitlabToken = getenv('GOGS_TOKEN');
+        $gitlabToken = getenv('QTW_TOKEN');
         if (empty($gitlabToken)) {
-            $this->markTestSkipped('Missing GOGS_TOKEN for codes.quadtreeworld.net');
+            $this->markTestSkipped('Missing QTW_TOKEN for codes.quadtreeworld.net');
         }
 
         $clientOptions = new ClientOptions();

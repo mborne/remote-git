@@ -27,7 +27,7 @@ This module is also used by [mborne/git-manager](https://github.com/mborne/git-m
 
 ## Requirements
 
-* PHP >= 7.4
+* PHP >= 7.4 or >= 8.x
 
 ## Supported GIT hosting services
 
@@ -102,22 +102,32 @@ $projects = $client->find($options);
 
 ## Dependencies
 
-* [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)
+* [guzzlehttp/guzzle - 7.x](https://packagist.org/packages/guzzlehttp/guzzle)
 * [psr/log](https://packagist.org/packages/psr/log)
 
 
 ## License
 
-mborne/remote-git is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
+[MIT](LICENSE)
 
 ## Testing
 
-```bash
-export GITLAB_TOKEN=AnyGitlabToken
-export GITHUB_TOKEN=AnyGithubToken
+* Configure access token for github.com and gitlab.com APIs (optional) :
 
+```bash
+# see https://github.com/settings/tokens
+export GITHUB_TOKEN=AnyGithubToken
+# see https://gitlab.com/-/profile/personal_access_tokens
+export GITLAB_TOKEN=AnyGitlabToken
+```
+
+* Install dependencies and run tests :
+
+```bash
 make test
+# Alternative :
+# composer install
+# vendor/bin/phpunit -c phpunit.xml.dist
 ```
 
 Note that an HTML coverage report is generated to `output/coverage/index.html`

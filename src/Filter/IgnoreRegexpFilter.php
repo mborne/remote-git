@@ -28,7 +28,7 @@ class IgnoreRegexpFilter implements ProjectFilterInterface
      */
     public function getDescription()
     {
-        return 'project name should not match /'.$this->ignoreRegexp + '/';
+        return 'project name should not match /'.$this->ignoreRegexp.'/';
     }
 
     /**

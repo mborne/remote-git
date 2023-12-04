@@ -26,7 +26,7 @@ class FilterCollectionTest extends TestCase
      *
      * @return ProjectFilterInterface
      */
-    private function createMockFilter($accepted)
+    private function createMockFilter($accepted, $description = 'mock')
     {
         $filter = $this->getMockBuilder(ProjectFilterInterface::class)
             ->getMock()
@@ -34,6 +34,10 @@ class FilterCollectionTest extends TestCase
         $filter->expects($this->any())
             ->method('isAccepted')
             ->willReturn($accepted)
+        ;
+        $filter->expects($this->any())
+            ->method('getDescription')
+            ->willReturn($description)
         ;
 
         return $filter;
@@ -61,10 +65,15 @@ class FilterCollectionTest extends TestCase
     public function testTrueFalseTrue()
     {
         $filterCollection = new FilterCollection(new NullLogger());
-        $filterCollection->addFilter($this->createMockFilter(true));
-        $filterCollection->addFilter($this->createMockFilter(false));
-        $filterCollection->addFilter($this->createMockFilter(true));
+        $filterCollection->addFilter($this->createMockFilter(true, 'mock-1'));
+        $filterCollection->addFilter($this->createMockFilter(false, 'mock-2'));
+        $filterCollection->addFilter($this->createMockFilter(true, 'mock-3'));
         $project = $this->createMockProject('test');
         $this->assertFalse($filterCollection->isAccepted($project));
+
+        $this->assertEquals(
+            '- mock-1'.PHP_EOL.'- mock-2'.PHP_EOL.'- mock-3',
+            $filterCollection->getDescription()
+        );
     }
 }

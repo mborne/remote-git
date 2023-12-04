@@ -52,7 +52,7 @@ class FilterCollection implements ProjectFilterInterface
     {
         $parts = [];
         foreach ($this->filters as $filter) {
-            $parts[] = ' - '.$filter->getDescription();
+            $parts[] = '- '.$filter->getDescription();
         }
 
         return implode(PHP_EOL, $parts);

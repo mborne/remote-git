@@ -14,6 +14,11 @@ class IgnoreRegexpFilterTest extends TestCase
     {
         $filter = new IgnoreRegexpFilter('(^phpstorm|^typo3\/library)');
 
+        $this->assertEquals(
+            'project name should not match /(^phpstorm|^typo3\/library)/',
+            $filter->getDescription()
+        );
+
         $expectedResults = [
             'mborne/sample-project' => true,
             'something' => true,

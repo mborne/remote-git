@@ -138,7 +138,7 @@ class GitlabClient extends AbstractClient
      */
     private function fetchAllPages(
         $path,
-        array $params = [],
+        array $params,
         ProjectFilterInterface $projectFilter
     ) {
         $result = [];

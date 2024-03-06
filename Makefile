@@ -10,10 +10,14 @@ test: check-style check-rules
 		--coverage-html output/coverage
 
 .PHONY: check-rules
-check-rules: vendor
+check-rules: phpstan phpmd
+
+phpmd:
 	@echo "-- Checking coding rules using phpmd (see @SuppressWarning to bypass control)"
 	vendor/bin/phpmd src text $(PHP_MD_RULES)
 
+phpstan:
+	vendor/bin/phpstan analyse -c phpstan.neon --error-format=raw
 
 .PHONY: fix-style
 fix-style: vendor

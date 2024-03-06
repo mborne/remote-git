@@ -26,6 +26,11 @@ class RequiredFileFilter implements ProjectFilterInterface
     protected $filePath;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param string          $filePath
      * @param LoggerInterface $logger
      *

@@ -99,8 +99,6 @@ class LocalClient implements ClientInterface
      *
      * @param string $parentPath absolute path to a given folder
      *
-     * @return string[]
-     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     protected function findProjectFolders($parentPath, array &$projectFolders)

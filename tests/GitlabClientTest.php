@@ -78,6 +78,7 @@ class GitlabClientTest extends TestCase
         $findOptions = new FindOptions();
         $findOptions->setOrganizations(['gitlab-org']);
         $projects = $client->find($findOptions);
+        $projectsByName = [];
         foreach ($projects as $project) {
             $this->assertInstanceOf(GitlabProject::class, $project);
             $this->assertGettersWorks($project);

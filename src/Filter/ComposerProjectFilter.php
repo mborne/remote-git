@@ -37,7 +37,6 @@ class ComposerProjectFilter implements ProjectFilterInterface
     /**
      * ProjectTypeFilter constructor.
      *
-     * @param string          $type
      * @param LoggerInterface $logger
      *
      * @SuppressWarnings(PHPMD.StaticAccess)

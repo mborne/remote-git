@@ -61,10 +61,10 @@ class GogsClientTest extends TestCase
         }
 
         $this->assertArrayHasKey(
-            'docker/docker-php',
+            'docker/docker-php-sury',
             $projectsByName
         );
-        $project = $projectsByName['docker/docker-php'];
+        $project = $projectsByName['docker/docker-php-sury'];
         $this->assertStringContainsString(
             'FROM ',
             $client->getRawFile($project, 'Dockerfile', 'master')
@@ -101,10 +101,10 @@ class GogsClientTest extends TestCase
         }
 
         $this->assertArrayHasKey(
-            'docker/docker-php',
+            'docker/docker-php-sury',
             $projectsByName
         );
-        $project = $projectsByName['docker/docker-php'];
+        $project = $projectsByName['docker/docker-php-sury'];
         $this->assertStringContainsString(
             'FROM ',
             $client->getRawFile($project, 'Dockerfile', 'master')

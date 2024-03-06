@@ -25,6 +25,7 @@
         "friendsofphp/php-cs-fixer": "3.17.*",
         "phpmd/phpmd": "^2.8",
         "pdepend/pdepend": "2.15.*",
-        "php-coveralls/php-coveralls": "^2.5"
+        "php-coveralls/php-coveralls": "^2.5",
+        "phpstan/phpstan": "^1.10"
     }
 }

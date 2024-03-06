@@ -31,10 +31,8 @@ class LocalClientTest extends TestCase
 
     /**
      * Create a LocalClient for sample test directory
-     *
-     * @return LocalClient
      */
-    protected function createLocalClient()
+    protected function createLocalClient(): LocalClient
     {
         // folder containing mborne/remote-git and mborne/satis-gitlab
         $rootPath = realpath(self::TEMP_DIR);
@@ -45,10 +43,13 @@ class LocalClientTest extends TestCase
         ;
 
         /* create client */
-        return ClientFactory::createClient(
+        $client = ClientFactory::createClient(
             $clientOptions,
             new NullLogger()
         );
+        $this->assertInstanceOf(LocalClient::class, $client);
+
+        return $client;
     }
 
     /**
@@ -56,7 +57,7 @@ class LocalClientTest extends TestCase
      *
      * @return LocalProject[]
      */
-    protected function findAllProjects()
+    protected function findAllProjects(): array
     {
         /* create client */
         $client = $this->createLocalClient();
@@ -78,7 +79,7 @@ class LocalClientTest extends TestCase
     /**
      * Ensure that mborne/remote-git and mborne/satis-gitlab are found
      */
-    public function testFindAll()
+    public function testFindAll(): void
     {
         $projectsByName = $this->findAllProjects();
         $this->assertArrayHasKey(
@@ -91,7 +92,7 @@ class LocalClientTest extends TestCase
     /**
      * Check that raw file content can be retreived from non bare repository
      */
-    public function testGetRawFileFromNonBareRepository()
+    public function testGetRawFileFromNonBareRepository(): void
     {
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/remote-git');
@@ -105,7 +106,7 @@ class LocalClientTest extends TestCase
     /**
      * Check that raw file content can be retreived from bare repository
      */
-    public function testGetRawFileFromBareRepository()
+    public function testGetRawFileFromBareRepository(): void
     {
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/satis-gitlab.git');

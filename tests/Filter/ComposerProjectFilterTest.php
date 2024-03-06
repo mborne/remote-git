@@ -14,11 +14,12 @@ class ComposerProjectFilterTest extends TestCase
     /**
      * Test getDescription
      */
-    public function testGetDescription()
+    public function testGetDescription(): void
     {
         $gitClient = $this->getMockBuilder(ClientInterface::class)
             ->getMock()
         ;
+        /** @var ClientInterface $gitClient */
         $filter = new ComposerProjectFilter($gitClient);
         $this->assertEquals(
             'composer.json should exists',
@@ -34,7 +35,7 @@ class ComposerProjectFilterTest extends TestCase
     /**
      * Rejected if composer.json doesn't exists
      */
-    public function testMissingComposerJson()
+    public function testMissingComposerJson(): void
     {
         $project = $this->createMockProject('test');
 
@@ -46,6 +47,7 @@ class ComposerProjectFilterTest extends TestCase
             ->method('getRawFile')
             ->willThrowException(new \Exception('404 not found'))
         ;
+        /** @var ClientInterface $gitClient */
         $filter = new ComposerProjectFilter($gitClient);
         $this->assertFalse($filter->isAccepted($project));
     }
@@ -53,7 +55,7 @@ class ComposerProjectFilterTest extends TestCase
     /**
      * Accepted if composer.json exists
      */
-    public function testComposerJsonAndTypeFilter()
+    public function testComposerJsonAndTypeFilter(): void
     {
         $project = $this->createMockProject('test');
 
@@ -70,6 +72,7 @@ class ComposerProjectFilterTest extends TestCase
             // ->with(['composer.json'])
             ->willReturn(json_encode($content))
         ;
+        /** @var ClientInterface $gitClient */
         $filter = new ComposerProjectFilter($gitClient);
         $this->assertTrue($filter->isAccepted($project));
 
@@ -85,7 +88,7 @@ class ComposerProjectFilterTest extends TestCase
     /**
      * Accepted if composer.json exists
      */
-    public function testComposerJsonAndMultipleTypeFilter()
+    public function testComposerJsonAndMultipleTypeFilter(): void
     {
         $project = $this->createMockProject('test');
 
@@ -102,6 +105,7 @@ class ComposerProjectFilterTest extends TestCase
             // ->with(['composer.json'])
             ->willReturn(json_encode($content))
         ;
+        /** @var ClientInterface $gitClient */
         $filter = new ComposerProjectFilter($gitClient);
         $this->assertTrue($filter->isAccepted($project));
         $filter->setProjectType('project,library');

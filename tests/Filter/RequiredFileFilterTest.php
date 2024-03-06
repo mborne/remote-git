@@ -14,7 +14,7 @@ class RequiredFileFilterTest extends TestCase
     /**
      * Rejected if composer.json doesn't exists
      */
-    public function testRequiredFileMissing()
+    public function testRequiredFileMissing(): void
     {
         $project = $this->createMockProject('test');
 
@@ -26,6 +26,7 @@ class RequiredFileFilterTest extends TestCase
             ->method('getRawFile')
             ->willThrowException(new \Exception('404 not found'))
         ;
+        /** @var ClientInterface $gitClient */
         $filter = new RequiredFileFilter($gitClient, 'README.md');
         $this->assertFalse($filter->isAccepted($project));
     }
@@ -47,6 +48,7 @@ class RequiredFileFilterTest extends TestCase
             // ->with(['composer.json'])
             ->willReturn(json_encode($content))
         ;
+        /** @var ClientInterface $gitClient */
         $filter = new RequiredFileFilter($gitClient, 'README.md');
         $this->assertTrue($filter->isAccepted($project));
     }

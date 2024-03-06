@@ -10,11 +10,9 @@ class TestCase extends BaseTestCase
     /**
      * Create a fake project with a given name
      *
-     * @param string $projectName
-     *
      * @return ProjectInterface
      */
-    protected function createMockProject($projectName)
+    protected function createMockProject(string $projectName)
     {
         $project = $this->getMockBuilder(ProjectInterface::class)
             ->getMock()
@@ -34,7 +32,7 @@ class TestCase extends BaseTestCase
     /**
      * Ensure that getter works for project
      */
-    protected function assertGettersWorks(ProjectInterface $project)
+    protected function assertGettersWorks(ProjectInterface $project): void
     {
         $this->assertNotEmpty($project->getId());
         $this->assertNotEmpty($project->getName());

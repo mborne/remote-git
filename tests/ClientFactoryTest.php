@@ -11,7 +11,7 @@ use MBO\RemoteGit\Local\LocalClient;
 
 class ClientFactoryTest extends TestCase
 {
-    public function testGetTypes()
+    public function testGetTypes(): void
     {
         $clientFactory = ClientFactory::getInstance();
 
@@ -19,7 +19,7 @@ class ClientFactoryTest extends TestCase
         $this->assertCount(4, $types);
     }
 
-    public function testInvalidType()
+    public function testInvalidType(): void
     {
         $clientFactory = ClientFactory::getInstance();
         $thrown = false;
@@ -33,7 +33,7 @@ class ClientFactoryTest extends TestCase
         $this->assertTrue($thrown, 'exception should be thrown');
     }
 
-    public function testDetectClientType()
+    public function testDetectClientType(): void
     {
         $this->assertEquals(
             GithubClient::class,

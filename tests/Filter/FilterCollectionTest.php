@@ -12,7 +12,7 @@ use MBO\RemoteGit\Filter\FilterCollection;
  */
 class FilterCollectionTest extends TestCase
 {
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $filterCollection = new FilterCollection(new NullLogger());
         $project = $this->createMockProject('test');
@@ -20,13 +20,11 @@ class FilterCollectionTest extends TestCase
     }
 
     /**
-     * Create a fake project filter returning true or false
-     *
-     * @param bool $accepted
+     * Create a fake ProjectFilterInterface returning true or false
      *
      * @return ProjectFilterInterface
      */
-    private function createMockFilter($accepted, $description = 'mock')
+    private function createMockFilter(bool $accepted, string $description = 'mock')
     {
         $filter = $this->getMockBuilder(ProjectFilterInterface::class)
             ->getMock()
@@ -43,7 +41,7 @@ class FilterCollectionTest extends TestCase
         return $filter;
     }
 
-    public function testOneTrue()
+    public function testOneTrue(): void
     {
         $filterCollection = new FilterCollection(new NullLogger());
         $filterCollection->addFilter($this->createMockFilter(true));
@@ -51,7 +49,7 @@ class FilterCollectionTest extends TestCase
         $this->assertTrue($filterCollection->isAccepted($project));
     }
 
-    public function testOneFalse()
+    public function testOneFalse(): void
     {
         $filterCollection = new FilterCollection(new NullLogger());
         $filterCollection->addFilter($this->createMockFilter(false));
@@ -62,7 +60,7 @@ class FilterCollectionTest extends TestCase
     /**
      * Check that isAccepted is unanymous
      */
-    public function testTrueFalseTrue()
+    public function testTrueFalseTrue(): void
     {
         $filterCollection = new FilterCollection(new NullLogger());
         $filterCollection->addFilter($this->createMockFilter(true, 'mock-1'));

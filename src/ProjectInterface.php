@@ -26,7 +26,7 @@ interface ProjectInterface
     /**
      * Get default branch
      *
-     * @return string
+     * @return ?string
      */
     public function getDefaultBranch();
 

@@ -7,7 +7,7 @@ use MBO\RemoteGit\Http\TokenType;
 
 class TokenTypeTest extends TestCase
 {
-    public function testCreateHttpHeaders()
+    public function testCreateHttpHeaders(): void
     {
         // empty headers for null token
         $this->assertEquals(

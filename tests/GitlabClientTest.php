@@ -12,9 +12,9 @@ use MBO\RemoteGit\Gitlab\GitlabProject;
 class GitlabClientTest extends TestCase
 {
     /**
-     * @return GitlabClient
+     * Create GitlabClient using GITLAB_TOKEN.
      */
-    protected function createGitlabClient()
+    protected function createGitlabClient(): GitlabClient
     {
         $gitlabToken = getenv('GITLAB_TOKEN');
         if (empty($gitlabToken)) {
@@ -28,16 +28,19 @@ class GitlabClientTest extends TestCase
         ;
 
         /* create client */
-        return ClientFactory::createClient(
+        $client = ClientFactory::createClient(
             $clientOptions,
             new NullLogger()
         );
+        $this->assertInstanceOf(GitlabClient::class, $client);
+
+        return $client;
     }
 
     /**
      * Ensure client can find mborne/sample-composer by username
      */
-    public function testGitlabDotComByUser()
+    public function testGitlabDotComByUser(): void
     {
         /* create client */
         $client = $this->createGitlabClient();
@@ -68,7 +71,7 @@ class GitlabClientTest extends TestCase
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
     }
 
-    public function testGitlabDotComOrgs()
+    public function testGitlabDotComOrgs(): void
     {
         /* create client */
         $client = $this->createGitlabClient();
@@ -93,7 +96,7 @@ class GitlabClientTest extends TestCase
     /**
      * Ensure client can find mborne/sample-composer with search
      */
-    public function testGitlabDotComSearch()
+    public function testGitlabDotComSearch(): void
     {
         /* create client */
         $client = $this->createGitlabClient();

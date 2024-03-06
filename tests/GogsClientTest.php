@@ -5,7 +5,6 @@ namespace MBO\RemoteGit\Tests;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\FindOptions;
-use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Gogs\GogsProject;
 
@@ -15,9 +14,9 @@ use MBO\RemoteGit\Gogs\GogsProject;
 class GogsClientTest extends TestCase
 {
     /**
-     * @return ClientInterface
+     * Create gogs client for codes.quadtreeworld.net using QTW_TOKEN.
      */
-    protected function createGitClient()
+    protected function createGitClient(): GogsClient
     {
         $gitlabToken = getenv('QTW_TOKEN');
         if (empty($gitlabToken)) {
@@ -32,15 +31,18 @@ class GogsClientTest extends TestCase
         ;
 
         /* create client */
-        return ClientFactory::createClient(
+        $client = ClientFactory::createClient(
             $clientOptions
         );
+        $this->assertInstanceOf(GogsClient::class, $client);
+
+        return $client;
     }
 
     /**
      * Test find by current user
      */
-    public function testFindByCurrentUser()
+    public function testFindByCurrentUser(): void
     {
         /* create client */
         $client = $this->createGitClient();
@@ -78,7 +80,7 @@ class GogsClientTest extends TestCase
     /**
      * Ensure client can find projects by username and organizations
      */
-    public function testFindByUserAndOrgs()
+    public function testFindByUserAndOrgs(): void
     {
         /* create client */
         $client = $this->createGitClient();

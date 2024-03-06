@@ -12,9 +12,9 @@ use MBO\RemoteGit\Github\GithubProject;
 class GithubClientTest extends TestCase
 {
     /**
-     * @return GithubClient
+     * Create GithubClient using GITHUB_TOKEN.
      */
-    protected function createGithubClient()
+    protected function createGithubClient(): GithubClient
     {
         $token = getenv('GITHUB_TOKEN');
         if (empty($token)) {
@@ -28,16 +28,19 @@ class GithubClientTest extends TestCase
         ;
 
         /* create client */
-        return ClientFactory::createClient(
+        $client = ClientFactory::createClient(
             $clientOptions,
             new NullLogger()
         );
+        $this->assertInstanceOf(GithubClient::class, $client);
+
+        return $client;
     }
 
     /**
      * Ensure client can find mborne's projects
      */
-    public function testUserAndOrgsRepositories()
+    public function testUserAndOrgsRepositories(): void
     {
         /* create client */
         $client = $this->createGithubClient();
@@ -84,7 +87,7 @@ class GithubClientTest extends TestCase
     /**
      * Ensure client can find mborne's projects with composer.json file
      */
-    public function testFilterFile()
+    public function testFilterFile(): void
     {
         /* create client */
         $client = $this->createGithubClient();
@@ -125,7 +128,7 @@ class GithubClientTest extends TestCase
     /**
      * Ensure client can find mborne's projects using _me_
      */
-    public function testFakeUserMe()
+    public function testFakeUserMe(): void
     {
         $ci = getenv('CI');
         if (!empty($ci)) {

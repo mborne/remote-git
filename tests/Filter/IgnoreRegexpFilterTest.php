@@ -10,7 +10,7 @@ use MBO\RemoteGit\Filter\IgnoreRegexpFilter;
  */
 class IgnoreRegexpFilterTest extends TestCase
 {
-    public function testExample()
+    public function testExample(): void
     {
         $filter = new IgnoreRegexpFilter('(^phpstorm|^typo3\/library)');
 

@@ -2,16 +2,15 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use Exception;
 use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Exception\RawFileNotFoundException;
-use PHPUnit\Framework\TestCase as BaseTestCase;
 use MBO\RemoteGit\ProjectInterface;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {
     /**
-     * Create a fake project with a given name
+     * Create a fake project with a given name.
      *
      * @return ProjectInterface
      */
@@ -33,7 +32,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Ensure that getter works for project
+     * Ensure that getter works for project.
      */
     protected function assertGettersWorks(ProjectInterface $project): void
     {
@@ -59,7 +58,7 @@ class TestCase extends BaseTestCase
         $thrown = null;
         try {
             $client->getRawFile($project, 'NOT-FOUND.md', $defaultBranch);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $thrown = $e;
         }
         $this->assertNotNull($thrown);

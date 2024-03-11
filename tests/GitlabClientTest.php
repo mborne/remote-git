@@ -2,12 +2,12 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use Psr\Log\NullLogger;
-use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gitlab\GitlabProject;
+use Psr\Log\NullLogger;
 
 class GitlabClientTest extends TestCase
 {
@@ -38,7 +38,7 @@ class GitlabClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find mborne/sample-composer by username
+     * Ensure client can find mborne/sample-composer by username.
      */
     public function testGitlabDotComByUser(): void
     {
@@ -96,7 +96,7 @@ class GitlabClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find mborne/sample-composer with search
+     * Ensure client can find mborne/sample-composer with search.
      */
     public function testGitlabDotComSearch(): void
     {

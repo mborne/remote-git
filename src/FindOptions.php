@@ -5,34 +5,34 @@ namespace MBO\RemoteGit;
 use MBO\RemoteGit\Filter\FilterCollection;
 
 /**
- * Find options to filter project listing
+ * Find options to filter project listing.
  *
  * @author mborne
  */
 class FindOptions
 {
     /**
-     * Filter according to organizations
+     * Filter according to organizations.
      *
      * @var string[]
      */
     private array $organizations = [];
 
     /**
-     * Filter according to user names
+     * Filter according to user names.
      *
      * @var string[]
      */
     private array $users = [];
 
     /**
-     * Search string (available only for gitlab prefer the use of organizations and users)
+     * Search string (available only for gitlab prefer the use of organizations and users).
      */
     private string $search;
 
     /**
      * Additional filter that can't be implemented throw
-     * project listing API parameters
+     * project listing API parameters.
      */
     private ProjectFilterInterface $filter;
 
@@ -42,7 +42,7 @@ class FindOptions
     }
 
     /**
-     * True if search is defined
+     * True if search is defined.
      */
     public function hasSearch(): bool
     {
@@ -50,7 +50,7 @@ class FindOptions
     }
 
     /**
-     * Get filter according to organizations
+     * Get filter according to organizations.
      *
      * @return string[]
      */
@@ -60,7 +60,7 @@ class FindOptions
     }
 
     /**
-     * Set filter according to organizations
+     * Set filter according to organizations.
      *
      * @param string[] $organizations Filter according to organizations
      */
@@ -72,7 +72,7 @@ class FindOptions
     }
 
     /**
-     * Get filter according to user names
+     * Get filter according to user names.
      *
      * @return string[]
      */
@@ -82,7 +82,7 @@ class FindOptions
     }
 
     /**
-     * Set filter according to user names
+     * Set filter according to user names.
      *
      * @param string[] $users Filter according to user names
      */
@@ -94,7 +94,7 @@ class FindOptions
     }
 
     /**
-     * Get search string (prefer the use of organizations and users)
+     * Get search string (prefer the use of organizations and users).
      */
     public function getSearch(): string
     {
@@ -102,7 +102,7 @@ class FindOptions
     }
 
     /**
-     * Set search string (prefer the use of organizations and users)
+     * Set search string (prefer the use of organizations and users).
      */
     public function setSearch(string $search): self
     {
@@ -112,7 +112,7 @@ class FindOptions
     }
 
     /**
-     * Get project listing API parameters
+     * Get project listing API parameters.
      */
     public function getFilter(): ProjectFilterInterface
     {
@@ -120,7 +120,7 @@ class FindOptions
     }
 
     /**
-     * Set project listing API parameters
+     * Set project listing API parameters.
      */
     public function setFilter(ProjectFilterInterface $filter): self
     {

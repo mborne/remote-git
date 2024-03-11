@@ -2,13 +2,13 @@
 
 namespace MBO\RemoteGit\Filter;
 
-use Psr\Log\LoggerInterface;
-use MBO\RemoteGit\ProjectInterface;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Compose a list of filter to simplify command line integration
+ * Compose a list of filter to simplify command line integration.
  *
  * @author mborne
  */
@@ -34,7 +34,7 @@ class FilterCollection implements ProjectFilterInterface
     }
 
     /**
-     * Add a filter to the collection
+     * Add a filter to the collection.
      */
     public function addFilter(ProjectFilterInterface $filter): self
     {
@@ -43,9 +43,6 @@ class FilterCollection implements ProjectFilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDescription(): string
     {
         $parts = [];
@@ -56,9 +53,6 @@ class FilterCollection implements ProjectFilterInterface
         return implode(PHP_EOL, $parts);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isAccepted(ProjectInterface $project): bool
     {
         foreach ($this->filters as $filter) {
@@ -82,7 +76,7 @@ class FilterCollection implements ProjectFilterInterface
     }
 
     /**
-     * Get filter name
+     * Get filter name.
      */
     private function getFilterName(ProjectFilterInterface $filter): string
     {

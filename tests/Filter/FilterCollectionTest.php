@@ -2,13 +2,13 @@
 
 namespace MBO\RemoteGit\Tests\Filter;
 
+use MBO\RemoteGit\Filter\FilterCollection;
+use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Tests\TestCase;
 use Psr\Log\NullLogger;
-use MBO\RemoteGit\ProjectFilterInterface;
-use MBO\RemoteGit\Filter\FilterCollection;
 
 /**
- * Test FilterCollection
+ * Test FilterCollection.
  */
 class FilterCollectionTest extends TestCase
 {
@@ -20,7 +20,7 @@ class FilterCollectionTest extends TestCase
     }
 
     /**
-     * Create a fake ProjectFilterInterface returning true or false
+     * Create a fake ProjectFilterInterface returning true or false.
      *
      * @return ProjectFilterInterface
      */
@@ -58,7 +58,7 @@ class FilterCollectionTest extends TestCase
     }
 
     /**
-     * Check that isAccepted is unanymous
+     * Check that isAccepted is unanymous.
      */
     public function testTrueFalseTrue(): void
     {

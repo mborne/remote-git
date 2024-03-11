@@ -3,34 +3,34 @@
 namespace MBO\RemoteGit;
 
 /**
- * Common project properties between different git project host (gitlab, github, etc.)
+ * Common project properties between different git project host (gitlab, github, etc.).
  *
  * @author mborne
  */
 interface ProjectInterface
 {
     /**
-     * Get project id
+     * Get project id.
      */
     public function getId(): string;
 
     /**
-     * Get project name (with namespace)
+     * Get project name (with namespace).
      */
     public function getName(): string;
 
     /**
-     * Get default branch
+     * Get default branch.
      */
     public function getDefaultBranch(): ?string;
 
     /**
-     * Get http url
+     * Get http url.
      */
     public function getHttpUrl(): string;
 
     /**
-     * Get hosting service specific properties
+     * Get hosting service specific properties.
      *
      * @return array<string,mixed>
      */

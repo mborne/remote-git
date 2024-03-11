@@ -2,11 +2,11 @@
 
 namespace MBO\RemoteGit\Filter;
 
-use Psr\Log\LoggerInterface;
-use MBO\RemoteGit\ProjectInterface;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ClientInterface as GitClientInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Filter projects ensuring that composer.json is present. Optionally,
@@ -25,7 +25,7 @@ class ComposerProjectFilter implements ProjectFilterInterface
     protected LoggerInterface $logger;
 
     /**
-     * Filter according to project type
+     * Filter according to project type.
      */
     protected string $projectType;
 
@@ -45,7 +45,7 @@ class ComposerProjectFilter implements ProjectFilterInterface
     }
 
     /**
-     * Get filter according to project type
+     * Get filter according to project type.
      */
     public function getProjectType(): string
     {
@@ -53,7 +53,7 @@ class ComposerProjectFilter implements ProjectFilterInterface
     }
 
     /**
-     * Set filter according to project type
+     * Set filter according to project type.
      */
     public function setProjectType(string $projectType): self
     {
@@ -62,9 +62,6 @@ class ComposerProjectFilter implements ProjectFilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDescription(): string
     {
         $description = 'composer.json should exists';
@@ -75,9 +72,6 @@ class ComposerProjectFilter implements ProjectFilterInterface
         return $description;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isAccepted(ProjectInterface $project): bool
     {
         try {

@@ -2,12 +2,12 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use Psr\Log\NullLogger;
-use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Local\LocalClient;
 use MBO\RemoteGit\Local\LocalProject;
+use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
 
 class LocalClientTest extends TestCase
@@ -15,7 +15,7 @@ class LocalClientTest extends TestCase
     public const TEMP_DIR = '/tmp/remote-git-test';
 
     /**
-     * Clone some projects in /tmp/remote-git-test to perform functional tests
+     * Clone some projects in /tmp/remote-git-test to perform functional tests.
      */
     public static function setUpBeforeClass(): void
     {
@@ -32,7 +32,7 @@ class LocalClientTest extends TestCase
     }
 
     /**
-     * Create a LocalClient for sample test directory
+     * Create a LocalClient for sample test directory.
      */
     protected function createLocalClient(): LocalClient
     {
@@ -53,7 +53,7 @@ class LocalClientTest extends TestCase
     }
 
     /**
-     * Find all projects in test folder
+     * Find all projects in test folder.
      *
      * @return LocalProject[]
      */
@@ -77,7 +77,7 @@ class LocalClientTest extends TestCase
     }
 
     /**
-     * Ensure that mborne/remote-git and mborne/satis-gitlab are found
+     * Ensure that mborne/remote-git and mborne/satis-gitlab are found.
      */
     public function testFindAll(): void
     {
@@ -90,7 +90,7 @@ class LocalClientTest extends TestCase
     }
 
     /**
-     * Check that raw file content can be retreived from non bare repository
+     * Check that raw file content can be retreived from non bare repository.
      */
     public function testGetRawFileFromNonBareRepository(): void
     {
@@ -107,7 +107,7 @@ class LocalClientTest extends TestCase
     }
 
     /**
-     * Check that raw file content can be retreived from bare repository
+     * Check that raw file content can be retreived from bare repository.
      */
     public function testGetRawFileFromBareRepository(): void
     {

@@ -2,16 +2,16 @@
 
 namespace MBO\RemoteGit;
 
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\Exception\ClientNotFoundException;
-use MBO\RemoteGit\Helper\LoggerHelper;
-use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Helper\ClientHelper;
+use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\Local\LocalClient;
+use Psr\Log\LoggerInterface;
 
 /**
  * Helper to create clients according to URL.
@@ -28,7 +28,7 @@ class ClientFactory
     private static $instance;
 
     /**
-     * Associates client type to metadata ('className','tokenType')
+     * Associates client type to metadata ('className','tokenType').
      *
      * @var array<string,array<string,string>>
      */
@@ -43,7 +43,7 @@ class ClientFactory
     }
 
     /**
-     * True if type is registred
+     * True if type is registred.
      *
      * @param string $type
      *
@@ -55,7 +55,7 @@ class ClientFactory
     }
 
     /**
-     * Get supported types
+     * Get supported types.
      *
      * @return string[]
      */
@@ -65,7 +65,7 @@ class ClientFactory
     }
 
     /**
-     * Create a client with options
+     * Create a client with options.
      */
     public static function createClient(
         ClientOptions $options,
@@ -75,7 +75,7 @@ class ClientFactory
     }
 
     /**
-     * Create a client with options
+     * Create a client with options.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -140,7 +140,7 @@ class ClientFactory
     }
 
     /**
-     * Get client class according to URL content
+     * Get client class according to URL content.
      */
     public static function detectClientClass(string $url): string
     {
@@ -176,7 +176,7 @@ class ClientFactory
     }
 
     /**
-     * Register client type
+     * Register client type.
      *
      * @param class-string $className
      *

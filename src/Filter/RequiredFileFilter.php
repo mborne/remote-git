@@ -2,14 +2,14 @@
 
 namespace MBO\RemoteGit\Filter;
 
-use Psr\Log\LoggerInterface;
-use MBO\RemoteGit\ProjectInterface;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ClientInterface as GitClientInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Accept projects if git repository contains a given file in default branch
+ * Accept projects if git repository contains a given file in default branch.
  *
  * @author mborne
  */
@@ -46,17 +46,11 @@ class RequiredFileFilter implements ProjectFilterInterface
         $this->logger = LoggerHelper::handleNull($logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDescription(): string
     {
         return sprintf("File '%s' should exist in default branch", $this->filePath);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isAccepted(ProjectInterface $project): bool
     {
         $branch = $project->getDefaultBranch();

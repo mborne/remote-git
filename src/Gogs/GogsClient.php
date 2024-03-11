@@ -2,15 +2,14 @@
 
 namespace MBO\RemoteGit\Gogs;
 
-use Exception;
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
 use MBO\RemoteGit\Exception\RawFileNotFoundException;
-use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Http\TokenType;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Client implementation for gogs and gitea.
@@ -24,9 +23,6 @@ class GogsClient extends AbstractClient
 
     public const DEFAULT_PER_PAGE = 1000;
 
-    /**
-     * {@inheritDoc}
-     */
     public function __construct(
         GuzzleHttpClient $httpClient,
         LoggerInterface $logger = null
@@ -34,17 +30,11 @@ class GogsClient extends AbstractClient
         parent::__construct($httpClient, $logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function createProject(array $rawProject): GogsProject
     {
         return new GogsProject($rawProject);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function find(FindOptions $options): array
     {
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
@@ -71,7 +61,7 @@ class GogsClient extends AbstractClient
     }
 
     /**
-     * Find projects for current user
+     * Find projects for current user.
      *
      * @return ProjectInterface[]
      */
@@ -90,7 +80,7 @@ class GogsClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by username.
      *
      * @return ProjectInterface[]
      */
@@ -110,7 +100,7 @@ class GogsClient extends AbstractClient
     }
 
     /**
-     * Find projects by organization
+     * Find projects by organization.
      *
      * @return ProjectInterface[]
      */
@@ -129,9 +119,6 @@ class GogsClient extends AbstractClient
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
@@ -146,7 +133,7 @@ class GogsClient extends AbstractClient
             $response = $this->getHttpClient()->request('GET', $uri);
 
             return (string) $response->getBody();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new RawFileNotFoundException($filePath, $ref, $e);
         }
     }

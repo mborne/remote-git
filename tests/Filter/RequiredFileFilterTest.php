@@ -2,17 +2,17 @@
 
 namespace MBO\RemoteGit\Tests\Filter;
 
-use MBO\RemoteGit\Tests\TestCase;
 use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Filter\RequiredFileFilter;
+use MBO\RemoteGit\Tests\TestCase;
 
 /**
- * Test RequiredFileFilter
+ * Test RequiredFileFilter.
  */
 class RequiredFileFilterTest extends TestCase
 {
     /**
-     * Rejected if composer.json doesn't exists
+     * Rejected if composer.json doesn't exists.
      */
     public function testRequiredFileMissing(): void
     {
@@ -32,7 +32,7 @@ class RequiredFileFilterTest extends TestCase
     }
 
     /**
-     * Accepted if composer.json exists
+     * Accepted if composer.json exists.
      */
     public function testRequiredFilePresent(): void
     {

@@ -2,18 +2,17 @@
 
 namespace MBO\RemoteGit\Gitlab;
 
-use Exception;
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
 use MBO\RemoteGit\Exception\RawFileNotFoundException;
-use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Http\TokenType;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Find gitlab projects
+ * Find gitlab projects.
  *
  * See following gitlab docs :
  *
@@ -31,7 +30,7 @@ class GitlabClient extends AbstractClient
     public const MAX_PAGES = 10000;
 
     /**
-     * Constructor with an http client and a logger
+     * Constructor with an http client and a logger.
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
@@ -40,17 +39,11 @@ class GitlabClient extends AbstractClient
         parent::__construct($httpClient, $logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function createProject(array $rawProject): GitlabProject
     {
         return new GitlabProject($rawProject);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function find(FindOptions $options): array
     {
         /* find all projects applying optional search */
@@ -76,7 +69,7 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by username.
      *
      * @return ProjectInterface[]
      */
@@ -92,7 +85,7 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Find projects by group
+     * Find projects by group.
      *
      * @return ProjectInterface[]
      */
@@ -108,7 +101,7 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Find all projects using option search
+     * Find all projects using option search.
      *
      * @return ProjectInterface[]
      */
@@ -128,7 +121,7 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Fetch all pages for a given path with query params
+     * Fetch all pages for a given path with query params.
      *
      * @param string                   $path   ex : "/api/v4/projects"
      * @param array<string,string|int> $params ex : array('search'=>'sample-composer')
@@ -156,9 +149,6 @@ class GitlabClient extends AbstractClient
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,
@@ -172,7 +162,7 @@ class GitlabClient extends AbstractClient
             $response = $this->httpClient->request('GET', $uri);
 
             return (string) $response->getBody();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new RawFileNotFoundException($filePath, $ref);
         }
     }

@@ -2,12 +2,12 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use Psr\Log\NullLogger;
-use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Github\GithubProject;
+use Psr\Log\NullLogger;
 
 class GithubClientTest extends TestCase
 {
@@ -38,7 +38,7 @@ class GithubClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find mborne's projects
+     * Ensure client can find mborne's projects.
      */
     public function testUserAndOrgsRepositories(): void
     {
@@ -91,7 +91,7 @@ class GithubClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find mborne's projects with composer.json file
+     * Ensure client can find mborne's projects with composer.json file.
      */
     public function testFilterFile(): void
     {
@@ -134,7 +134,7 @@ class GithubClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find mborne's projects using _me_
+     * Ensure client can find mborne's projects using _me_.
      */
     public function testFakeUserMe(): void
     {

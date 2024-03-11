@@ -3,7 +3,7 @@
 namespace MBO\RemoteGit;
 
 /**
- * Git connection options
+ * Git connection options.
  *
  * @author mborne
  */
@@ -11,22 +11,22 @@ class ClientOptions
 {
     /**
      * Allows to force a given client type and avoid
-     * detection based on URL
+     * detection based on URL.
      */
     private string $type;
 
     /**
-     * Base URL (ex : https://gitlab.com)
+     * Base URL (ex : https://gitlab.com).
      */
     private string $url;
 
     /**
-     * Access token
+     * Access token.
      */
     private ?string $token;
 
     /**
-     * Bypass SSL certificate checks for self signed certificates
+     * Bypass SSL certificate checks for self signed certificates.
      */
     private bool $unsafeSsl;
 
@@ -36,7 +36,7 @@ class ClientOptions
     }
 
     /**
-     * True if client type is specified
+     * True if client type is specified.
      */
     public function hasType(): bool
     {
@@ -44,7 +44,7 @@ class ClientOptions
     }
 
     /**
-     * Get client type
+     * Get client type.
      */
     public function getType(): string
     {
@@ -52,7 +52,7 @@ class ClientOptions
     }
 
     /**
-     * Set client type (ex : github, gitlab-v4,...)
+     * Set client type (ex : github, gitlab-v4,...).
      */
     public function setType(string $type): self
     {
@@ -62,7 +62,7 @@ class ClientOptions
     }
 
     /**
-     * Get URL
+     * Get URL.
      */
     public function getUrl(): string
     {
@@ -70,7 +70,7 @@ class ClientOptions
     }
 
     /**
-     * Set URL
+     * Set URL.
      */
     public function setUrl(string $url): self
     {
@@ -88,7 +88,7 @@ class ClientOptions
     }
 
     /**
-     * Get access token
+     * Get access token.
      */
     public function getToken(): ?string
     {
@@ -96,7 +96,7 @@ class ClientOptions
     }
 
     /**
-     * Set access token
+     * Set access token.
      */
     public function setToken(?string $token): self
     {
@@ -106,7 +106,7 @@ class ClientOptions
     }
 
     /**
-     * Is unsafeSsl
+     * Is unsafeSsl.
      */
     public function isUnsafeSsl(): bool
     {
@@ -114,7 +114,7 @@ class ClientOptions
     }
 
     /**
-     * Set unsafeSsl
+     * Set unsafeSsl.
      */
     public function setUnsafeSsl(bool $unsafeSsl): self
     {

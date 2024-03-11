@@ -2,16 +2,16 @@
 
 namespace MBO\RemoteGit\Local;
 
-use Psr\Log\LoggerInterface;
 use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Exception\RawFileNotFoundException;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Helper\LoggerHelper;
 use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Client for a local folder containing a project hierarchy
+ * Client for a local folder containing a project hierarchy.
  */
 class LocalClient implements ClientInterface
 {
@@ -19,7 +19,7 @@ class LocalClient implements ClientInterface
     public const TOKEN_TYPE = TokenType::NONE;
 
     /**
-     * Path to the root folder
+     * Path to the root folder.
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class LocalClient implements ClientInterface
     private $logger;
 
     /**
-     * Create a LocalClient for a folder containing a hierarchy of git repositories
+     * Create a LocalClient for a folder containing a hierarchy of git repositories.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -41,9 +41,6 @@ class LocalClient implements ClientInterface
         $this->logger = LoggerHelper::handleNull($logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function find(FindOptions $options): array
     {
         $projects = [];
@@ -62,7 +59,7 @@ class LocalClient implements ClientInterface
     }
 
     /**
-     * Create a LocalProject retreiving metadata from absolute path to project
+     * Create a LocalProject retreiving metadata from absolute path to project.
      *
      * @param string $projectFolder
      *
@@ -128,9 +125,6 @@ class LocalClient implements ClientInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,

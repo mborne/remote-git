@@ -2,17 +2,17 @@
 
 namespace MBO\RemoteGit\Tests\Filter;
 
-use MBO\RemoteGit\Tests\TestCase;
 use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Filter\ComposerProjectFilter;
+use MBO\RemoteGit\Tests\TestCase;
 
 /**
- * Test ComposerProjectFilter
+ * Test ComposerProjectFilter.
  */
 class ComposerProjectFilterTest extends TestCase
 {
     /**
-     * Test getDescription
+     * Test getDescription.
      */
     public function testGetDescription(): void
     {
@@ -33,7 +33,7 @@ class ComposerProjectFilterTest extends TestCase
     }
 
     /**
-     * Rejected if composer.json doesn't exists
+     * Rejected if composer.json doesn't exists.
      */
     public function testMissingComposerJson(): void
     {
@@ -53,7 +53,7 @@ class ComposerProjectFilterTest extends TestCase
     }
 
     /**
-     * Accepted if composer.json exists
+     * Accepted if composer.json exists.
      */
     public function testComposerJsonAndTypeFilter(): void
     {
@@ -86,7 +86,7 @@ class ComposerProjectFilterTest extends TestCase
     }
 
     /**
-     * Accepted if composer.json exists
+     * Accepted if composer.json exists.
      */
     public function testComposerJsonAndMultipleTypeFilter(): void
     {

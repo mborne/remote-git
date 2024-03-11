@@ -2,11 +2,11 @@
 
 namespace MBO\RemoteGit\Tests\Filter;
 
-use MBO\RemoteGit\Tests\TestCase;
 use MBO\RemoteGit\Filter\IgnoreRegexpFilter;
+use MBO\RemoteGit\Tests\TestCase;
 
 /**
- * Test IgnoreRegexpFilter
+ * Test IgnoreRegexpFilter.
  */
 class IgnoreRegexpFilterTest extends TestCase
 {

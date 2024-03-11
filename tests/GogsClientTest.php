@@ -2,8 +2,8 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Gogs\GogsProject;
@@ -40,7 +40,7 @@ class GogsClientTest extends TestCase
     }
 
     /**
-     * Test find by current user
+     * Test find by current user.
      */
     public function testFindByCurrentUser(): void
     {
@@ -83,7 +83,7 @@ class GogsClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find projects by username and organizations
+     * Ensure client can find projects by username and organizations.
      */
     public function testFindByUserAndOrgs(): void
     {

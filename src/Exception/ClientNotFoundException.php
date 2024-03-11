@@ -2,12 +2,10 @@
 
 namespace MBO\RemoteGit\Exception;
 
-use RuntimeException;
-
 /**
- * Custom exception for missing client type
+ * Custom exception for missing client type.
  */
-class ClientNotFoundException extends RuntimeException
+class ClientNotFoundException extends \RuntimeException
 {
     /**
      * @param string[] $availableTypes

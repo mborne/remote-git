@@ -1,4 +1,4 @@
-PHP_CS_RULES=@Symfony,-ordered_imports,-phpdoc_summary,-global_namespace_import,-no_superfluous_phpdoc_tags
+PHP_CS_RULES=@Symfony
 PHP_MD_RULES=cleancode,codesize,controversial,design,naming,unusedcode
 
 .PHONY: test

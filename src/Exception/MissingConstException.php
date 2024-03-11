@@ -2,12 +2,10 @@
 
 namespace MBO\RemoteGit\Exception;
 
-use RuntimeException;
-
 /**
- * Custom exception for missing parameters
+ * Custom exception for missing parameters.
  */
-class MissingConstException extends RuntimeException
+class MissingConstException extends \RuntimeException
 {
     public function __construct(string $className, string $constName)
     {

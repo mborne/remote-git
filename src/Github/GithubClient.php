@@ -2,19 +2,18 @@
 
 namespace MBO\RemoteGit\Github;
 
-use Exception;
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
 use MBO\RemoteGit\Exception\RawFileNotFoundException;
 use MBO\RemoteGit\Exception\RequiredParameterException;
-use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Http\TokenType;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Client implementation for github
+ * Client implementation for github.
  *
  * See following github docs :
  *
@@ -43,10 +42,9 @@ class GithubClient extends AbstractClient
     protected $logger;
 
     /**
-     * Constructor with an http client and a logger
+     * Constructor with an http client and a logger.
      *
      * @param $httpClient http client
-     * @param $logger
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -57,17 +55,11 @@ class GithubClient extends AbstractClient
         parent::__construct($httpClient, $logger);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function createProject(array $rawProject): GithubProject
     {
         return new GithubProject($rawProject);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function find(FindOptions $options): array
     {
         $result = [];
@@ -122,7 +114,7 @@ class GithubClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by username.
      *
      * @return ProjectInterface[]
      */
@@ -137,7 +129,7 @@ class GithubClient extends AbstractClient
     }
 
     /**
-     * Fetch all pages for a given URI
+     * Fetch all pages for a given URI.
      *
      * @param string                   $path        such as '/orgs/IGNF/repos' or '/users/mborne/repos'
      * @param array<string,string|int> $extraParams
@@ -165,9 +157,6 @@ class GithubClient extends AbstractClient
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
@@ -190,7 +179,7 @@ class GithubClient extends AbstractClient
             ]);
 
             return (string) $response->getBody();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new RawFileNotFoundException($filePath, $ref, $e);
         }
     }

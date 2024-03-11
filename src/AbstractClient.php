@@ -2,13 +2,13 @@
 
 namespace MBO\RemoteGit;
 
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use Psr\Log\LoggerInterface;
 
 /**
  * Abstract class providing a framework to implement clients
- * based on API
+ * based on API.
  */
 abstract class AbstractClient implements ClientInterface
 {
@@ -23,7 +23,7 @@ abstract class AbstractClient implements ClientInterface
     protected $logger;
 
     /**
-     * Constructor with an httpClient ready to performs API requests
+     * Constructor with an httpClient ready to performs API requests.
      *
      * @param LoggerInterface $logger
      *
@@ -37,33 +37,25 @@ abstract class AbstractClient implements ClientInterface
         $this->logger = LoggerHelper::handleNull($logger);
     }
 
-    /**
-     * @return GuzzleHttpClient
-     */
     protected function getHttpClient(): GuzzleHttpClient
     {
         return $this->httpClient;
     }
 
-    /**
-     * @return LoggerInterface
-     */
     protected function getLogger(): LoggerInterface
     {
         return $this->logger;
     }
 
     /**
-     * Create a project according to JSON metadata provided by an API
+     * Create a project according to JSON metadata provided by an API.
      *
      * @param array<string,mixed> $rawProject
-     *
-     * @return ProjectInterface
      */
     abstract protected function createProject(array $rawProject): ProjectInterface;
 
     /**
-     * Get projets for a given path with parameters
+     * Get projets for a given path with parameters.
      *
      * @param array<string,string|int> $params
      *
@@ -86,7 +78,7 @@ abstract class AbstractClient implements ClientInterface
     }
 
     /**
-     * Implode params to performs HTTP request
+     * Implode params to performs HTTP request.
      *
      * @param array<string,string|int> $params key=>value
      */
@@ -101,7 +93,7 @@ abstract class AbstractClient implements ClientInterface
     }
 
     /**
-     * Helper to apply filter to a project list
+     * Helper to apply filter to a project list.
      *
      * @param ProjectInterface[] $projects
      *

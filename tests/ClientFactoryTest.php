@@ -4,6 +4,7 @@ namespace MBO\RemoteGit\Tests;
 
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\ClientOptions;
+use MBO\RemoteGit\Exception\ClientNotFoundException;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
@@ -22,15 +23,20 @@ class ClientFactoryTest extends TestCase
     public function testInvalidType(): void
     {
         $clientFactory = ClientFactory::getInstance();
-        $thrown = false;
+        $thrown = null;
         try {
             $options = new ClientOptions();
             $options->setType('missing');
             $clientFactory->createGitClient($options);
         } catch (\Exception $e) {
-            $thrown = true;
+            $thrown = $e;
         }
-        $this->assertTrue($thrown, 'exception should be thrown');
+        $this->assertNotNull($thrown, 'exception should be thrown');
+        $this->assertInstanceOf(ClientNotFoundException::class, $thrown);
+        $this->assertStringStartsWith(
+            "type 'missing' not found in",
+            $thrown->getMessage()
+        );
     }
 
     public function testDetectClientType(): void

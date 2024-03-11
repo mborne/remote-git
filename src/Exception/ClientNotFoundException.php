@@ -9,7 +9,10 @@ use RuntimeException;
  */
 class ClientNotFoundException extends RuntimeException
 {
-    public function __construct($typeName, $availableTypes = [])
+    /**
+     * @param string[] $availableTypes
+     */
+    public function __construct(string $typeName, array $availableTypes = [])
     {
         $message = sprintf("type '%s' not found in %s", $typeName, json_encode($availableTypes));
         parent::__construct($message);

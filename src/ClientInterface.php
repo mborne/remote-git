@@ -15,7 +15,7 @@ interface ClientInterface
      *
      * @return ProjectInterface[]
      */
-    public function find(FindOptions $options);
+    public function find(FindOptions $options): array;
 
     /**
      * Get raw file
@@ -23,12 +23,10 @@ interface ClientInterface
      * @param ProjectInterface $project  ex : 123456
      * @param string           $filePath ex : composer.json
      * @param string           $ref      ex : master
-     *
-     * @return string
      */
     public function getRawFile(
         ProjectInterface $project,
-        $filePath,
-        $ref
-    );
+        string $filePath,
+        string $ref
+    ): string;
 }

@@ -9,7 +9,7 @@ use RuntimeException;
  */
 class RequiredParameterException extends RuntimeException
 {
-    public function __construct($message = 'missing required parameter')
+    public function __construct(string $message = 'missing required parameter')
     {
         parent::__construct($message);
     }

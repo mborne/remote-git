@@ -16,29 +16,25 @@ class FindOptions
      *
      * @var string[]
      */
-    private $organizations = [];
+    private array $organizations = [];
 
     /**
      * Filter according to user names
      *
      * @var string[]
      */
-    private $users = [];
+    private array $users = [];
 
     /**
      * Search string (available only for gitlab prefer the use of organizations and users)
-     *
-     * @var string
      */
-    private $search;
+    private string $search;
 
     /**
      * Additional filter that can't be implemented throw
      * project listing API parameters
-     *
-     * @var ProjectFilterInterface
      */
-    private $filter;
+    private ProjectFilterInterface $filter;
 
     public function __construct()
     {
@@ -47,10 +43,8 @@ class FindOptions
 
     /**
      * True if search is defined
-     *
-     * @return bool
      */
-    public function hasSearch()
+    public function hasSearch(): bool
     {
         return !empty($this->search);
     }
@@ -60,7 +54,7 @@ class FindOptions
      *
      * @return string[]
      */
-    public function getOrganizations()
+    public function getOrganizations(): array
     {
         return $this->organizations;
     }
@@ -69,10 +63,8 @@ class FindOptions
      * Set filter according to organizations
      *
      * @param string[] $organizations Filter according to organizations
-     *
-     * @return self
      */
-    public function setOrganizations(array $organizations)
+    public function setOrganizations(array $organizations): self
     {
         $this->organizations = $organizations;
 
@@ -84,7 +76,7 @@ class FindOptions
      *
      * @return string[]
      */
-    public function getUsers()
+    public function getUsers(): array
     {
         return $this->users;
     }
@@ -93,10 +85,8 @@ class FindOptions
      * Set filter according to user names
      *
      * @param string[] $users Filter according to user names
-     *
-     * @return self
      */
-    public function setUsers(array $users)
+    public function setUsers(array $users): self
     {
         $this->users = $users;
 
@@ -105,22 +95,16 @@ class FindOptions
 
     /**
      * Get search string (prefer the use of organizations and users)
-     *
-     * @return string
      */
-    public function getSearch()
+    public function getSearch(): string
     {
         return $this->search;
     }
 
     /**
      * Set search string (prefer the use of organizations and users)
-     *
-     * @param string $search Search string (prefer the use of organizations and users)
-     *
-     * @return self
      */
-    public function setSearch($search)
+    public function setSearch(string $search): self
     {
         $this->search = $search;
 
@@ -129,22 +113,16 @@ class FindOptions
 
     /**
      * Get project listing API parameters
-     *
-     * @return ProjectFilterInterface
      */
-    public function getFilter()
+    public function getFilter(): ProjectFilterInterface
     {
         return $this->filter;
     }
 
     /**
      * Set project listing API parameters
-     *
-     * @param ProjectFilterInterface $filter project listing API parameters
-     *
-     * @return self
      */
-    public function setFilter(ProjectFilterInterface $filter)
+    public function setFilter(ProjectFilterInterface $filter): self
     {
         $this->filter = $filter;
 

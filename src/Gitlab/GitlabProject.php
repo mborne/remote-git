@@ -11,33 +11,33 @@ use MBO\RemoteGit\ProjectInterface;
  */
 class GitlabProject implements ProjectInterface
 {
-    protected $rawMetadata;
-
-    public function __construct($rawMetadata)
+    /**
+     * @param array<string,mixed> $rawMetadata
+     */
+    public function __construct(private array $rawMetadata)
     {
-        $this->rawMetadata = $rawMetadata;
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->rawMetadata['id'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->rawMetadata['path_with_namespace'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getDefaultBranch()
+    public function getDefaultBranch(): ?string
     {
         if (!isset($this->rawMetadata['default_branch'])) {
             return null;
@@ -46,18 +46,18 @@ class GitlabProject implements ProjectInterface
         return $this->rawMetadata['default_branch'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getHttpUrl()
+    public function getHttpUrl(): string
     {
         return $this->rawMetadata['http_url_to_repo'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getRawMetadata()
+    public function getRawMetadata(): array
     {
         return $this->rawMetadata;
     }

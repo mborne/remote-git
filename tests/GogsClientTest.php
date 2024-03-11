@@ -66,6 +66,8 @@ class GogsClientTest extends TestCase
             'docker/docker-php-sury',
             $projectsByName
         );
+
+        /* test getRawFile */
         $project = $projectsByName['docker/docker-php-sury'];
         $this->assertStringContainsString(
             'FROM ',
@@ -75,6 +77,9 @@ class GogsClientTest extends TestCase
             'ServerTokens Prod',
             $client->getRawFile($project, 'conf/apache-security.conf', 'master')
         );
+
+        /* test getRawFile not found */
+        $this->ensureThatRawFileNotFoundThrowsException($client, $project);
     }
 
     /**

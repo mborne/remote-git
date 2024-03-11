@@ -12,14 +12,10 @@ class LoggerHelper
 {
     /**
      * Converts null to NullLogger
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return LoggerInterface
      */
     public static function handleNull(
         LoggerInterface $logger = null
-    ) {
+    ): LoggerInterface {
         return is_null($logger) ? new NullLogger() : $logger;
     }
 }

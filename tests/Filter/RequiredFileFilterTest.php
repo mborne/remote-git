@@ -34,7 +34,7 @@ class RequiredFileFilterTest extends TestCase
     /**
      * Accepted if composer.json exists
      */
-    public function testRequiredFilePresent()
+    public function testRequiredFilePresent(): void
     {
         $project = $this->createMockProject('test');
 

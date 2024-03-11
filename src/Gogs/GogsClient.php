@@ -2,16 +2,18 @@
 
 namespace MBO\RemoteGit\Gogs;
 
+use Exception;
 use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
+use MBO\RemoteGit\Exception\RawFileNotFoundException;
 use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Http\TokenType;
 
 /**
- * Client implementation for gogs
+ * Client implementation for gogs and gitea.
  *
  * @author mborne
  */
@@ -22,8 +24,8 @@ class GogsClient extends AbstractClient
 
     public const DEFAULT_PER_PAGE = 1000;
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
@@ -32,18 +34,18 @@ class GogsClient extends AbstractClient
         parent::__construct($httpClient, $logger);
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    protected function createProject(array $rawProject)
+    protected function createProject(array $rawProject): GogsProject
     {
         return new GogsProject($rawProject);
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function find(FindOptions $options)
+    public function find(FindOptions $options): array
     {
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
             return $this->findByCurrentUser(
@@ -75,7 +77,7 @@ class GogsClient extends AbstractClient
      */
     protected function findByCurrentUser(
         ProjectFilterInterface $projectFilter
-    ) {
+    ): array {
         return $this->filter(
             $this->getProjects(
                 '/api/v1/user/repos',
@@ -93,9 +95,9 @@ class GogsClient extends AbstractClient
      * @return ProjectInterface[]
      */
     protected function findByUser(
-        $user,
+        string $user,
         ProjectFilterInterface $projectFilter
-    ) {
+    ): array {
         return $this->filter(
             $this->getProjects(
                 '/api/v1/users/'.$user.'/repos',
@@ -108,14 +110,14 @@ class GogsClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by organization
      *
      * @return ProjectInterface[]
      */
     protected function findByOrg(
-        $org,
+        string $org,
         ProjectFilterInterface $projectFilter
-    ) {
+    ): array {
         return $this->filter(
             $this->getProjects(
                 '/api/v1/orgs/'.$org.'/repos',
@@ -127,21 +129,25 @@ class GogsClient extends AbstractClient
         );
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
         $ref
-    ) {
+    ): string {
         $uri = '/api/v1/repos/'.$project->getName().'/raw/';
         $uri .= $project->getDefaultBranch();
         $uri .= '/'.$filePath;
 
-        $this->getLogger()->debug('GET '.$uri);
-        $response = $this->getHttpClient()->request('GET', $uri);
+        try {
+            $this->getLogger()->debug('GET '.$uri);
+            $response = $this->getHttpClient()->request('GET', $uri);
 
-        return (string) $response->getBody();
+            return (string) $response->getBody();
+        } catch (Exception $e) {
+            throw new RawFileNotFoundException($filePath, $ref, $e);
+        }
     }
 }

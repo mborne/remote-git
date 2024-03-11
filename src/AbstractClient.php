@@ -40,7 +40,7 @@ abstract class AbstractClient implements ClientInterface
     /**
      * @return GuzzleHttpClient
      */
-    protected function getHttpClient()
+    protected function getHttpClient(): GuzzleHttpClient
     {
         return $this->httpClient;
     }
@@ -48,7 +48,7 @@ abstract class AbstractClient implements ClientInterface
     /**
      * @return LoggerInterface
      */
-    protected function getLogger()
+    protected function getLogger(): LoggerInterface
     {
         return $this->logger;
     }
@@ -56,19 +56,23 @@ abstract class AbstractClient implements ClientInterface
     /**
      * Create a project according to JSON metadata provided by an API
      *
+     * @param array<string,mixed> $rawProject
+     *
      * @return ProjectInterface
      */
-    abstract protected function createProject(array $rawProject);
+    abstract protected function createProject(array $rawProject): ProjectInterface;
 
     /**
      * Get projets for a given path with parameters
      *
+     * @param array<string,string|int> $params
+     *
      * @return ProjectInterface[]
      */
     protected function getProjects(
-        $path,
+        string $path,
         array $params = []
-    ) {
+    ): array {
         $uri = $path.'?'.$this->implodeParams($params);
         $this->getLogger()->debug('GET '.$uri);
         $response = $this->getHttpClient()->request('GET', $uri);
@@ -82,17 +86,15 @@ abstract class AbstractClient implements ClientInterface
     }
 
     /**
-     * Implode params to performs request
+     * Implode params to performs HTTP request
      *
-     * @param array $params key=>value
-     *
-     * @return string
+     * @param array<string,string|int> $params key=>value
      */
-    protected function implodeParams($params)
+    protected function implodeParams(array $params): string
     {
         $parts = [];
         foreach ($params as $key => $value) {
-            $parts[] = $key.'='.urlencode($value);
+            $parts[] = $key.'='.urlencode((string) $value);
         }
 
         return implode('&', $parts);
@@ -105,7 +107,7 @@ abstract class AbstractClient implements ClientInterface
      *
      * @return ProjectInterface[]
      */
-    protected function filter(array $projects, ProjectFilterInterface $filter)
+    protected function filter(array $projects, ProjectFilterInterface $filter): array
     {
         $result = [];
         foreach ($projects as $project) {

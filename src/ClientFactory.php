@@ -30,7 +30,7 @@ class ClientFactory
     /**
      * Associates client type to metadata ('className','tokenType')
      *
-     * @var array
+     * @var array<string,array<string,string>>
      */
     private $types = [];
 
@@ -66,31 +66,23 @@ class ClientFactory
 
     /**
      * Create a client with options
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return ClientInterface
      */
     public static function createClient(
         ClientOptions $options,
         LoggerInterface $logger = null
-    ) {
+    ): ClientInterface {
         return self::getInstance()->createGitClient($options, $logger);
     }
 
     /**
      * Create a client with options
      *
-     * @param LoggerInterface $logger
-     *
-     * @return ClientInterface
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function createGitClient(
         ClientOptions $options,
         LoggerInterface $logger = null
-    ) {
+    ): ClientInterface {
         $logger = LoggerHelper::handleNull($logger);
 
         /* Detect client type from URL if not specified */
@@ -141,17 +133,16 @@ class ClientFactory
         /* create http client */
         $httpClient = new GuzzleHttpClient($guzzleOptions);
         /* create git client */
-        return new $clientClass($httpClient, $logger);
+        $result = new $clientClass($httpClient, $logger);
+        assert($result instanceof ClientInterface);
+
+        return $result;
     }
 
     /**
      * Get client class according to URL content
-     *
-     * @param string $url
-     *
-     * @return string
      */
-    public static function detectClientClass($url)
+    public static function detectClientClass(string $url): string
     {
         $scheme = parse_url($url, PHP_URL_SCHEME);
         if (!in_array($scheme, ['http', 'https'])) {
@@ -159,9 +150,10 @@ class ClientFactory
         }
 
         $hostname = parse_url($url, PHP_URL_HOST);
+        assert('string' === gettype($hostname));
         if ('api.github.com' === $hostname || 'github.com' === $hostname) {
             return GithubClient::class;
-        } elseif (false !== strpos($hostname, 'gogs')) {
+        } elseif (str_contains($hostname, 'gogs')) {
             return GogsClient::class;
         }
         /*
@@ -176,7 +168,7 @@ class ClientFactory
      */
     public static function getInstance()
     {
-        if (is_null(self::$instance)) {
+        if (null == self::$instance) {
             self::$instance = new ClientFactory();
         }
 
@@ -186,11 +178,11 @@ class ClientFactory
     /**
      * Register client type
      *
-     * @param string $className
+     * @param class-string $className
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function register($className)
+    private function register(string $className): void
     {
         $clientProperties = ClientHelper::getStaticProperties($className);
         $this->types[$clientProperties['typeName']] = $clientProperties;

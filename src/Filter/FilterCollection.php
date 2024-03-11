@@ -25,8 +25,6 @@ class FilterCollection implements ProjectFilterInterface
     private $logger;
 
     /**
-     * @param LoggerInterface $logger
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(LoggerInterface $logger = null)
@@ -37,18 +35,18 @@ class FilterCollection implements ProjectFilterInterface
 
     /**
      * Add a filter to the collection
-     *
-     * @return void
      */
-    public function addFilter(ProjectFilterInterface $filter)
+    public function addFilter(ProjectFilterInterface $filter): self
     {
         $this->filters[] = $filter;
+
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         $parts = [];
         foreach ($this->filters as $filter) {
@@ -59,9 +57,9 @@ class FilterCollection implements ProjectFilterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function isAccepted(ProjectInterface $project)
+    public function isAccepted(ProjectInterface $project): bool
     {
         foreach ($this->filters as $filter) {
             if (!$filter->isAccepted($project)) {
@@ -85,10 +83,8 @@ class FilterCollection implements ProjectFilterInterface
 
     /**
      * Get filter name
-     *
-     * @return string
      */
-    private function getFilterName(ProjectFilterInterface $filter)
+    private function getFilterName(ProjectFilterInterface $filter): string
     {
         $clazz = get_class($filter);
         $parts = explode('\\', $clazz);

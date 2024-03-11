@@ -63,10 +63,12 @@ class GitlabClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/sample-composer'];
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
         $composer = $client->getRawFile(
             $project,
             'composer.json',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
     }
@@ -116,12 +118,18 @@ class GitlabClientTest extends TestCase
             $projectsByName
         );
 
+        /* test getRawFile */
         $project = $projectsByName['mborne/sample-composer'];
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
         $composer = $client->getRawFile(
             $project,
             'composer.json',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
+
+        /* test getRawFile not found */
+        $this->ensureThatRawFileNotFoundThrowsException($client, $project);
     }
 }

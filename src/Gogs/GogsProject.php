@@ -11,49 +11,49 @@ use MBO\RemoteGit\ProjectInterface;
  */
 class GogsProject implements ProjectInterface
 {
-    protected $rawMetadata;
-
-    public function __construct($rawMetadata)
+    /**
+     * @param array<string,mixed> $rawMetadata
+     */
+    public function __construct(private array $rawMetadata)
     {
-        $this->rawMetadata = $rawMetadata;
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->rawMetadata['id'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->rawMetadata['full_name'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getDefaultBranch()
+    public function getDefaultBranch(): ?string
     {
         return $this->rawMetadata['default_branch'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getHttpUrl()
+    public function getHttpUrl(): string
     {
         return $this->rawMetadata['clone_url'];
     }
 
-    /*
-     * @{inheritDoc}
+    /**
+     * {@inheritDoc}
      */
-    public function getRawMetadata()
+    public function getRawMetadata(): array
     {
         return $this->rawMetadata;
     }

@@ -11,36 +11,28 @@ interface ProjectInterface
 {
     /**
      * Get project id
-     *
-     * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Get project name (with namespace)
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Get default branch
-     *
-     * @return ?string
      */
-    public function getDefaultBranch();
+    public function getDefaultBranch(): ?string;
 
     /**
      * Get http url
-     *
-     * @return string
      */
-    public function getHttpUrl();
+    public function getHttpUrl(): string;
 
     /**
      * Get hosting service specific properties
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    public function getRawMetadata();
+    public function getRawMetadata(): array;
 }

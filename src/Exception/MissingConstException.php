@@ -9,7 +9,7 @@ use RuntimeException;
  */
 class MissingConstException extends RuntimeException
 {
-    public function __construct($className, $constName)
+    public function __construct(string $className, string $constName)
     {
         $message = sprintf("Missing const '%s' on class '%s'", $constName, $className);
         parent::__construct($message);

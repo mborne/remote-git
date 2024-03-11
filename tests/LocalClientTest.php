@@ -25,7 +25,9 @@ class LocalClientTest extends TestCase
         }
         $fs->mkdir(self::TEMP_DIR);
         $fs->mkdir(self::TEMP_DIR.'/mborne');
+        // non bare repository
         exec('cd '.self::TEMP_DIR.'/mborne && git clone https://github.com/mborne/remote-git.git');
+        // bare repository
         exec('cd '.self::TEMP_DIR.'/mborne && git clone --bare https://github.com/mborne/satis-gitlab.git');
     }
 
@@ -35,11 +37,9 @@ class LocalClientTest extends TestCase
     protected function createLocalClient(): LocalClient
     {
         // folder containing mborne/remote-git and mborne/satis-gitlab
-        $rootPath = realpath(self::TEMP_DIR);
-
         $clientOptions = new ClientOptions();
         $clientOptions
-            ->setUrl($rootPath)
+            ->setUrl(self::TEMP_DIR)
         ;
 
         /* create client */
@@ -94,13 +94,16 @@ class LocalClientTest extends TestCase
      */
     public function testGetRawFileFromNonBareRepository(): void
     {
+        /* test getRawFile */
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/remote-git');
-        $readmeContent = $client->getRawFile($project, 'README.md', $project->getDefaultBranch());
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
+        $readmeContent = $client->getRawFile($project, 'README.md', $defaultBranch);
         $this->assertStringContainsString('# mborne/remote-git', $readmeContent);
 
-        $testCaseContent = $client->getRawFile($project, 'tests/TestCase.php', $project->getDefaultBranch());
-        $this->assertStringContainsString('class TestCase', $testCaseContent);
+        /* test getRawFile not found */
+        $this->ensureThatRawFileNotFoundThrowsException($client, $project);
     }
 
     /**
@@ -108,12 +111,15 @@ class LocalClientTest extends TestCase
      */
     public function testGetRawFileFromBareRepository(): void
     {
+        /* test getRawFile */
         $client = $this->createLocalClient();
         $project = $client->createLocalProject(self::TEMP_DIR.'/mborne/satis-gitlab.git');
-        $readmeContent = $client->getRawFile($project, 'composer.json', $project->getDefaultBranch());
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
+        $readmeContent = $client->getRawFile($project, 'composer.json', $defaultBranch);
         $this->assertStringContainsString('symfony/console', $readmeContent);
 
-        $testCaseContent = $client->getRawFile($project, 'tests/TestCase.php', $project->getDefaultBranch());
-        $this->assertStringContainsString('class TestCase', $testCaseContent);
+        /* test getRawFile not found */
+        $this->ensureThatRawFileNotFoundThrowsException($client, $project);
     }
 }

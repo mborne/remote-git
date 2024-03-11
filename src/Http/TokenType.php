@@ -14,10 +14,9 @@ class TokenType
     /**
      * Create HTTP headers according to a tokenType
      *
-     * @param string $tokenType
-     * @param string $token
+     * @return array<string,string>
      */
-    public static function createHttpHeaders($tokenType, $token)
+    public static function createHttpHeaders(string $tokenType, ?string $token): array
     {
         if (empty($token)) {
             return [];

@@ -47,23 +47,27 @@ class RequiredFileFilter implements ProjectFilterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf("File '%s' should exist in default branch", $this->filePath);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function isAccepted(ProjectInterface $project)
+    public function isAccepted(ProjectInterface $project): bool
     {
+        $branch = $project->getDefaultBranch();
+        if (is_null($branch)) {
+            return false;
+        }
         try {
             $this->gitClient->getRawFile(
                 $project,
                 $this->filePath,
-                $project->getDefaultBranch()
+                $branch
             );
 
             return true;

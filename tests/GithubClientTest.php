@@ -69,19 +69,25 @@ class GithubClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/satis-gitlab'];
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
         $composer = $client->getRawFile(
             $project,
             'composer.json',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
 
+        /* test getRawFile */
         $testFileInSubdirectory = $client->getRawFile(
             $project,
             'tests/TestCase.php',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
+
+        /* test getRawFile not found */
+        $this->ensureThatRawFileNotFoundThrowsException($client, $project);
     }
 
     /**
@@ -110,17 +116,19 @@ class GithubClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/satis-gitlab'];
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
         $composer = $client->getRawFile(
             $project,
             'composer.json',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
 
         $testFileInSubdirectory = $client->getRawFile(
             $project,
             'tests/TestCase.php',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
     }

@@ -2,19 +2,19 @@
 
 namespace MBO\RemoteGit\Tests;
 
-use Psr\Log\NullLogger;
-use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\ClientFactory;
+use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gitlab\GitlabProject;
+use Psr\Log\NullLogger;
 
 class GitlabClientTest extends TestCase
 {
     /**
-     * @return GitlabClient
+     * Create GitlabClient using GITLAB_TOKEN.
      */
-    protected function createGitlabClient()
+    protected function createGitlabClient(): GitlabClient
     {
         $gitlabToken = getenv('GITLAB_TOKEN');
         if (empty($gitlabToken)) {
@@ -28,16 +28,19 @@ class GitlabClientTest extends TestCase
         ;
 
         /* create client */
-        return ClientFactory::createClient(
+        $client = ClientFactory::createClient(
             $clientOptions,
             new NullLogger()
         );
+        $this->assertInstanceOf(GitlabClient::class, $client);
+
+        return $client;
     }
 
     /**
-     * Ensure client can find mborne/sample-composer by username
+     * Ensure client can find mborne/sample-composer by username.
      */
-    public function testGitlabDotComByUser()
+    public function testGitlabDotComByUser(): void
     {
         /* create client */
         $client = $this->createGitlabClient();
@@ -60,15 +63,17 @@ class GitlabClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/sample-composer'];
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
         $composer = $client->getRawFile(
             $project,
             'composer.json',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
     }
 
-    public function testGitlabDotComOrgs()
+    public function testGitlabDotComOrgs(): void
     {
         /* create client */
         $client = $this->createGitlabClient();
@@ -78,6 +83,7 @@ class GitlabClientTest extends TestCase
         $findOptions = new FindOptions();
         $findOptions->setOrganizations(['gitlab-org']);
         $projects = $client->find($findOptions);
+        $projectsByName = [];
         foreach ($projects as $project) {
             $this->assertInstanceOf(GitlabProject::class, $project);
             $this->assertGettersWorks($project);
@@ -90,9 +96,9 @@ class GitlabClientTest extends TestCase
     }
 
     /**
-     * Ensure client can find mborne/sample-composer with search
+     * Ensure client can find mborne/sample-composer with search.
      */
-    public function testGitlabDotComSearch()
+    public function testGitlabDotComSearch(): void
     {
         /* create client */
         $client = $this->createGitlabClient();
@@ -112,12 +118,18 @@ class GitlabClientTest extends TestCase
             $projectsByName
         );
 
+        /* test getRawFile */
         $project = $projectsByName['mborne/sample-composer'];
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
         $composer = $client->getRawFile(
             $project,
             'composer.json',
-            $project->getDefaultBranch()
+            $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
+
+        /* test getRawFile not found */
+        $this->ensureThatRawFileNotFoundThrowsException($client, $project);
     }
 }

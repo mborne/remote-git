@@ -2,11 +2,11 @@
 
 namespace MBO\RemoteGit\Filter;
 
-use Psr\Log\LoggerInterface;
-use MBO\RemoteGit\ProjectInterface;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ClientInterface as GitClientInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Filter projects ensuring that composer.json is present. Optionally,
@@ -18,26 +18,20 @@ use MBO\RemoteGit\Helper\LoggerHelper;
 class ComposerProjectFilter implements ProjectFilterInterface
 {
     /**
-     * @var GitClientInterface
+     * Client allowing to retrieve composer.json file.
      */
-    protected $gitClient;
+    protected GitClientInterface $gitClient;
+
+    protected LoggerInterface $logger;
 
     /**
-     * @var LoggerInterface
+     * Filter according to project type.
      */
-    protected $logger;
-
-    /**
-     * Filter according to project type
-     *
-     * @var string
-     */
-    protected $projectType;
+    protected string $projectType;
 
     /**
      * ProjectTypeFilter constructor.
      *
-     * @param string          $type
      * @param LoggerInterface $logger
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
@@ -51,33 +45,24 @@ class ComposerProjectFilter implements ProjectFilterInterface
     }
 
     /**
-     * Get filter according to project type
-     *
-     * @return string
+     * Get filter according to project type.
      */
-    public function getProjectType()
+    public function getProjectType(): string
     {
         return $this->projectType;
     }
 
     /**
-     * Set filter according to project type
-     *
-     * @param string $projectType Filter according to project type
-     *
-     * @return self
+     * Set filter according to project type.
      */
-    public function setProjectType($projectType)
+    public function setProjectType(string $projectType): self
     {
         $this->projectType = $projectType;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         $description = 'composer.json should exists';
         if (!empty($this->projectType)) {
@@ -87,10 +72,7 @@ class ComposerProjectFilter implements ProjectFilterInterface
         return $description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccepted(ProjectInterface $project)
+    public function isAccepted(ProjectInterface $project): bool
     {
         try {
             $branch = $project->getDefaultBranch();

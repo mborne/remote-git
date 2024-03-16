@@ -1,4 +1,4 @@
-PHP_CS_RULES=@Symfony,-ordered_imports,-phpdoc_summary,-global_namespace_import,-no_superfluous_phpdoc_tags
+PHP_CS_RULES=@Symfony,-global_namespace_import
 PHP_MD_RULES=cleancode,codesize,controversial,design,naming,unusedcode
 
 .PHONY: test
@@ -10,10 +10,14 @@ test: check-style check-rules
 		--coverage-html output/coverage
 
 .PHONY: check-rules
-check-rules: vendor
+check-rules: phpstan phpmd
+
+phpmd:
 	@echo "-- Checking coding rules using phpmd (see @SuppressWarning to bypass control)"
 	vendor/bin/phpmd src text $(PHP_MD_RULES)
 
+phpstan:
+	vendor/bin/phpstan analyse -c phpstan.neon --error-format=raw
 
 .PHONY: fix-style
 fix-style: vendor
@@ -25,8 +29,8 @@ fix-style: vendor
 .PHONY: check-style
 check-style: vendor
 	@echo "-- Checking coding style using php-cs-fixer (run 'make fix-style' if it fails)"
-	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES) -v --dry-run --diff --using-cache=no
-	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES) -v --dry-run --diff --using-cache=no
+	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES) -v --dry-run --diff
+	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES) -v --dry-run --diff
 
 vendor:
 	composer install

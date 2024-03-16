@@ -5,55 +5,40 @@ namespace MBO\RemoteGit\Github;
 use MBO\RemoteGit\ProjectInterface;
 
 /**
- * Project implementation for github
+ * Project implementation for github.
  *
  * @author mborne
  */
 class GithubProject implements ProjectInterface
 {
-    protected $rawMetadata;
-
-    public function __construct($rawMetadata)
+    /**
+     * @param array<string,mixed> $rawMetadata
+     */
+    public function __construct(private array $rawMetadata)
     {
-        $this->rawMetadata = $rawMetadata;
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->rawMetadata['id'];
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->rawMetadata['full_name'];
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    public function getDefaultBranch()
+    public function getDefaultBranch(): ?string
     {
         return $this->rawMetadata['default_branch'];
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    public function getHttpUrl()
+    public function getHttpUrl(): string
     {
         return $this->rawMetadata['clone_url'];
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    public function getRawMetadata()
+    public function getRawMetadata(): array
     {
         return $this->rawMetadata;
     }

@@ -2,18 +2,18 @@
 
 namespace MBO\RemoteGit\Github;
 
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
+use MBO\RemoteGit\Exception\RawFileNotFoundException;
 use MBO\RemoteGit\Exception\RequiredParameterException;
-use MBO\RemoteGit\ProjectInterface;
 use MBO\RemoteGit\FindOptions;
-use MBO\RemoteGit\ProjectFilterInterface;
-use MBO\RemoteGit\Helper\LoggerHelper;
 use MBO\RemoteGit\Http\TokenType;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Client implementation for github
+ * Client implementation for github.
  *
  * See following github docs :
  *
@@ -42,10 +42,9 @@ class GithubClient extends AbstractClient
     protected $logger;
 
     /**
-     * Constructor with an http client and a logger
+     * Constructor with an http client and a logger.
      *
      * @param $httpClient http client
-     * @param $logger
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -53,22 +52,15 @@ class GithubClient extends AbstractClient
         GuzzleHttpClient $httpClient,
         LoggerInterface $logger = null
     ) {
-        $this->httpClient = $httpClient;
-        $this->logger = LoggerHelper::handleNull($logger);
+        parent::__construct($httpClient, $logger);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createProject(array $rawProject)
+    protected function createProject(array $rawProject): GithubProject
     {
         return new GithubProject($rawProject);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function find(FindOptions $options)
+    public function find(FindOptions $options): array
     {
         $result = [];
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
@@ -99,7 +91,7 @@ class GithubClient extends AbstractClient
      * @return ProjectInterface[]
      */
     protected function findByUser(
-        $user,
+        string $user,
         ProjectFilterInterface $projectFilter
     ) {
         /*
@@ -122,12 +114,12 @@ class GithubClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by username.
      *
      * @return ProjectInterface[]
      */
     protected function findByOrg(
-        $org,
+        string $org,
         ProjectFilterInterface $projectFilter
     ) {
         return $this->fetchAllPages(
@@ -137,17 +129,18 @@ class GithubClient extends AbstractClient
     }
 
     /**
-     * Fetch all pages for a given URI
+     * Fetch all pages for a given URI.
      *
-     * @param string $path such as '/orgs/IGNF/repos' or '/users/mborne/repos'
+     * @param string                   $path        such as '/orgs/IGNF/repos' or '/users/mborne/repos'
+     * @param array<string,string|int> $extraParams
      *
      * @return ProjectInterface[]
      */
     private function fetchAllPages(
-        $path,
+        string $path,
         ProjectFilterInterface $projectFilter,
-        $extraParams = []
-    ) {
+        array $extraParams = []
+    ): array {
         $result = [];
         for ($page = 1; $page <= self::MAX_PAGES; ++$page) {
             $params = array_merge($extraParams, [
@@ -164,14 +157,11 @@ class GithubClient extends AbstractClient
         return $result;
     }
 
-    /*
-     * @{inheritDoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
         $ref
-    ) {
+    ): string {
         $metadata = $project->getRawMetadata();
         $uri = str_replace(
             '{+path}',
@@ -179,13 +169,18 @@ class GithubClient extends AbstractClient
             $metadata['contents_url']
         );
         $uri .= '?ref='.$ref;
-        $this->getLogger()->debug('GET '.$uri);
-        $response = $this->getHttpClient()->request('GET', $uri, [
-            'headers' => [
-                'Accept' => 'application/vnd.github.v3.raw',
-            ],
-        ]);
 
-        return (string) $response->getBody();
+        try {
+            $this->getLogger()->debug('GET '.$uri);
+            $response = $this->getHttpClient()->request('GET', $uri, [
+                'headers' => [
+                    'Accept' => 'application/vnd.github.v3.raw',
+                ],
+            ]);
+
+            return (string) $response->getBody();
+        } catch (\Exception $e) {
+            throw new RawFileNotFoundException($filePath, $ref, $e);
+        }
     }
 }

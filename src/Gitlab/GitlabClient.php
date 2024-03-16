@@ -2,16 +2,17 @@
 
 namespace MBO\RemoteGit\Gitlab;
 
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\AbstractClient;
-use MBO\RemoteGit\ProjectInterface;
+use MBO\RemoteGit\Exception\RawFileNotFoundException;
 use MBO\RemoteGit\FindOptions;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Http\TokenType;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Find gitlab projects
+ * Find gitlab projects.
  *
  * See following gitlab docs :
  *
@@ -29,10 +30,7 @@ class GitlabClient extends AbstractClient
     public const MAX_PAGES = 10000;
 
     /**
-     * Constructor with an http client and a logger
-     *
-     * @param $httpClient http client
-     * @param $logger
+     * Constructor with an http client and a logger.
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
@@ -41,18 +39,12 @@ class GitlabClient extends AbstractClient
         parent::__construct($httpClient, $logger);
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    protected function createProject(array $rawProject)
+    protected function createProject(array $rawProject): GitlabProject
     {
         return new GitlabProject($rawProject);
     }
 
-    /*
-     * @{inheritDoc}
-     */
-    public function find(FindOptions $options)
+    public function find(FindOptions $options): array
     {
         /* find all projects applying optional search */
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
@@ -77,14 +69,14 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Find projects by username
+     * Find projects by username.
      *
      * @return ProjectInterface[]
      */
     protected function findByUser(
-        $user,
+        string $user,
         ProjectFilterInterface $projectFilter
-    ) {
+    ): array {
         return $this->fetchAllPages(
             '/api/v4/users/'.urlencode($user).'/projects',
             [],
@@ -93,14 +85,14 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Find projects by group
+     * Find projects by group.
      *
      * @return ProjectInterface[]
      */
     protected function findByGroup(
-        $group,
+        string $group,
         ProjectFilterInterface $projectFilter
-    ) {
+    ): array {
         return $this->fetchAllPages(
             '/api/v4/groups/'.urlencode($group).'/projects',
             [],
@@ -109,7 +101,7 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Find all projects using option search
+     * Find all projects using option search.
      *
      * @return ProjectInterface[]
      */
@@ -129,16 +121,16 @@ class GitlabClient extends AbstractClient
     }
 
     /**
-     * Fetch all pages for a given path with query params
+     * Fetch all pages for a given path with query params.
      *
-     * @param string $path   ex : "/api/v4/projects"
-     * @param array  $params ex : array('search'=>'sample-composer')
+     * @param string                   $path   ex : "/api/v4/projects"
+     * @param array<string,string|int> $params ex : array('search'=>'sample-composer')
      *
      * @return ProjectInterface[]
      */
     private function fetchAllPages(
-        $path,
-        array $params = [],
+        string $path,
+        array $params,
         ProjectFilterInterface $projectFilter
     ) {
         $result = [];
@@ -157,20 +149,21 @@ class GitlabClient extends AbstractClient
         return $result;
     }
 
-    /*
-     * @{inheritDoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
-        $filePath,
-        $ref
-    ) {
+        string $filePath,
+        string $ref
+    ): string {
         // ref : https://docs.gitlab.com/ee/api/repository_files.html#get-raw-file-from-repository
         $uri = '/api/v4/projects/'.$project->getId().'/repository/files/'.urlencode($filePath).'/raw';
         $uri .= '?ref='.$ref;
-        $this->getLogger()->debug('GET '.$uri);
-        $response = $this->httpClient->request('GET', $uri);
+        try {
+            $this->getLogger()->debug('GET '.$uri);
+            $response = $this->httpClient->request('GET', $uri);
 
-        return (string) $response->getBody();
+            return (string) $response->getBody();
+        } catch (\Exception $e) {
+            throw new RawFileNotFoundException($filePath, $ref);
+        }
     }
 }

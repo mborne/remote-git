@@ -3,23 +3,19 @@
 namespace MBO\RemoteGit;
 
 /**
- * Test if a project should be included in satis config (regexp, )
+ * Test if a project should be included in satis config (regexp, ).
  *
  * @author mborne
  */
 interface ProjectFilterInterface
 {
     /**
-     * Get filter description (ex : "Project should contains a composer.json file")
-     *
-     * @return string
+     * Get filter description (ex : "Project should contains a composer.json file").
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
-     * Returns true if the project should be included in satis configuration
-     *
-     * @return bool
+     * Returns true if the project should be included in satis configuration.
      */
-    public function isAccepted(ProjectInterface $project);
+    public function isAccepted(ProjectInterface $project): bool;
 }

@@ -2,12 +2,12 @@
 
 namespace MBO\RemoteGit\Tests\Http;
 
-use MBO\RemoteGit\Tests\TestCase;
 use MBO\RemoteGit\Http\TokenType;
+use MBO\RemoteGit\Tests\TestCase;
 
 class TokenTypeTest extends TestCase
 {
-    public function testCreateHttpHeaders()
+    public function testCreateHttpHeaders(): void
     {
         // empty headers for null token
         $this->assertEquals(

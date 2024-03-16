@@ -3,7 +3,7 @@
 namespace MBO\RemoteGit;
 
 /**
- * Git connection options
+ * Git connection options.
  *
  * @author mborne
  */
@@ -11,32 +11,24 @@ class ClientOptions
 {
     /**
      * Allows to force a given client type and avoid
-     * detection based on URL
-     *
-     * @var string
+     * detection based on URL.
      */
-    private $type;
+    private string $type;
 
     /**
-     * Base URL (ex : https://gitlab.com)
-     *
-     * @var string
+     * Base URL (ex : https://gitlab.com).
      */
-    private $url;
+    private string $url;
 
     /**
-     * Access token
-     *
-     * @var string
+     * Access token.
      */
-    private $token;
+    private ?string $token;
 
     /**
-     * Bypass SSL certificate checks for self signed certificates
-     *
-     * @var bool
+     * Bypass SSL certificate checks for self signed certificates.
      */
-    private $unsafeSsl;
+    private bool $unsafeSsl;
 
     public function __construct()
     {
@@ -44,33 +36,25 @@ class ClientOptions
     }
 
     /**
-     * True if client type is specificied
-     *
-     * @return bool
+     * True if client type is specified.
      */
-    public function hasType()
+    public function hasType(): bool
     {
         return !empty($this->type);
     }
 
     /**
-     * Get client type
-     *
-     * @return string
+     * Get client type.
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * Set client type
-     *
-     * @param string $type gitlab,github,gogs,...
-     *
-     * @return self
+     * Set client type (ex : github, gitlab-v4,...).
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -78,21 +62,17 @@ class ClientOptions
     }
 
     /**
-     * @return string
+     * Get URL.
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
     /**
-     * Set URL
-     *
-     * @param string $url
-     *
-     * @return self
+     * Set URL.
      */
-    public function setUrl($url)
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
@@ -101,32 +81,24 @@ class ClientOptions
 
     /**
      * Is token defined?
-     *
-     * @return bool
      */
-    public function hasToken()
+    public function hasToken(): bool
     {
         return !empty($this->token);
     }
 
     /**
-     * Get access token
-     *
-     * @return string
+     * Get access token.
      */
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->token;
     }
 
     /**
-     * Set access token
-     *
-     * @param string $token Access token
-     *
-     * @return self
+     * Set access token.
      */
-    public function setToken($token)
+    public function setToken(?string $token): self
     {
         $this->token = $token;
 
@@ -134,21 +106,17 @@ class ClientOptions
     }
 
     /**
-     * @return bool
+     * Is unsafeSsl.
      */
-    public function isUnsafeSsl()
+    public function isUnsafeSsl(): bool
     {
         return $this->unsafeSsl;
     }
 
     /**
-     * Set unsafeSsl
-     *
-     * @param bool $unsafeSsl
-     *
-     * @return self
+     * Set unsafeSsl.
      */
-    public function setUnsafeSsl($unsafeSsl)
+    public function setUnsafeSsl(bool $unsafeSsl): self
     {
         $this->unsafeSsl = $unsafeSsl;
 

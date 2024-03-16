@@ -2,24 +2,24 @@
 
 namespace MBO\RemoteGit\Helper;
 
-use ReflectionClass;
 use MBO\RemoteGit\ClientInterface;
 use MBO\RemoteGit\Exception\MissingConstException;
 use MBO\RemoteGit\Exception\RequiredParameterException;
+use ReflectionClass;
 
 /**
- * Helper to inspect client classes
+ * Helper to inspect client classes.
  */
 class ClientHelper
 {
     /**
-     * Retrieve TYPE and TOKEN_TYPE from client class
+     * Retrieve TYPE and TOKEN_TYPE from client class.
      *
-     * @param string $className
+     * @param class-string $className
      *
      * @return string[]
      */
-    public static function getStaticProperties($className)
+    public static function getStaticProperties(string $className): array
     {
         $reflectionClass = new ReflectionClass($className);
         if (!$reflectionClass->implementsInterface(ClientInterface::class)) {

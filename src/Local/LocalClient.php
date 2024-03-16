@@ -2,15 +2,16 @@
 
 namespace MBO\RemoteGit\Local;
 
-use Psr\Log\LoggerInterface;
 use MBO\RemoteGit\ClientInterface;
+use MBO\RemoteGit\Exception\RawFileNotFoundException;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Helper\LoggerHelper;
 use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Client for a local folder containing a project hierarchy
+ * Client for a local folder containing a project hierarchy.
  */
 class LocalClient implements ClientInterface
 {
@@ -18,7 +19,7 @@ class LocalClient implements ClientInterface
     public const TOKEN_TYPE = TokenType::NONE;
 
     /**
-     * Path to the root folder
+     * Path to the root folder.
      *
      * @var string
      */
@@ -30,23 +31,17 @@ class LocalClient implements ClientInterface
     private $logger;
 
     /**
-     * Create a LocalClient for a folder containing a hierarchy of git repositories
-     *
-     * @param string          $rootPath
-     * @param LoggerInterface $logger
+     * Create a LocalClient for a folder containing a hierarchy of git repositories.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct($rootPath, LoggerInterface $logger = null)
+    public function __construct(string $rootPath, LoggerInterface $logger = null)
     {
-        $this->rootPath = realpath($rootPath);
+        $this->rootPath = $rootPath;
         $this->logger = LoggerHelper::handleNull($logger);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function find(FindOptions $options)
+    public function find(FindOptions $options): array
     {
         $projects = [];
 
@@ -64,7 +59,7 @@ class LocalClient implements ClientInterface
     }
 
     /**
-     * Create a LocalProject retreiving metadata from absolute path to project
+     * Create a LocalProject retreiving metadata from absolute path to project.
      *
      * @param string $projectFolder
      *
@@ -97,16 +92,16 @@ class LocalClient implements ClientInterface
      * TODO use something like "git rev-parse --git-dir" to validate
      * folders
      *
-     * @param string $parentPath absolute path to a given folder
-     *
-     * @return string[]
+     * @param string   $parentPath     absolute path to a given folder
+     * @param string[] $projectFolders
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    protected function findProjectFolders($parentPath, array &$projectFolders)
+    protected function findProjectFolders(string $parentPath, array &$projectFolders): void
     {
         $this->logger->debug("Checking if $parentPath is a git repository ...");
         $items = scandir($parentPath);
+        assert(false !== $items);
         foreach ($items as $item) {
             if ('.' === $item || '..' === $item) {
                 continue;
@@ -130,28 +125,38 @@ class LocalClient implements ClientInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRawFile(
         ProjectInterface $project,
-        $filePath,
-        $ref
-    ) {
+        string $filePath,
+        string $ref
+    ): string {
         $cmd = sprintf(
-            'cd %s ; git show %s:%s',
-            escapeshellarg($project->getHttpUrl()),
+            'git show %s:%s',
             escapeshellarg($ref),
             escapeshellarg($filePath)
         );
-        $this->logger->info(sprintf(
-            'getRawFile(%s,%s,%s) : %s',
-            escapeshellarg($project->getHttpUrl()),
-            escapeshellarg($ref),
-            escapeshellarg($filePath),
-            $cmd
-        ));
+        $cwd = $project->getHttpUrl();
 
-        return shell_exec($cmd);
+        $pipes = [];
+        $proc = proc_open($cmd, [
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes, $cwd);
+
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+        if (false === $proc || 0 !== proc_close($proc)) {
+            $this->logger->error(sprintf('command fails : %s', $stderr), [
+                'cmd' => $cmd,
+                'cwd' => $cwd,
+            ]);
+            throw new RawFileNotFoundException($filePath, $ref);
+        }
+
+        assert(false !== $stdout);
+
+        return $stdout;
     }
 }

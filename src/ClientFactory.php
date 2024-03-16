@@ -2,16 +2,16 @@
 
 namespace MBO\RemoteGit;
 
-use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\Exception\ClientNotFoundException;
-use MBO\RemoteGit\Helper\LoggerHelper;
-use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Helper\ClientHelper;
+use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\Local\LocalClient;
+use Psr\Log\LoggerInterface;
 
 /**
  * Helper to create clients according to URL.
@@ -28,9 +28,9 @@ class ClientFactory
     private static $instance;
 
     /**
-     * Associates client type to metadata ('className','tokenType')
+     * Associates client type to metadata ('className','tokenType').
      *
-     * @var array
+     * @var array<string,array<string,string>>
      */
     private $types = [];
 
@@ -43,7 +43,7 @@ class ClientFactory
     }
 
     /**
-     * True if type is registred
+     * True if type is registred.
      *
      * @param string $type
      *
@@ -55,7 +55,7 @@ class ClientFactory
     }
 
     /**
-     * Get supported types
+     * Get supported types.
      *
      * @return string[]
      */
@@ -65,32 +65,24 @@ class ClientFactory
     }
 
     /**
-     * Create a client with options
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return ClientInterface
+     * Create a client with options.
      */
     public static function createClient(
         ClientOptions $options,
         LoggerInterface $logger = null
-    ) {
+    ): ClientInterface {
         return self::getInstance()->createGitClient($options, $logger);
     }
 
     /**
-     * Create a client with options
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return ClientInterface
+     * Create a client with options.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function createGitClient(
         ClientOptions $options,
         LoggerInterface $logger = null
-    ) {
+    ): ClientInterface {
         $logger = LoggerHelper::handleNull($logger);
 
         /* Detect client type from URL if not specified */
@@ -141,17 +133,16 @@ class ClientFactory
         /* create http client */
         $httpClient = new GuzzleHttpClient($guzzleOptions);
         /* create git client */
-        return new $clientClass($httpClient, $logger);
+        $result = new $clientClass($httpClient, $logger);
+        assert($result instanceof ClientInterface);
+
+        return $result;
     }
 
     /**
-     * Get client class according to URL content
-     *
-     * @param string $url
-     *
-     * @return string
+     * Get client class according to URL content.
      */
-    public static function detectClientClass($url)
+    public static function detectClientClass(string $url): string
     {
         $scheme = parse_url($url, PHP_URL_SCHEME);
         if (!in_array($scheme, ['http', 'https'])) {
@@ -159,9 +150,10 @@ class ClientFactory
         }
 
         $hostname = parse_url($url, PHP_URL_HOST);
+        assert('string' === gettype($hostname));
         if ('api.github.com' === $hostname || 'github.com' === $hostname) {
             return GithubClient::class;
-        } elseif (false !== strpos($hostname, 'gogs')) {
+        } elseif (str_contains($hostname, 'gogs')) {
             return GogsClient::class;
         }
         /*
@@ -176,7 +168,7 @@ class ClientFactory
      */
     public static function getInstance()
     {
-        if (is_null(self::$instance)) {
+        if (null == self::$instance) {
             self::$instance = new ClientFactory();
         }
 
@@ -184,13 +176,13 @@ class ClientFactory
     }
 
     /**
-     * Register client type
+     * Register client type.
      *
-     * @param string $className
+     * @param class-string $className
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function register($className)
+    private function register(string $className): void
     {
         $clientProperties = ClientHelper::getStaticProperties($className);
         $this->types[$clientProperties['typeName']] = $clientProperties;

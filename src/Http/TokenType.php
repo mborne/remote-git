@@ -3,7 +3,7 @@
 namespace MBO\RemoteGit\Http;
 
 /**
- * Provides types of implementation for token
+ * Provides types of implementation for token.
  */
 class TokenType
 {
@@ -12,12 +12,11 @@ class TokenType
     public const AUTHORIZATION_TOKEN = 'Authorization: token {token}';
 
     /**
-     * Create HTTP headers according to a tokenType
+     * Create HTTP headers according to a tokenType.
      *
-     * @param string $tokenType
-     * @param string $token
+     * @return array<string,string>
      */
-    public static function createHttpHeaders($tokenType, $token)
+    public static function createHttpHeaders(string $tokenType, ?string $token): array
     {
         if (empty($token)) {
             return [];

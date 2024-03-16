@@ -2,13 +2,13 @@
 
 namespace MBO\RemoteGit\Filter;
 
-use Psr\Log\LoggerInterface;
-use MBO\RemoteGit\ProjectInterface;
-use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\Helper\LoggerHelper;
+use MBO\RemoteGit\ProjectFilterInterface;
+use MBO\RemoteGit\ProjectInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Compose a list of filter to simplify command line integration
+ * Compose a list of filter to simplify command line integration.
  *
  * @author mborne
  */
@@ -25,8 +25,6 @@ class FilterCollection implements ProjectFilterInterface
     private $logger;
 
     /**
-     * @param LoggerInterface $logger
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(LoggerInterface $logger = null)
@@ -36,19 +34,16 @@ class FilterCollection implements ProjectFilterInterface
     }
 
     /**
-     * Add a filter to the collection
-     *
-     * @return void
+     * Add a filter to the collection.
      */
-    public function addFilter(ProjectFilterInterface $filter)
+    public function addFilter(ProjectFilterInterface $filter): self
     {
         $this->filters[] = $filter;
+
+        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         $parts = [];
         foreach ($this->filters as $filter) {
@@ -58,10 +53,7 @@ class FilterCollection implements ProjectFilterInterface
         return implode(PHP_EOL, $parts);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccepted(ProjectInterface $project)
+    public function isAccepted(ProjectInterface $project): bool
     {
         foreach ($this->filters as $filter) {
             if (!$filter->isAccepted($project)) {
@@ -84,11 +76,9 @@ class FilterCollection implements ProjectFilterInterface
     }
 
     /**
-     * Get filter name
-     *
-     * @return string
+     * Get filter name.
      */
-    private function getFilterName(ProjectFilterInterface $filter)
+    private function getFilterName(ProjectFilterInterface $filter): string
     {
         $clazz = get_class($filter);
         $parts = explode('\\', $clazz);

@@ -5,56 +5,38 @@ namespace MBO\RemoteGit\Local;
 use MBO\RemoteGit\ProjectInterface;
 
 /**
- * Project corresponding to a local git folder
+ * Project corresponding to a local git folder.
  */
 class LocalProject implements ProjectInterface
 {
     /**
-     * @var string[]
+     * @param array<string,mixed> $rawMetadata
      */
-    protected $rawMetadata;
-
-    public function __construct(array $rawMetadata)
+    public function __construct(private array $rawMetadata)
     {
-        $this->rawMetadata = $rawMetadata;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->rawMetadata['id'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->rawMetadata['full_name'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultBranch()
+    public function getDefaultBranch(): ?string
     {
         return $this->rawMetadata['head_branch'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHttpUrl()
+    public function getHttpUrl(): string
     {
         return $this->rawMetadata['full_path'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRawMetadata()
+    public function getRawMetadata(): array
     {
         return $this->rawMetadata;
     }

@@ -1,4 +1,4 @@
-PHP_CS_RULES=@Symfony
+PHP_CS_RULES=@Symfony,-global_namespace_import
 PHP_MD_RULES=cleancode,codesize,controversial,design,naming,unusedcode
 
 .PHONY: test
@@ -29,8 +29,8 @@ fix-style: vendor
 .PHONY: check-style
 check-style: vendor
 	@echo "-- Checking coding style using php-cs-fixer (run 'make fix-style' if it fails)"
-	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES) -v --dry-run --diff --using-cache=no
-	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES) -v --dry-run --diff --using-cache=no
+	vendor/bin/php-cs-fixer fix src --rules $(PHP_CS_RULES) -v --dry-run --diff
+	vendor/bin/php-cs-fixer fix tests --rules $(PHP_CS_RULES) -v --dry-run --diff
 
 vendor:
 	composer install

@@ -42,6 +42,11 @@ class GitlabProject implements ProjectInterface
         return $this->rawMetadata['http_url_to_repo'];
     }
 
+    public function isArchived(): bool
+    {
+        return $this->rawMetadata['archived'];
+    }
+
     public function getRawMetadata(): array
     {
         return $this->rawMetadata;

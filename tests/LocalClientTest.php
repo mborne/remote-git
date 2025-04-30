@@ -89,6 +89,17 @@ class LocalClientTest extends TestCase
     }
 
     /**
+     * Ensure that isArchived returns false.
+     */
+    public function testIsArchived(): void
+    {
+        $projects = $this->findAllProjects();
+        foreach ($projects as $project) {
+            $this->assertFalse($project->isArchived());
+        }
+    }
+
+    /**
      * Check that raw file content can be retreived from non bare repository.
      */
     public function testGetRawFileFromNonBareRepository(): void

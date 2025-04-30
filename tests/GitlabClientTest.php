@@ -62,14 +62,18 @@ class GitlabClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/sample-composer'];
+        /* test getDefaultBranch */
         $defaultBranch = $project->getDefaultBranch();
         $this->assertNotNull($defaultBranch);
+        /* test getRawFile */
         $composer = $client->getRawFile(
             $project,
             'composer.json',
             $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
+        /* test isArchived */
+        $this->assertFalse($project->isArchived());
     }
 
     public function testGitlabDotComOrgs(): void
@@ -117,10 +121,13 @@ class GitlabClientTest extends TestCase
             $projectsByName
         );
 
-        /* test getRawFile */
         $project = $projectsByName['mborne/sample-composer'];
+
+        /* test getDefaultBranch */
         $defaultBranch = $project->getDefaultBranch();
         $this->assertNotNull($defaultBranch);
+
+        /* test getRawFile */
         $composer = $client->getRawFile(
             $project,
             'composer.json',
@@ -130,5 +137,8 @@ class GitlabClientTest extends TestCase
 
         /* test getRawFile not found */
         $this->ensureThatRawFileNotFoundThrowsException($client, $project);
+
+        /* test isArchived */
+        $this->assertFalse($project->isArchived());
     }
 }

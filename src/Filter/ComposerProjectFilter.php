@@ -32,13 +32,11 @@ class ComposerProjectFilter implements ProjectFilterInterface
     /**
      * ProjectTypeFilter constructor.
      *
-     * @param LoggerInterface $logger
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
         GitClientInterface $gitClient,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         $this->gitClient = $gitClient;
         $this->logger = LoggerHelper::handleNull($logger);

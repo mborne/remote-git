@@ -35,7 +35,7 @@ class LocalClient implements ClientInterface
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct(string $rootPath, LoggerInterface $logger = null)
+    public function __construct(string $rootPath, ?LoggerInterface $logger = null)
     {
         $this->rootPath = $rootPath;
         $this->logger = LoggerHelper::handleNull($logger);
@@ -128,7 +128,7 @@ class LocalClient implements ClientInterface
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,
-        string $ref
+        string $ref,
     ): string {
         $cmd = sprintf(
             'git show %s:%s',

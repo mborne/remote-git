@@ -31,15 +31,14 @@ class RequiredFileFilter implements ProjectFilterInterface
     protected $logger;
 
     /**
-     * @param string          $filePath
-     * @param LoggerInterface $logger
+     * @param string $filePath
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
         GitClientInterface $gitClient,
         $filePath,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         $this->gitClient = $gitClient;
         $this->filePath = $filePath;

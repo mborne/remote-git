@@ -27,7 +27,7 @@ class FilterCollection implements ProjectFilterInterface
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(?LoggerInterface $logger = null)
     {
         $this->filters = [];
         $this->logger = LoggerHelper::handleNull($logger);

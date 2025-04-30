@@ -7,7 +7,7 @@
 /output/
 
 # dev and temp files
-/.phpunit.result.cache
+/.phpunit.cache
 /.php_cs.cache
 /.vscode
 /.php-cs-fixer.cache

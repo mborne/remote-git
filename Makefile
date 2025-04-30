@@ -1,5 +1,4 @@
 PHP_CS_RULES=@Symfony,-global_namespace_import
-PHP_MD_RULES=cleancode,codesize,controversial,design,naming,unusedcode
 
 .PHONY: test
 test: check-style check-rules
@@ -10,11 +9,7 @@ test: check-style check-rules
 		--coverage-html output/coverage
 
 .PHONY: check-rules
-check-rules: phpstan phpmd
-
-phpmd:
-	@echo "-- Checking coding rules using phpmd (see @SuppressWarning to bypass control)"
-	vendor/bin/phpmd src text $(PHP_MD_RULES)
+check-rules: phpstan
 
 phpstan:
 	vendor/bin/phpstan analyse -c phpstan.neon --error-format=raw

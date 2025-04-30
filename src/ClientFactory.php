@@ -69,7 +69,7 @@ class ClientFactory
      */
     public static function createClient(
         ClientOptions $options,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ): ClientInterface {
         return self::getInstance()->createGitClient($options, $logger);
     }
@@ -81,7 +81,7 @@ class ClientFactory
      */
     public function createGitClient(
         ClientOptions $options,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ): ClientInterface {
         $logger = LoggerHelper::handleNull($logger);
 
@@ -156,6 +156,7 @@ class ClientFactory
         } elseif (str_contains($hostname, 'gogs')) {
             return GogsClient::class;
         }
+
         /*
          * fallback to gitlab to ensure comptability with original version
          * of satis-gitlab

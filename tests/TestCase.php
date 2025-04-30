@@ -49,7 +49,7 @@ class TestCase extends BaseTestCase
      */
     protected function ensureThatRawFileNotFoundThrowsException(
         ClientInterface $client,
-        ProjectInterface $project
+        ProjectInterface $project,
     ): void {
         $defaultBranch = $project->getDefaultBranch();
         $this->assertNotNull($defaultBranch);

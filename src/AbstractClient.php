@@ -25,13 +25,11 @@ abstract class AbstractClient implements ClientInterface
     /**
      * Constructor with an httpClient ready to performs API requests.
      *
-     * @param LoggerInterface $logger
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     protected function __construct(
         GuzzleHttpClient $httpClient,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         $this->httpClient = $httpClient;
         $this->logger = LoggerHelper::handleNull($logger);
@@ -63,7 +61,7 @@ abstract class AbstractClient implements ClientInterface
      */
     protected function getProjects(
         string $path,
-        array $params = []
+        array $params = [],
     ): array {
         $uri = $path.'?'.$this->implodeParams($params);
         $this->getLogger()->debug('GET '.$uri);

@@ -14,7 +14,7 @@ class LoggerHelper
      * Converts null to NullLogger.
      */
     public static function handleNull(
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ): LoggerInterface {
         return is_null($logger) ? new NullLogger() : $logger;
     }

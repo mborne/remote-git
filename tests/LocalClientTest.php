@@ -100,6 +100,17 @@ class LocalClientTest extends TestCase
     }
 
     /**
+     * Ensure that isArchived returns public.
+     */
+    public function testGetVisibility(): void
+    {
+        $projects = $this->findAllProjects();
+        foreach ($projects as $project) {
+            $this->assertNull($project->getVisibility());
+        }
+    }
+
+    /**
      * Check that raw file content can be retreived from non bare repository.
      */
     public function testGetRawFileFromNonBareRepository(): void

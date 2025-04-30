@@ -32,16 +32,6 @@ class GithubClient extends AbstractClient
     public const MAX_PAGES = 10000;
 
     /**
-     * @var GuzzleHttpClient
-     */
-    protected $httpClient;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * Constructor with an http client and a logger.
      *
      * @param $httpClient http client

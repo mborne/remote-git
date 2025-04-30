@@ -24,8 +24,14 @@
     "require-dev": {
         "phpunit/phpunit": "^10",
         "friendsofphp/php-cs-fixer": "3.75.*",
-        "pdepend/pdepend": "2.16.*",
         "php-coveralls/php-coveralls": "^2.5",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^2.1",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-phpunit": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }

@@ -21,10 +21,8 @@ class FilterCollectionTest extends TestCase
 
     /**
      * Create a fake ProjectFilterInterface returning true or false.
-     *
-     * @return ProjectFilterInterface
      */
-    private function createMockFilter(bool $accepted, string $description = 'mock')
+    private function createMockFilter(bool $accepted, string $description = 'mock'): ProjectFilterInterface
     {
         $filter = $this->getMockBuilder(ProjectFilterInterface::class)
             ->getMock()
@@ -37,6 +35,7 @@ class FilterCollectionTest extends TestCase
             ->method('getDescription')
             ->willReturn($description)
         ;
+        assert($filter instanceof ProjectFilterInterface);
 
         return $filter;
     }

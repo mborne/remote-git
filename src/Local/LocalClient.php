@@ -32,8 +32,6 @@ class LocalClient implements ClientInterface
 
     /**
      * Create a LocalClient for a folder containing a hierarchy of git repositories.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(string $rootPath, ?LoggerInterface $logger = null)
     {
@@ -94,8 +92,6 @@ class LocalClient implements ClientInterface
      *
      * @param string   $parentPath     absolute path to a given folder
      * @param string[] $projectFolders
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     protected function findProjectFolders(string $parentPath, array &$projectFolders): void
     {

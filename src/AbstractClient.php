@@ -24,8 +24,6 @@ abstract class AbstractClient implements ClientInterface
 
     /**
      * Constructor with an httpClient ready to performs API requests.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     protected function __construct(
         GuzzleHttpClient $httpClient,

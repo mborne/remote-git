@@ -11,10 +11,8 @@ class TestCase extends BaseTestCase
 {
     /**
      * Create a fake project with a given name.
-     *
-     * @return ProjectInterface
      */
-    protected function createMockProject(string $projectName)
+    protected function createMockProject(string $projectName): ProjectInterface
     {
         $project = $this->getMockBuilder(ProjectInterface::class)
             ->getMock()
@@ -27,6 +25,7 @@ class TestCase extends BaseTestCase
             ->method('getDefaultBranch')
             ->willReturn('master')
         ;
+        assert($project instanceof ProjectInterface);
 
         return $project;
     }

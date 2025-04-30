@@ -52,7 +52,7 @@ class GogsClientTest extends TestCase
         $findOptions = new FindOptions();
         $projects = $client->find($findOptions);
 
-        $this->assertTrue(is_array($projects));
+        $this->assertIsArray($projects);
         $this->assertNotEmpty($projects);
 
         $projectsByName = [];
@@ -97,7 +97,7 @@ class GogsClientTest extends TestCase
         $findOptions->setOrganizations(['docker']);
         $projects = $client->find($findOptions);
 
-        $this->assertTrue(is_array($projects));
+        $this->assertIsArray($projects);
         $this->assertNotEmpty($projects);
 
         $projectsByName = [];

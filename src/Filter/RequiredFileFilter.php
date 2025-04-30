@@ -32,8 +32,6 @@ class RequiredFileFilter implements ProjectFilterInterface
 
     /**
      * @param string $filePath
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
         GitClientInterface $gitClient,

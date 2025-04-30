@@ -61,7 +61,6 @@ class LocalClientTest extends TestCase
     {
         /* create client */
         $client = $this->createLocalClient();
-        $this->assertInstanceOf(LocalClient::class, $client);
 
         /* search projects */
         $options = new FindOptions();

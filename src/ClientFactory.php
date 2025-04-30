@@ -76,8 +76,6 @@ class ClientFactory
 
     /**
      * Create a client with options.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function createGitClient(
         ClientOptions $options,
@@ -180,8 +178,6 @@ class ClientFactory
      * Register client type.
      *
      * @param class-string $className
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     private function register(string $className): void
     {

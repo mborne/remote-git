@@ -44,7 +44,6 @@ class GitlabClientTest extends TestCase
     {
         /* create client */
         $client = $this->createGitlabClient();
-        $this->assertInstanceOf(GitlabClient::class, $client);
 
         /* search projects */
         $findOptions = new FindOptions();

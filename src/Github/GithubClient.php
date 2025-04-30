@@ -45,8 +45,6 @@ class GithubClient extends AbstractClient
      * Constructor with an http client and a logger.
      *
      * @param $httpClient http client
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
         GuzzleHttpClient $httpClient,

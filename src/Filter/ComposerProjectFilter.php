@@ -31,8 +31,6 @@ class ComposerProjectFilter implements ProjectFilterInterface
 
     /**
      * ProjectTypeFilter constructor.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
         GitClientInterface $gitClient,

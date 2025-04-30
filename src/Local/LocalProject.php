@@ -3,6 +3,7 @@
 namespace MBO\RemoteGit\Local;
 
 use MBO\RemoteGit\ProjectInterface;
+use MBO\RemoteGit\ProjectVisibility;
 
 /**
  * Project corresponding to a local git folder.
@@ -39,6 +40,11 @@ class LocalProject implements ProjectInterface
     public function isArchived(): bool
     {
         return false; // Always returns false for LocalClient
+    }
+
+    public function getVisibility(): ?ProjectVisibility
+    {
+        return null; // Always returns null for LocalClient
     }
 
     public function getRawMetadata(): array

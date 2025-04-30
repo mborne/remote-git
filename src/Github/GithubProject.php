@@ -3,6 +3,7 @@
 namespace MBO\RemoteGit\Github;
 
 use MBO\RemoteGit\ProjectInterface;
+use MBO\RemoteGit\ProjectVisibility;
 
 /**
  * Project implementation for github.
@@ -33,14 +34,19 @@ class GithubProject implements ProjectInterface
         return $this->rawMetadata['default_branch'];
     }
 
+    public function getHttpUrl(): string
+    {
+        return $this->rawMetadata['clone_url'];
+    }
+
     public function isArchived(): bool
     {
         return $this->rawMetadata['archived'];
     }
 
-    public function getHttpUrl(): string
+    public function getVisibility(): ?ProjectVisibility
     {
-        return $this->rawMetadata['clone_url'];
+        return $this->rawMetadata['private'] ? ProjectVisibility::PRIVATE : ProjectVisibility::PUBLIC;
     }
 
     public function getRawMetadata(): array

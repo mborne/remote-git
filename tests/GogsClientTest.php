@@ -7,6 +7,7 @@ use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Gogs\GogsProject;
+use MBO\RemoteGit\ProjectVisibility;
 
 /**
  * Test GogsClient with https://codes.quadtreeworld.net which is a gitea instance.
@@ -125,5 +126,8 @@ class GogsClientTest extends TestCase
 
         /* test isArchived */
         $this->assertFalse($project->isArchived());
+
+        /* test getVisibility */
+        $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
     }
 }

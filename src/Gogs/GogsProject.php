@@ -3,6 +3,7 @@
 namespace MBO\RemoteGit\Gogs;
 
 use MBO\RemoteGit\ProjectInterface;
+use MBO\RemoteGit\ProjectVisibility;
 
 /**
  * Project implementation for github.
@@ -41,6 +42,17 @@ class GogsProject implements ProjectInterface
     public function isArchived(): bool
     {
         return $this->rawMetadata['archived'];
+    }
+
+    public function getVisibility(): ?ProjectVisibility
+    {
+        if ($this->rawMetadata['private']) {
+            return ProjectVisibility::PRIVATE;
+        } elseif ($this->rawMetadata['internal']) {
+            return ProjectVisibility::INTERNAL;
+        } else {
+            return ProjectVisibility::PUBLIC;
+        }
     }
 
     public function getRawMetadata(): array

@@ -37,6 +37,13 @@ interface ProjectInterface
     public function isArchived(): bool;
 
     /**
+     * Get project visibility.
+     *
+     * @warning This method will always return null for LocalClient.
+     */
+    public function getVisibility(): ?ProjectVisibility;
+
+    /**
      * Get hosting service specific properties.
      *
      * @return array<string,mixed>

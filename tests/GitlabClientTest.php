@@ -7,6 +7,7 @@ use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gitlab\GitlabProject;
+use MBO\RemoteGit\ProjectVisibility;
 use Psr\Log\NullLogger;
 
 class GitlabClientTest extends TestCase
@@ -62,9 +63,11 @@ class GitlabClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/sample-composer'];
+
         /* test getDefaultBranch */
         $defaultBranch = $project->getDefaultBranch();
         $this->assertNotNull($defaultBranch);
+
         /* test getRawFile */
         $composer = $client->getRawFile(
             $project,
@@ -72,8 +75,12 @@ class GitlabClientTest extends TestCase
             $defaultBranch
         );
         $this->assertStringContainsString('mborne@users.noreply.github.com', $composer);
+
         /* test isArchived */
         $this->assertFalse($project->isArchived());
+
+        /* test getVisibility */
+        $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
     }
 
     public function testGitlabDotComOrgs(): void
@@ -140,5 +147,8 @@ class GitlabClientTest extends TestCase
 
         /* test isArchived */
         $this->assertFalse($project->isArchived());
+
+        /* test getVisibility */
+        $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
     }
 }

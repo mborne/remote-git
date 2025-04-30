@@ -7,6 +7,7 @@ use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Github\GithubProject;
+use MBO\RemoteGit\ProjectVisibility;
 use Psr\Log\NullLogger;
 
 class GithubClientTest extends TestCase
@@ -95,6 +96,9 @@ class GithubClientTest extends TestCase
 
         /* test isArchived */
         $this->assertFalse($project->isArchived());
+
+        /* test getVisibility */
+        $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
     }
 
     /**

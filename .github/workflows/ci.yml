@@ -50,7 +50,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-        QTW_TOKEN: ${{ secrets.QTW_TOKEN }}
 
     - name: Upload coverage results to coveralls.io
       if: github.ref == 'refs/heads/master' && matrix.php-version == '8.1'

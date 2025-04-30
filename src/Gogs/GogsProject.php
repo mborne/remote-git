@@ -38,6 +38,11 @@ class GogsProject implements ProjectInterface
         return $this->rawMetadata['clone_url'];
     }
 
+    public function isArchived(): bool
+    {
+        return $this->rawMetadata['archived'];
+    }
+
     public function getRawMetadata(): array
     {
         return $this->rawMetadata;

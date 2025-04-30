@@ -33,6 +33,11 @@ class GithubProject implements ProjectInterface
         return $this->rawMetadata['default_branch'];
     }
 
+    public function isArchived(): bool
+    {
+        return $this->rawMetadata['archived'];
+    }
+
     public function getHttpUrl(): string
     {
         return $this->rawMetadata['clone_url'];

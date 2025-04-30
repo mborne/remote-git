@@ -36,6 +36,11 @@ class LocalProject implements ProjectInterface
         return $this->rawMetadata['full_path'];
     }
 
+    public function isArchived(): bool
+    {
+        return false; // Always returns false for LocalClient
+    }
+
     public function getRawMetadata(): array
     {
         return $this->rawMetadata;

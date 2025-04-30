@@ -30,6 +30,13 @@ interface ProjectInterface
     public function getHttpUrl(): string;
 
     /**
+     * True if the project is archived.
+     *
+     * @warning This method will always return false for LocalClient.
+     */
+    public function isArchived(): bool;
+
+    /**
      * Get hosting service specific properties.
      *
      * @return array<string,mixed>

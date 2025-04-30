@@ -70,7 +70,11 @@ class GithubClientTest extends TestCase
 
         $project = $projectsByName['mborne/satis-gitlab'];
         $defaultBranch = $project->getDefaultBranch();
+
+        /* test getDefaultBranch */
         $this->assertNotNull($defaultBranch);
+
+        /* test getRawFile */
         $composer = $client->getRawFile(
             $project,
             'composer.json',
@@ -88,6 +92,9 @@ class GithubClientTest extends TestCase
 
         /* test getRawFile not found */
         $this->ensureThatRawFileNotFoundThrowsException($client, $project);
+
+        /* test isArchived */
+        $this->assertFalse($project->isArchived());
     }
 
     /**

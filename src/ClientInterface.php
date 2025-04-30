@@ -27,6 +27,6 @@ interface ClientInterface
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,
-        string $ref
+        string $ref,
     ): string;
 }

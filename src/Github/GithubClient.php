@@ -32,25 +32,13 @@ class GithubClient extends AbstractClient
     public const MAX_PAGES = 10000;
 
     /**
-     * @var GuzzleHttpClient
-     */
-    protected $httpClient;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * Constructor with an http client and a logger.
      *
      * @param $httpClient http client
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         parent::__construct($httpClient, $logger);
     }
@@ -92,7 +80,7 @@ class GithubClient extends AbstractClient
      */
     protected function findByUser(
         string $user,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ) {
         /*
          * Use /user/repos?affiliation=owner for special user _me_
@@ -120,7 +108,7 @@ class GithubClient extends AbstractClient
      */
     protected function findByOrg(
         string $org,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ) {
         return $this->fetchAllPages(
             '/orgs/'.$org.'/repos',
@@ -139,7 +127,7 @@ class GithubClient extends AbstractClient
     private function fetchAllPages(
         string $path,
         ProjectFilterInterface $projectFilter,
-        array $extraParams = []
+        array $extraParams = [],
     ): array {
         $result = [];
         for ($page = 1; $page <= self::MAX_PAGES; ++$page) {
@@ -160,7 +148,7 @@ class GithubClient extends AbstractClient
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
-        $ref
+        $ref,
     ): string {
         $metadata = $project->getRawMetadata();
         $uri = str_replace(

@@ -16,10 +16,10 @@ class ComposerProjectFilterTest extends TestCase
      */
     public function testGetDescription(): void
     {
+        /** @var ClientInterface */
         $gitClient = $this->getMockBuilder(ClientInterface::class)
             ->getMock()
         ;
-        /** @var ClientInterface $gitClient */
         $filter = new ComposerProjectFilter($gitClient);
         $this->assertEquals(
             'composer.json should exists',

@@ -32,10 +32,8 @@ class LocalClient implements ClientInterface
 
     /**
      * Create a LocalClient for a folder containing a hierarchy of git repositories.
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct(string $rootPath, LoggerInterface $logger = null)
+    public function __construct(string $rootPath, ?LoggerInterface $logger = null)
     {
         $this->rootPath = $rootPath;
         $this->logger = LoggerHelper::handleNull($logger);
@@ -94,8 +92,6 @@ class LocalClient implements ClientInterface
      *
      * @param string   $parentPath     absolute path to a given folder
      * @param string[] $projectFolders
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     protected function findProjectFolders(string $parentPath, array &$projectFolders): void
     {
@@ -128,7 +124,7 @@ class LocalClient implements ClientInterface
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,
-        string $ref
+        string $ref,
     ): string {
         $cmd = sprintf(
             'git show %s:%s',

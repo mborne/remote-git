@@ -34,7 +34,7 @@ class GitlabClient extends AbstractClient
      */
     public function __construct(
         GuzzleHttpClient $httpClient,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         parent::__construct($httpClient, $logger);
     }
@@ -75,7 +75,7 @@ class GitlabClient extends AbstractClient
      */
     protected function findByUser(
         string $user,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ): array {
         return $this->fetchAllPages(
             '/api/v4/users/'.urlencode($user).'/projects',
@@ -91,7 +91,7 @@ class GitlabClient extends AbstractClient
      */
     protected function findByGroup(
         string $group,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ): array {
         return $this->fetchAllPages(
             '/api/v4/groups/'.urlencode($group).'/projects',
@@ -131,7 +131,7 @@ class GitlabClient extends AbstractClient
     private function fetchAllPages(
         string $path,
         array $params,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ) {
         $result = [];
 
@@ -152,7 +152,7 @@ class GitlabClient extends AbstractClient
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,
-        string $ref
+        string $ref,
     ): string {
         // ref : https://docs.gitlab.com/ee/api/repository_files.html#get-raw-file-from-repository
         $uri = '/api/v4/projects/'.$project->getId().'/repository/files/'.urlencode($filePath).'/raw';

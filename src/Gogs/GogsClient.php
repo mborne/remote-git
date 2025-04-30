@@ -25,7 +25,7 @@ class GogsClient extends AbstractClient
 
     public function __construct(
         GuzzleHttpClient $httpClient,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         parent::__construct($httpClient, $logger);
     }
@@ -66,7 +66,7 @@ class GogsClient extends AbstractClient
      * @return ProjectInterface[]
      */
     protected function findByCurrentUser(
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ): array {
         return $this->filter(
             $this->getProjects(
@@ -86,7 +86,7 @@ class GogsClient extends AbstractClient
      */
     protected function findByUser(
         string $user,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ): array {
         return $this->filter(
             $this->getProjects(
@@ -106,7 +106,7 @@ class GogsClient extends AbstractClient
      */
     protected function findByOrg(
         string $org,
-        ProjectFilterInterface $projectFilter
+        ProjectFilterInterface $projectFilter,
     ): array {
         return $this->filter(
             $this->getProjects(
@@ -122,7 +122,7 @@ class GogsClient extends AbstractClient
     public function getRawFile(
         ProjectInterface $project,
         $filePath,
-        $ref
+        $ref,
     ): string {
         $uri = '/api/v1/repos/'.$project->getName().'/raw/';
         $uri .= $project->getDefaultBranch();

@@ -30,6 +30,11 @@ class GitlabProject implements ProjectInterface
         return $this->rawMetadata['path_with_namespace'];
     }
 
+    public function getDescription(): string
+    {
+        return $this->rawMetadata['description'];
+    }
+
     public function getDefaultBranch(): ?string
     {
         if (!isset($this->rawMetadata['default_branch'])) {

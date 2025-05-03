@@ -20,6 +20,13 @@ interface ProjectInterface
     public function getName(): string;
 
     /**
+     * Get project description from API.
+     *
+     * @warning This method will always return empty string for LocalClient.
+     */
+    public function getDescription(): string;
+
+    /**
      * Get default branch.
      */
     public function getDefaultBranch(): ?string;

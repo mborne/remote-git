@@ -29,6 +29,11 @@ class GogsProject implements ProjectInterface
         return $this->rawMetadata['full_name'];
     }
 
+    public function getDescription(): string
+    {
+        return $this->rawMetadata['description'];
+    }
+
     public function getDefaultBranch(): ?string
     {
         return $this->rawMetadata['default_branch'];

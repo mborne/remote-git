@@ -89,6 +89,17 @@ class LocalClientTest extends TestCase
     }
 
     /**
+     * Ensure that getDescription returns null.
+     */
+    public function getDescription(): void
+    {
+        $projects = $this->findAllProjects();
+        foreach ($projects as $project) {
+            $this->assertEmpty($project->getDescription());
+        }
+    }
+
+    /**
      * Ensure that isArchived returns false.
      */
     public function testIsArchived(): void

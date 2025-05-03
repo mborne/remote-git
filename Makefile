@@ -2,7 +2,7 @@ PHP_CS_RULES=@Symfony,-global_namespace_import
 
 .PHONY: test
 test: check-style check-rules
-	@echo "-- Running phpunit... See output/index.html "
+	@echo "-- Running phpunit... See output/coverage/index.html "
 	XDEBUG_MODE=coverage vendor/bin/phpunit -c phpunit.xml.dist \
 		--log-junit output/junit-report.xml \
 		--coverage-clover output/clover.xml \

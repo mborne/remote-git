@@ -64,6 +64,12 @@ class GitlabClientTest extends TestCase
 
         $project = $projectsByName['mborne/sample-composer'];
 
+        /* test getDescription */
+        $this->assertStringContainsString(
+            'This repository provides a project to test',
+            $project->getDescription()
+        );
+
         /* test getDefaultBranch */
         $defaultBranch = $project->getDefaultBranch();
         $this->assertNotNull($defaultBranch);

@@ -12,4 +12,9 @@ enum ProjectVisibility: string
     case PUBLIC = 'public';
     case PRIVATE = 'private';
     case INTERNAL = 'internal';
+
+    public function toString(): string
+    {
+        return $this->value;
+    }
 }

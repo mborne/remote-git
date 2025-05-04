@@ -45,6 +45,7 @@ class ClientFactoryTest extends TestCase
             GithubClient::class,
             ClientFactory::detectClientClass('https://github.com')
         );
+
         $this->assertEquals(
             GogsClient::class,
             ClientFactory::detectClientClass('https://gogs.localhost')
@@ -52,6 +53,15 @@ class ClientFactoryTest extends TestCase
         $this->assertEquals(
             GogsClient::class,
             ClientFactory::detectClientClass('http://gogs.forge.fr')
+        );
+
+        $this->assertEquals(
+            GogsClient::class,
+            ClientFactory::detectClientClass('https://gitea.com')
+        );
+        $this->assertEquals(
+            GogsClient::class,
+            ClientFactory::detectClientClass('https://gitea.example.com')
         );
 
         $this->assertEquals(

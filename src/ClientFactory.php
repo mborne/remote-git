@@ -153,6 +153,8 @@ class ClientFactory
             return GithubClient::class;
         } elseif (str_contains($hostname, 'gogs')) {
             return GogsClient::class;
+        } elseif (str_contains($hostname, 'gitea')) {
+            return GogsClient::class;
         }
 
         /*

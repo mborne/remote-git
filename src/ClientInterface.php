@@ -11,7 +11,7 @@ namespace MBO\RemoteGit;
 interface ClientInterface
 {
     /**
-     * Find projects throw API.
+     * Find projects using API calls.
      *
      * @return ProjectInterface[]
      */

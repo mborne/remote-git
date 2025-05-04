@@ -51,7 +51,7 @@ class ComposerProjectFilter implements ProjectFilterInterface
     }
 
     /**
-     * Set filter according to project type. 
+     * Set filter according to project type.
      */
     public function setProjectType(string $projectType): self
     {

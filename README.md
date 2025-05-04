@@ -119,6 +119,8 @@ $projects = $client->find($options);
 export GITHUB_TOKEN=AnyGithubToken
 # see https://gitlab.com/-/profile/personal_access_tokens
 export GITLAB_TOKEN=AnyGitlabToken
+# see https://gitea.com/user/settings/applications
+export GITEA_TOKEN=AnyGiteaToken
 ```
 
 * Install dependencies and run tests :

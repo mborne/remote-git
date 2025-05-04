@@ -10,23 +10,26 @@ use MBO\RemoteGit\Gogs\GogsProject;
 use MBO\RemoteGit\ProjectVisibility;
 
 /**
- * Test GogsClient with https://codes.quadtreeworld.net which is a gitea instance.
+ * Test GogsClient with gitea.com using the following public projects :
+ *
+ * - https://gitea.com/mborne/sample-composer
+ * - https://gitea.com/docker/metadata-action
  */
-class GogsClientTest extends TestCase
+class GiteaClientTest extends TestCase
 {
     /**
-     * Create gogs client for codes.quadtreeworld.net using QTW_TOKEN.
+     * Create gogs client for gitea.com using GITEA_TOKEN.
      */
     protected function createGitClient(): GogsClient
     {
-        $gitlabToken = getenv('QTW_TOKEN');
+        $gitlabToken = getenv('GITEA_TOKEN');
         if (empty($gitlabToken)) {
-            $this->markTestSkipped('Missing QTW_TOKEN for codes.quadtreeworld.net');
+            $this->markTestSkipped('Missing GITEA_TOKEN for gitea.com');
         }
 
         $clientOptions = new ClientOptions();
         $clientOptions
-            ->setUrl('https://codes.quadtreeworld.net')
+            ->setUrl('https://gitea.com')
             ->setToken($gitlabToken)
             ->setType(GogsClient::TYPE)
         ;
@@ -64,19 +67,25 @@ class GogsClientTest extends TestCase
         }
 
         $this->assertArrayHasKey(
-            'docker/docker-php-sury',
+            'mborne/sample-composer',
             $projectsByName
         );
 
+        /* test getDefaultBranch */
+        $defaultBranch = $project->getDefaultBranch();
+        $this->assertNotNull($defaultBranch);
+
+        /* test isArchived */
+        $this->assertFalse($project->isArchived());
+
+        /* test getVisibility */
+        $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
+
         /* test getRawFile */
-        $project = $projectsByName['docker/docker-php-sury'];
+        $project = $projectsByName['mborne/sample-composer'];
         $this->assertStringContainsString(
-            'FROM ',
-            $client->getRawFile($project, 'Dockerfile', 'master')
-        );
-        $this->assertStringContainsString(
-            'ServerTokens Prod',
-            $client->getRawFile($project, 'conf/apache-security.conf', 'master')
+            '# mborne/sample-composer',
+            $client->getRawFile($project, 'README.md', 'master')
         );
 
         /* test getRawFile not found */
@@ -108,26 +117,17 @@ class GogsClientTest extends TestCase
             $projectsByName[$project->getName()] = $project;
         }
 
+        /* retrieve sample project */
         $this->assertArrayHasKey(
-            'docker/docker-php-sury',
+            'docker/metadata-action',
             $projectsByName
         );
+        $project = $projectsByName['docker/metadata-action'];
 
-        /* test getRawFile */
-        $project = $projectsByName['docker/docker-php-sury'];
+        /* test getDescription */
         $this->assertStringContainsString(
-            'FROM ',
-            $client->getRawFile($project, 'Dockerfile', 'master')
+            'Mirror of https://github.com/docker/metadata-action',
+            $project->getDescription()
         );
-        $this->assertStringContainsString(
-            'ServerTokens Prod',
-            $client->getRawFile($project, 'conf/apache-security.conf', 'master')
-        );
-
-        /* test isArchived */
-        $this->assertFalse($project->isArchived());
-
-        /* test getVisibility */
-        $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
     }
 }

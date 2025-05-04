@@ -70,9 +70,15 @@ class GithubClientTest extends TestCase
         );
 
         $project = $projectsByName['mborne/satis-gitlab'];
-        $defaultBranch = $project->getDefaultBranch();
+
+        /* test getDescription */
+        $this->assertStringContainsString(
+            'PHP composer/satis extended with the hability to generate configuration',
+            $project->getDescription()
+        );
 
         /* test getDefaultBranch */
+        $defaultBranch = $project->getDefaultBranch();
         $this->assertNotNull($defaultBranch);
 
         /* test getRawFile */

@@ -27,6 +27,11 @@ class LocalProject implements ProjectInterface
         return $this->rawMetadata['full_name'];
     }
 
+    public function getDescription(): string
+    {
+        return '';
+    }
+
     public function getDefaultBranch(): ?string
     {
         return $this->rawMetadata['head_branch'];

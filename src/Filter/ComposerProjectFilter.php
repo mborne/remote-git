@@ -25,7 +25,9 @@ class ComposerProjectFilter implements ProjectFilterInterface
     protected LoggerInterface $logger;
 
     /**
-     * Filter according to project type.
+     * Filter according to composer project type ("library", "project",...).
+     *
+     * @see https://getcomposer.org/doc/04-schema.md#type
      */
     protected string $projectType;
 
@@ -49,7 +51,7 @@ class ComposerProjectFilter implements ProjectFilterInterface
     }
 
     /**
-     * Set filter according to project type.
+     * Set filter according to project type. 
      */
     public function setProjectType(string $projectType): self
     {

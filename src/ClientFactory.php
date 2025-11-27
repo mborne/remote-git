@@ -46,10 +46,8 @@ class ClientFactory
      * True if type is registred.
      *
      * @param string $type
-     *
-     * @return bool
      */
-    public function hasType($type)
+    public function hasType($type): bool
     {
         return isset($this->types[$type]);
     }
@@ -59,7 +57,7 @@ class ClientFactory
      *
      * @return string[]
      */
-    public function getTypes()
+    public function getTypes(): array
     {
         return array_keys($this->types);
     }

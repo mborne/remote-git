@@ -14,9 +14,9 @@ jobs:
 
     strategy:
       matrix:
-        # 8.4 is not yet supported by PHP-CS-Fixer
+        # 8.5 is not yet supported by PHP-CS-Fixer
         # https://github.com/PHP-CS-Fixer/PHP-CS-Fixer?tab=readme-ov-file#supported-php-versions
-        php-version: [8.1,8.2,8.3]
+        php-version: [8.3,8.4]
 
     runs-on: ubuntu-latest
 

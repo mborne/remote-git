@@ -46,8 +46,6 @@ class ClientFactory
      * True if type is registred.
      *
      * @param string $type
-     *
-     * @return bool
      */
     public function hasType($type): bool
     {

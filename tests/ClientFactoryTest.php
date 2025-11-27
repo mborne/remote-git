@@ -20,6 +20,14 @@ class ClientFactoryTest extends TestCase
         $this->assertCount(4, $types);
     }
 
+    public function testHasType(): void
+    {
+        $clientFactory = ClientFactory::getInstance();
+
+        $this->assertTrue($clientFactory->hasType("github"));
+        $this->assertFalse($clientFactory->hasType("type-not-found"));
+    }
+
     public function testInvalidType(): void
     {
         $clientFactory = ClientFactory::getInstance();

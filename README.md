@@ -27,7 +27,7 @@ This module is also used by [mborne/git-manager](https://github.com/mborne/git-m
 
 ## Requirements
 
-* [PHP >= 8.1](https://www.php.net/supported-versions.php)
+* [PHP >= 8.3](https://www.php.net/supported-versions.php)
 
 ## Supported GIT hosting services
 

@@ -51,7 +51,7 @@ class GitlabProject implements ProjectInterface
 
     public function isArchived(): bool
     {
-        return $this->rawMetadata['archived'];
+        return $this->rawMetadata['archived'] ?? false;
     }
 
     public function getVisibility(): ?ProjectVisibility

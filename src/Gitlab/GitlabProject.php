@@ -56,7 +56,8 @@ class GitlabProject implements ProjectInterface
 
     public function getVisibility(): ?ProjectVisibility
     {
-        switch ($this->rawMetadata['visibility']) {
+        $visibility = $this->rawMetadata['visibility'] ?? 'public';
+        switch ($visibility) {
             case 'public':
                 return ProjectVisibility::PUBLIC;
             case 'private':

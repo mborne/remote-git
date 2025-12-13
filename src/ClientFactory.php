@@ -4,13 +4,13 @@ namespace MBO\RemoteGit;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
 use MBO\RemoteGit\Exception\ClientNotFoundException;
+use MBO\RemoteGit\Exception\ProtocolNotSupportedException;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Helper\ClientHelper;
 use MBO\RemoteGit\Helper\LoggerHelper;
 use MBO\RemoteGit\Http\TokenType;
-use MBO\RemoteGit\Local\LocalClient;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -39,7 +39,6 @@ class ClientFactory
         $this->register(GitlabClient::class);
         $this->register(GithubClient::class);
         $this->register(GogsClient::class);
-        $this->register(LocalClient::class);
     }
 
     /**
@@ -97,9 +96,9 @@ class ClientFactory
             throw new ClientNotFoundException($options->getType(), $this->getTypes());
         }
 
-        /* Handle LocalClient */
-        if (LocalClient::TYPE === $options->getType()) {
-            return new LocalClient($options->getUrl(), $logger);
+        /* handle removed LocalClient */
+        if ('local' === $options->getType()) {
+            throw new ClientNotFoundException($options->getType(), $this->getTypes());
         }
 
         /* Force github API URL */
@@ -142,7 +141,7 @@ class ClientFactory
     {
         $scheme = parse_url($url, PHP_URL_SCHEME);
         if (!in_array($scheme, ['http', 'https'])) {
-            return LocalClient::class;
+            throw new ProtocolNotSupportedException($scheme ?? 'file', $url);
         }
 
         $hostname = parse_url($url, PHP_URL_HOST);

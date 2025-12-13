@@ -21,8 +21,6 @@ interface ProjectInterface
 
     /**
      * Get project description from API.
-     *
-     * @warning This method will always return empty string for LocalClient.
      */
     public function getDescription(): string;
 
@@ -38,15 +36,11 @@ interface ProjectInterface
 
     /**
      * True if the project is archived.
-     *
-     * @warning This method will always return false for LocalClient.
      */
     public function isArchived(): bool;
 
     /**
      * Get project visibility.
-     *
-     * @warning This method will always return null for LocalClient.
      */
     public function getVisibility(): ?ProjectVisibility;
 

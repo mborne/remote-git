@@ -69,7 +69,7 @@ class GogsClient extends AbstractClient
         ProjectFilterInterface $projectFilter,
     ): array {
         return $this->filter(
-            $this->getProjects(
+            $this->fetchProjects(
                 '/api/v1/user/repos',
                 [
                     'limit' => self::DEFAULT_PER_PAGE,
@@ -89,7 +89,7 @@ class GogsClient extends AbstractClient
         ProjectFilterInterface $projectFilter,
     ): array {
         return $this->filter(
-            $this->getProjects(
+            $this->fetchProjects(
                 '/api/v1/users/'.$user.'/repos',
                 [
                     'limit' => self::DEFAULT_PER_PAGE,
@@ -109,7 +109,7 @@ class GogsClient extends AbstractClient
         ProjectFilterInterface $projectFilter,
     ): array {
         return $this->filter(
-            $this->getProjects(
+            $this->fetchProjects(
                 '/api/v1/orgs/'.$org.'/repos',
                 [
                     'limit' => self::DEFAULT_PER_PAGE,

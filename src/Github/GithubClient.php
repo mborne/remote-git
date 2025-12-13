@@ -135,7 +135,7 @@ class GithubClient extends AbstractClient
                 'page' => $page,
                 'per_page' => self::DEFAULT_PER_PAGE,
             ]);
-            $projects = $this->getProjects($path, $params);
+            $projects = $this->fetchProjects($path, $params);
             if (empty($projects)) {
                 break;
             }

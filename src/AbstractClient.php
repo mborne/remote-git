@@ -57,7 +57,7 @@ abstract class AbstractClient implements ClientInterface
      *
      * @return ProjectInterface[]
      */
-    protected function getProjects(
+    protected function fetchProjects(
         string $path,
         array $params = [],
     ): array {

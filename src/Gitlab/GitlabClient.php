@@ -139,7 +139,7 @@ class GitlabClient extends AbstractClient
             $params['page'] = $page;
             $params['per_page'] = self::DEFAULT_PER_PAGE;
 
-            $projects = $this->getProjects($path, $params);
+            $projects = $this->fetchProjects($path, $params);
             if (empty($projects)) {
                 break;
             }

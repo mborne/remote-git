@@ -12,10 +12,8 @@ use Psr\Log\LoggerInterface;
  */
 abstract class AbstractClient implements ClientInterface
 {
-    /**
-     * @var GuzzleHttpClient
-     */
-    protected $httpClient;
+    private const DEFAULT_PER_PAGE = 50;
+    private const MAX_PAGES = 1000;
 
     /**
      * @var LoggerInterface
@@ -24,9 +22,12 @@ abstract class AbstractClient implements ClientInterface
 
     /**
      * Constructor with an httpClient ready to performs API requests.
+     *
+     * @param string $limitPerPageParam 'per_page' (GitLab, GitHub) or 'limit' (Gogs, Gitea)
      */
     protected function __construct(
-        GuzzleHttpClient $httpClient,
+        protected GuzzleHttpClient $httpClient,
+        private string $limitPerPageParam,
         ?LoggerInterface $logger = null,
     ) {
         $this->httpClient = $httpClient;
@@ -50,6 +51,11 @@ abstract class AbstractClient implements ClientInterface
      */
     abstract protected function createProject(array $rawProject): ProjectInterface;
 
+    public function find(FindOptions $options): array
+    {
+        return iterator_to_array($this->getProjects($options), false);
+    }
+
     /**
      * Get projets for a given path with parameters.
      *
@@ -57,7 +63,7 @@ abstract class AbstractClient implements ClientInterface
      *
      * @return ProjectInterface[]
      */
-    protected function getProjects(
+    private function fetchProjects(
         string $path,
         array $params = [],
     ): array {
@@ -74,6 +80,37 @@ abstract class AbstractClient implements ClientInterface
     }
 
     /**
+     * Fetch all pages for a given path with query params.
+     *
+     * @param string                 $path          ex : "/api/v4/projects"
+     * @param ProjectFilterInterface $projectFilter client side filtering
+     * @param array<string,string>   $extraParams   ex : ['affiliation' => 'owner']
+     *
+     * @return iterable<ProjectInterface>
+     */
+    protected function fetchAllPages(
+        string $path,
+        ProjectFilterInterface $projectFilter,
+        array $extraParams = [],
+    ): iterable {
+        for ($page = 1; $page <= self::MAX_PAGES; ++$page) {
+            $params = array_merge($extraParams, [
+                'page' => $page,
+                $this->limitPerPageParam => self::DEFAULT_PER_PAGE,
+            ]);
+            $projects = $this->fetchProjects($path, $params);
+            if (empty($projects)) {
+                break;
+            }
+            foreach ($projects as $project) {
+                if ($projectFilter->isAccepted($project)) {
+                    yield $project;
+                }
+            }
+        }
+    }
+
+    /**
      * Implode params to performs HTTP request.
      *
      * @param array<string,string|int> $params key=>value
@@ -86,25 +123,5 @@ abstract class AbstractClient implements ClientInterface
         }
 
         return implode('&', $parts);
-    }
-
-    /**
-     * Helper to apply filter to a project list.
-     *
-     * @param ProjectInterface[] $projects
-     *
-     * @return ProjectInterface[]
-     */
-    protected function filter(array $projects, ProjectFilterInterface $filter): array
-    {
-        $result = [];
-        foreach ($projects as $project) {
-            if (!$filter->isAccepted($project)) {
-                continue;
-            }
-            $result[] = $project;
-        }
-
-        return $result;
     }
 }

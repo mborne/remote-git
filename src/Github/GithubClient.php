@@ -27,9 +27,7 @@ class GithubClient extends AbstractClient
 {
     public const TYPE = 'github';
     public const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
-
-    public const DEFAULT_PER_PAGE = 100;
-    public const MAX_PAGES = 10000;
+    private const LIMIT_PER_PAGE_PARAM = 'per_page';
 
     /**
      * Constructor with an http client and a logger.
@@ -40,7 +38,7 @@ class GithubClient extends AbstractClient
         GuzzleHttpClient $httpClient,
         ?LoggerInterface $logger = null,
     ) {
-        parent::__construct($httpClient, $logger);
+        parent::__construct($httpClient, self::LIMIT_PER_PAGE_PARAM, $logger);
     }
 
     protected function createProject(array $rawProject): GithubProject
@@ -48,26 +46,23 @@ class GithubClient extends AbstractClient
         return new GithubProject($rawProject);
     }
 
-    public function find(FindOptions $options): array
+    public function getProjects(FindOptions $options): iterable
     {
-        $result = [];
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
-            throw new RequiredParameterException('[GithubClient]Define at least an org or a user to use find');
+            throw new RequiredParameterException('[GithubClient]Define at least an org or an user');
         }
         foreach ($options->getUsers() as $user) {
-            $result = array_merge($result, $this->findByUser(
+            yield from $this->findByUser(
                 $user,
                 $options->getFilter()
-            ));
+            );
         }
         foreach ($options->getOrganizations() as $org) {
-            $result = array_merge($result, $this->findByOrg(
+            yield from $this->findByOrg(
                 $org,
                 $options->getFilter()
-            ));
+            );
         }
-
-        return $result;
     }
 
     /**
@@ -81,68 +76,39 @@ class GithubClient extends AbstractClient
     protected function findByUser(
         string $user,
         ProjectFilterInterface $projectFilter,
-    ) {
+    ): iterable {
         /*
          * Use /user/repos?affiliation=owner for special user _me_
          */
         if ('_me_' == $user) {
-            return $this->fetchAllPages(
+            yield from $this->fetchAllPages(
                 '/user/repos',
                 $projectFilter,
-                [
+                extraParams: [
                     'affiliation' => 'owner',
                 ]
             );
+        } else {
+            yield from $this->fetchAllPages(
+                '/users/'.$user.'/repos',
+                $projectFilter
+            );
         }
-
-        return $this->fetchAllPages(
-            '/users/'.$user.'/repos',
-            $projectFilter
-        );
     }
 
     /**
-     * Find projects by username.
+     * Find projects by org name.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
     protected function findByOrg(
         string $org,
         ProjectFilterInterface $projectFilter,
-    ) {
-        return $this->fetchAllPages(
+    ): iterable {
+        yield from $this->fetchAllPages(
             '/orgs/'.$org.'/repos',
             $projectFilter
         );
-    }
-
-    /**
-     * Fetch all pages for a given URI.
-     *
-     * @param string                   $path        such as '/orgs/IGNF/repos' or '/users/mborne/repos'
-     * @param array<string,string|int> $extraParams
-     *
-     * @return ProjectInterface[]
-     */
-    private function fetchAllPages(
-        string $path,
-        ProjectFilterInterface $projectFilter,
-        array $extraParams = [],
-    ): array {
-        $result = [];
-        for ($page = 1; $page <= self::MAX_PAGES; ++$page) {
-            $params = array_merge($extraParams, [
-                'page' => $page,
-                'per_page' => self::DEFAULT_PER_PAGE,
-            ]);
-            $projects = $this->getProjects($path, $params);
-            if (empty($projects)) {
-                break;
-            }
-            $result = array_merge($result, $this->filter($projects, $projectFilter));
-        }
-
-        return $result;
     }
 
     public function getRawFile(

@@ -11,7 +11,16 @@ namespace MBO\RemoteGit;
 interface ClientInterface
 {
     /**
+     * Find projects according to options.
+     *
+     * @return iterable<ProjectInterface>
+     */
+    public function getProjects(FindOptions $options): iterable;
+
+    /**
      * Find projects using API calls.
+     *
+     * @deprecated use getProjects instead
      *
      * @return ProjectInterface[]
      */

@@ -5,10 +5,10 @@ namespace MBO\RemoteGit\Tests;
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\ClientOptions;
 use MBO\RemoteGit\Exception\ClientNotFoundException;
+use MBO\RemoteGit\Exception\ProtocolNotSupportedException;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gogs\GogsClient;
-use MBO\RemoteGit\Local\LocalClient;
 
 class ClientFactoryTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ClientFactoryTest extends TestCase
         $clientFactory = ClientFactory::getInstance();
 
         $types = $clientFactory->getTypes();
-        $this->assertCount(4, $types);
+        $this->assertCount(3, $types);
     }
 
     public function testHasType(): void
@@ -72,15 +72,42 @@ class ClientFactoryTest extends TestCase
             ClientFactory::detectClientClass('https://gitea.example.com')
         );
 
-        $this->assertEquals(
-            LocalClient::class,
-            ClientFactory::detectClientClass('/path/to/a/folder')
-        );
-
         // fallback to gitlab for satis-gitlab original implementation
         $this->assertEquals(
             GitlabClient::class,
             ClientFactory::detectClientClass('https://something-else.com')
+        );
+    }
+
+    public function testRemovedLocalClient(): void
+    {
+        $thrownException = null;
+        try {
+            ClientFactory::detectClientClass('/path/to/a/folder');
+        } catch (\Exception $e) {
+            $thrownException = $e;
+        }
+        $this->assertNotNull($thrownException);
+        $this->assertInstanceOf(ProtocolNotSupportedException::class, $thrownException);
+        $this->assertEquals(
+            "protocol 'file' for '/path/to/a/folder' is not supported (LocalClient has been removed)",
+            $thrownException->getMessage()
+        );
+    }
+
+    public function testGitProtocol(): void
+    {
+        $thrownException = null;
+        try {
+            ClientFactory::detectClientClass('git://github.com/mborne');
+        } catch (\Exception $e) {
+            $thrownException = $e;
+        }
+        $this->assertNotNull($thrownException);
+        $this->assertInstanceOf(ProtocolNotSupportedException::class, $thrownException);
+        $this->assertEquals(
+            "protocol 'git' for 'git://github.com/mborne' is not supported (use HTTPS)",
+            $thrownException->getMessage()
         );
     }
 }

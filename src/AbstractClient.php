@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractClient implements ClientInterface
 {
     private const DEFAULT_PER_PAGE = 50;
-    private const MAX_PAGES = 10000;
+    private const MAX_PAGES = 1000;
 
     /**
      * @var LoggerInterface
@@ -63,7 +63,7 @@ abstract class AbstractClient implements ClientInterface
      *
      * @return ProjectInterface[]
      */
-    protected function fetchProjects(
+    private function fetchProjects(
         string $path,
         array $params = [],
     ): array {
@@ -123,25 +123,5 @@ abstract class AbstractClient implements ClientInterface
         }
 
         return implode('&', $parts);
-    }
-
-    /**
-     * Helper to apply filter to a project list.
-     *
-     * @param ProjectInterface[] $projects
-     *
-     * @return ProjectInterface[]
-     */
-    protected function filter(array $projects, ProjectFilterInterface $filter): array
-    {
-        $result = [];
-        foreach ($projects as $project) {
-            if (!$filter->isAccepted($project)) {
-                continue;
-            }
-            $result[] = $project;
-        }
-
-        return $result;
     }
 }

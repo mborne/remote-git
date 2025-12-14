@@ -128,6 +128,7 @@ class GitlabClientTest extends TestCase
         foreach ($projects as $project) {
             $projectsByName[$project->getName()] = $project;
         }
+
         /* check project found */
         $this->assertArrayHasKey(
             'mborne/sample-composer',

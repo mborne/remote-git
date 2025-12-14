@@ -25,9 +25,7 @@ class GitlabClient extends AbstractClient
 {
     public const TYPE = 'gitlab-v4';
     public const TOKEN_TYPE = TokenType::PRIVATE_TOKEN;
-
-    public const DEFAULT_PER_PAGE = 50;
-    public const MAX_PAGES = 10000;
+    private const LIMIT_PER_PAGE_PARAM = 'per_page';
 
     /**
      * Constructor with an http client and a logger.
@@ -36,7 +34,7 @@ class GitlabClient extends AbstractClient
         GuzzleHttpClient $httpClient,
         ?LoggerInterface $logger = null,
     ) {
-        parent::__construct($httpClient, $logger);
+        parent::__construct($httpClient, self::LIMIT_PER_PAGE_PARAM, $logger);
     }
 
     protected function createProject(array $rawProject): GitlabProject
@@ -44,42 +42,38 @@ class GitlabClient extends AbstractClient
         return new GitlabProject($rawProject);
     }
 
-    public function find(FindOptions $options): array
+    public function getProjects(FindOptions $options): iterable
     {
         /* find all projects applying optional search */
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
-            return $this->findBySearch($options);
+            yield from $this->findBySearch($options);
         }
 
-        $result = [];
         foreach ($options->getUsers() as $user) {
-            $result = array_merge($result, $this->findByUser(
+            yield from $this->findByUser(
                 $user,
                 $options->getFilter()
-            ));
+            );
         }
         foreach ($options->getOrganizations() as $org) {
-            $result = array_merge($result, $this->findByGroup(
+            yield from $this->findByGroup(
                 $org,
                 $options->getFilter()
-            ));
+            );
         }
-
-        return $result;
     }
 
     /**
      * Find projects by username.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
     protected function findByUser(
         string $user,
         ProjectFilterInterface $projectFilter,
-    ): array {
-        return $this->fetchAllPages(
+    ): iterable {
+        yield from $this->fetchAllPages(
             '/api/v4/users/'.urlencode($user).'/projects',
-            [],
             $projectFilter
         );
     }
@@ -87,15 +81,14 @@ class GitlabClient extends AbstractClient
     /**
      * Find projects by group.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
     protected function findByGroup(
         string $group,
         ProjectFilterInterface $projectFilter,
-    ): array {
-        return $this->fetchAllPages(
+    ): iterable {
+        yield from $this->fetchAllPages(
             '/api/v4/groups/'.urlencode($group).'/projects',
-            [],
             $projectFilter
         );
     }
@@ -103,9 +96,9 @@ class GitlabClient extends AbstractClient
     /**
      * Find all projects using option search.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
-    protected function findBySearch(FindOptions $options)
+    protected function findBySearch(FindOptions $options): iterable
     {
         $path = '/api/v4/projects';
         $params = [];
@@ -113,40 +106,11 @@ class GitlabClient extends AbstractClient
             $params['search'] = $options->getSearch();
         }
 
-        return $this->fetchAllPages(
+        yield from $this->fetchAllPages(
             $path,
-            $params,
-            $options->getFilter()
+            $options->getFilter(),
+            $params
         );
-    }
-
-    /**
-     * Fetch all pages for a given path with query params.
-     *
-     * @param string                   $path   ex : "/api/v4/projects"
-     * @param array<string,string|int> $params ex : array('search'=>'sample-composer')
-     *
-     * @return ProjectInterface[]
-     */
-    private function fetchAllPages(
-        string $path,
-        array $params,
-        ProjectFilterInterface $projectFilter,
-    ) {
-        $result = [];
-
-        for ($page = 1; $page <= self::MAX_PAGES; ++$page) {
-            $params['page'] = $page;
-            $params['per_page'] = self::DEFAULT_PER_PAGE;
-
-            $projects = $this->fetchProjects($path, $params);
-            if (empty($projects)) {
-                break;
-            }
-            $result = array_merge($result, $this->filter($projects, $projectFilter));
-        }
-
-        return $result;
     }
 
     public function getRawFile(

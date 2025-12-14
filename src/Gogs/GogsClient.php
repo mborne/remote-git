@@ -20,14 +20,13 @@ class GogsClient extends AbstractClient
 {
     public const TYPE = 'gogs-v1';
     public const TOKEN_TYPE = TokenType::AUTHORIZATION_TOKEN;
-
-    public const DEFAULT_PER_PAGE = 1000;
+    private const LIMIT_PER_PAGE_PARAM = 'limit';
 
     public function __construct(
         GuzzleHttpClient $httpClient,
         ?LoggerInterface $logger = null,
     ) {
-        parent::__construct($httpClient, $logger);
+        parent::__construct($httpClient, self::LIMIT_PER_PAGE_PARAM, $logger);
     }
 
     protected function createProject(array $rawProject): GogsProject
@@ -35,46 +34,38 @@ class GogsClient extends AbstractClient
         return new GogsProject($rawProject);
     }
 
-    public function find(FindOptions $options): array
+    public function getProjects(FindOptions $options): iterable
     {
         if (empty($options->getUsers()) && empty($options->getOrganizations())) {
-            return $this->findByCurrentUser(
+            yield from $this->findByCurrentUser(
                 $options->getFilter()
             );
         }
 
-        $result = [];
         foreach ($options->getUsers() as $user) {
-            $result = array_merge($result, $this->findByUser(
+            yield from $this->findByUser(
                 $user,
                 $options->getFilter()
-            ));
+            );
         }
         foreach ($options->getOrganizations() as $org) {
-            $result = array_merge($result, $this->findByOrg(
+            yield from $this->findByOrg(
                 $org,
                 $options->getFilter()
-            ));
+            );
         }
-
-        return $result;
     }
 
     /**
      * Find projects for current user.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
     protected function findByCurrentUser(
         ProjectFilterInterface $projectFilter,
-    ): array {
-        return $this->filter(
-            $this->fetchProjects(
-                '/api/v1/user/repos',
-                [
-                    'limit' => self::DEFAULT_PER_PAGE,
-                ]
-            ),
+    ): iterable {
+        yield from $this->fetchAllPages(
+            '/api/v1/user/repos',
             $projectFilter
         );
     }
@@ -82,19 +73,14 @@ class GogsClient extends AbstractClient
     /**
      * Find projects by username.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
     protected function findByUser(
         string $user,
         ProjectFilterInterface $projectFilter,
-    ): array {
-        return $this->filter(
-            $this->fetchProjects(
-                '/api/v1/users/'.$user.'/repos',
-                [
-                    'limit' => self::DEFAULT_PER_PAGE,
-                ]
-            ),
+    ): iterable {
+        yield from $this->fetchAllPages(
+            '/api/v1/users/'.$user.'/repos',
             $projectFilter
         );
     }
@@ -102,19 +88,14 @@ class GogsClient extends AbstractClient
     /**
      * Find projects by organization.
      *
-     * @return ProjectInterface[]
+     * @return iterable<ProjectInterface>
      */
     protected function findByOrg(
         string $org,
         ProjectFilterInterface $projectFilter,
-    ): array {
-        return $this->filter(
-            $this->fetchProjects(
-                '/api/v1/orgs/'.$org.'/repos',
-                [
-                    'limit' => self::DEFAULT_PER_PAGE,
-                ]
-            ),
+    ): iterable {
+        yield from $this->fetchAllPages(
+            '/api/v1/orgs/'.$org.'/repos',
             $projectFilter
         );
     }

@@ -140,8 +140,11 @@ class ClientFactory
     public static function detectClientClass(string $url): string
     {
         $scheme = parse_url($url, PHP_URL_SCHEME);
+        if (!is_string($scheme)) {
+            $scheme = 'file';
+        }
         if (!in_array($scheme, ['http', 'https'])) {
-            throw new ProtocolNotSupportedException($scheme ?? 'file', $url);
+            throw new ProtocolNotSupportedException($scheme, $url);
         }
 
         $hostname = parse_url($url, PHP_URL_HOST);

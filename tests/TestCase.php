@@ -21,6 +21,25 @@ class TestCase extends BaseTestCase
         return $project;
     }
 
+    protected function getDataPath(string $relativePath): string
+    {
+        $absolutePath = __DIR__.'/data/'.$relativePath;
+        $this->assertFileExists($absolutePath, "Data file '$relativePath' should exists");
+
+        return $absolutePath;
+    }
+
+    protected function getDataJson(string $relativePath): array
+    {
+        $absolutePath = $this->getDataPath($relativePath);
+        $content = file_get_contents($absolutePath);
+        $this->assertNotFalse($content, "Failed to read data file '$relativePath'");
+        $json = json_decode($content, true);
+        $this->assertNotNull($json, "Failed to decode JSON from data file '$relativePath'");
+
+        return $json;
+    }
+
     /**
      * Ensure that getter works for project.
      */

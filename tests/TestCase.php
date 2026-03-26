@@ -29,6 +29,11 @@ class TestCase extends BaseTestCase
         return $absolutePath;
     }
 
+    /**
+     * Get JSON data from a file.
+     *
+     * @return array<string,mixed>
+     */
     protected function getDataJson(string $relativePath): array
     {
         $absolutePath = $this->getDataPath($relativePath);
@@ -36,6 +41,7 @@ class TestCase extends BaseTestCase
         $this->assertNotFalse($content, "Failed to read data file '$relativePath'");
         $json = json_decode($content, true);
         $this->assertNotNull($json, "Failed to decode JSON from data file '$relativePath'");
+        $this->assertIsArray($json, "Decoded JSON from data file '$relativePath' should be an array");
 
         return $json;
     }

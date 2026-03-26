@@ -34,6 +34,11 @@ class GithubProject implements ProjectInterface
         return $this->rawMetadata['description'];
     }
 
+    public function getTopics(): array
+    {
+        return $this->rawMetadata['topics'] ?? [];
+    }
+
     public function getDefaultBranch(): ?string
     {
         return $this->rawMetadata['default_branch'];

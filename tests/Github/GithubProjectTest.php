@@ -33,6 +33,21 @@ class GithubProjectTest extends TestCase
         );
     }
 
+    public function testGetTopics(): void
+    {
+        $this->assertEquals([
+            'cert-manager',
+            'devops',
+            'docker',
+            'homelab',
+            'k8s',
+            'kind',
+            'kubernetes',
+            'nginx-ingress-controller',
+            'traefik',
+        ], $this->project->getTopics());
+    }
+
     public function testGetDefaultBranch(): void
     {
         $this->assertEquals('master', $this->project->getDefaultBranch());

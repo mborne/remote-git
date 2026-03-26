@@ -35,6 +35,11 @@ class GitlabProject implements ProjectInterface
         return $this->rawMetadata['description'];
     }
 
+    public function getTopics(): array
+    {
+        return $this->rawMetadata['topics'] ?? [];
+    }
+
     public function getDefaultBranch(): ?string
     {
         if (!isset($this->rawMetadata['default_branch'])) {

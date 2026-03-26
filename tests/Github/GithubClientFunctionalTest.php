@@ -1,6 +1,6 @@
 <?php
 
-namespace MBO\RemoteGit\Tests;
+namespace MBO\RemoteGit\Tests\Github;
 
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\ClientOptions;
@@ -8,9 +8,10 @@ use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Github\GithubClient;
 use MBO\RemoteGit\Github\GithubProject;
 use MBO\RemoteGit\ProjectVisibility;
+use MBO\RemoteGit\Tests\TestCase;
 use Psr\Log\NullLogger;
 
-class GithubClientTest extends TestCase
+class GithubClientFunctionalTest extends TestCase
 {
     /**
      * Create GithubClient using GITHUB_TOKEN.
@@ -148,42 +149,5 @@ class GithubClientTest extends TestCase
             $defaultBranch
         );
         $this->assertStringContainsString('class TestCase', $testFileInSubdirectory);
-    }
-
-    /**
-     * Ensure client can find mborne's projects using _me_.
-     */
-    public function testFakeUserMe(): void
-    {
-        $ci = getenv('CI');
-        if (!empty($ci)) {
-            $this->markTestSkipped('https://api.github.com/user/repos usage is forbidden in actions ("Resource not accessible by integration")');
-        }
-
-        $client = $this->createGithubClient();
-        $this->assertInstanceOf(GithubClient::class, $client);
-
-        /* search projects */
-        $options = new FindOptions();
-        $options->setUsers(['_me_']);
-        $projects = $client->find($options);
-        $projectsByName = [];
-        foreach ($projects as $project) {
-            $this->assertInstanceOf(GithubProject::class, $project);
-            $this->assertGettersWorks($project);
-            $this->assertStringStartsWith('mborne/', $project->getName());
-            $projectsByName[$project->getName()] = $project;
-        }
-
-        // check public project
-        $this->assertArrayHasKey(
-            'mborne/remote-git',
-            $projectsByName
-        );
-        // check private project
-        $this->assertArrayHasKey(
-            'mborne/tp-pattern-geometry-correction',
-            $projectsByName
-        );
     }
 }

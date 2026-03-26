@@ -14,18 +14,9 @@ class TestCase extends BaseTestCase
      */
     protected function createMockProject(string $projectName): ProjectInterface
     {
-        $project = $this->getMockBuilder(ProjectInterface::class)
-            ->getMock()
-        ;
-        $project->expects($this->any())
-            ->method('getName')
-            ->willReturn($projectName)
-        ;
-        $project->expects($this->any())
-            ->method('getDefaultBranch')
-            ->willReturn('master')
-        ;
-        assert($project instanceof ProjectInterface);
+        $project = $this->createStub(ProjectInterface::class);
+        $project->method('getName')->willReturn($projectName);
+        $project->method('getDefaultBranch')->willReturn('master');
 
         return $project;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MBO\RemoteGit\Tests;
+namespace MBO\RemoteGit\Tests\Gitlab;
 
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\ClientOptions;
@@ -8,9 +8,10 @@ use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gitlab\GitlabClient;
 use MBO\RemoteGit\Gitlab\GitlabProject;
 use MBO\RemoteGit\ProjectVisibility;
+use MBO\RemoteGit\Tests\TestCase;
 use Psr\Log\NullLogger;
 
-class GitlabClientTest extends TestCase
+class GitlabClientFunctionalTest extends TestCase
 {
     /**
      * Create GitlabClient using GITLAB_TOKEN.

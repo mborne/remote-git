@@ -24,18 +24,9 @@ class FilterCollectionTest extends TestCase
      */
     private function createMockFilter(bool $accepted, string $description = 'mock'): ProjectFilterInterface
     {
-        $filter = $this->getMockBuilder(ProjectFilterInterface::class)
-            ->getMock()
-        ;
-        $filter->expects($this->any())
-            ->method('isAccepted')
-            ->willReturn($accepted)
-        ;
-        $filter->expects($this->any())
-            ->method('getDescription')
-            ->willReturn($description)
-        ;
-        assert($filter instanceof ProjectFilterInterface);
+        $filter = $this->createStub(ProjectFilterInterface::class);
+        $filter->method('isAccepted')->willReturn($accepted);
+        $filter->method('getDescription')->willReturn($description);
 
         return $filter;
     }

@@ -1,23 +1,23 @@
 <?php
 
-namespace MBO\RemoteGit\Tests\Gitlab;
+namespace MBO\RemoteGit\Tests\Gogs;
 
-use MBO\RemoteGit\Gitlab\GitlabProject;
+use MBO\RemoteGit\Gogs\GogsProject;
 use MBO\RemoteGit\ProjectVisibility;
 use MBO\RemoteGit\Tests\TestCase;
 
-class GitlabProjectTest extends TestCase
+class GiteaProjectTest extends TestCase
 {
-    private GitlabProject $project;
+    private GogsProject $project;
 
     protected function setUp(): void
     {
-        $this->project = new GitlabProject($this->getDataJson('gitlab/sample-composer.json'));
+        $this->project = new GogsProject($this->getDataJson('gitea/sample-composer.json'));
     }
 
     public function testGetId(): void
     {
-        $this->assertEquals('7406180', $this->project->getId());
+        $this->assertEquals('97861', $this->project->getId());
     }
 
     public function testGetName(): void
@@ -28,7 +28,7 @@ class GitlabProjectTest extends TestCase
     public function testGetDescription(): void
     {
         $this->assertEquals(
-            'This repository provides a project to test [mborne/remote-git](https://github.com/mborne/remote-git)',
+            'This repository provides a project to test mborne/remote-git',
             $this->project->getDescription()
         );
     }
@@ -38,6 +38,7 @@ class GitlabProjectTest extends TestCase
         $this->assertEquals([
             'git-client',
             'testing',
+            'gitea',
         ], $this->project->getTopics());
     }
 
@@ -49,7 +50,7 @@ class GitlabProjectTest extends TestCase
     public function testGetHttpUrl(): void
     {
         $this->assertEquals(
-            'https://gitlab.com/mborne/sample-composer.git',
+            'https://gitea.com/mborne/sample-composer.git',
             $this->project->getHttpUrl()
         );
     }
@@ -69,6 +70,6 @@ class GitlabProjectTest extends TestCase
         $metadata = $this->project->getRawMetadata();
         $this->assertIsArray($metadata);
         $this->assertArrayHasKey('id', $metadata);
-        $this->assertArrayHasKey('path_with_namespace', $metadata);
+        $this->assertArrayHasKey('full_name', $metadata);
     }
 }

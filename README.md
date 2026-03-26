@@ -8,11 +8,8 @@ A lightweight PHP client providing a consistent access to hosted and self-hosted
 
 ## Use cases
 
-Note that a small set of features is prefered here to a rich API integration to allow homogenous access to remote hosting services.
-
-The original development has been realized in [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) repository to **generate a config file referencing git repositories**.
-
-This module is also used by [mborne/git-manager](https://github.com/mborne/git-manager#git-manager) to **backup and analyse git repositories** (for example that following files are present : README.md, LICENSE,...)
+- The original development has been realized in [mborne/satis-gitlab](https://github.com/mborne/satis-gitlab) repository to **generate a config file referencing git repositories**.
+- This module is also used by [mborne/git-manager](https://github.com/mborne/git-manager#git-manager) to **backup and analyse git repositories** (for example that following files are present : README.md, LICENSE,...)
 
 ## Features
 
@@ -28,8 +25,7 @@ This module is also used by [mborne/git-manager](https://github.com/mborne/git-m
 ## Requirements
 
 * [PHP >= 8.3](https://www.php.net/supported-versions.php)
-
-## Supported GIT hosting services
+* Supported GIT hosting services :
 
 | Type      | Description                                                              |
 | --------- | ------------------------------------------------------------------------ |

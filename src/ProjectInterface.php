@@ -25,6 +25,13 @@ interface ProjectInterface
     public function getDescription(): string;
 
     /**
+     * Get project topics.
+     *
+     * @return string[]
+     */
+    public function getTopics(): array;
+
+    /**
      * Get default branch.
      */
     public function getDefaultBranch(): ?string;

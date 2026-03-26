@@ -6,6 +6,5 @@ parameters:
 	ignoreErrors:
 		-
 			messages:
-				- '#is not subtype of native type PHPUnit\\Framework\\MockObject\\MockObject#'
 				- '#will always evaluate to true#'
 			path: tests/*

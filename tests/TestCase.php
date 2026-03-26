@@ -14,20 +14,36 @@ class TestCase extends BaseTestCase
      */
     protected function createMockProject(string $projectName): ProjectInterface
     {
-        $project = $this->getMockBuilder(ProjectInterface::class)
-            ->getMock()
-        ;
-        $project->expects($this->any())
-            ->method('getName')
-            ->willReturn($projectName)
-        ;
-        $project->expects($this->any())
-            ->method('getDefaultBranch')
-            ->willReturn('master')
-        ;
-        assert($project instanceof ProjectInterface);
+        $project = $this->createStub(ProjectInterface::class);
+        $project->method('getName')->willReturn($projectName);
+        $project->method('getDefaultBranch')->willReturn('master');
 
         return $project;
+    }
+
+    protected function getDataPath(string $relativePath): string
+    {
+        $absolutePath = __DIR__.'/data/'.$relativePath;
+        $this->assertFileExists($absolutePath, "Data file '$relativePath' should exists");
+
+        return $absolutePath;
+    }
+
+    /**
+     * Get JSON data from a file.
+     *
+     * @return array<string,mixed>
+     */
+    protected function getDataJson(string $relativePath): array
+    {
+        $absolutePath = $this->getDataPath($relativePath);
+        $content = file_get_contents($absolutePath);
+        $this->assertNotFalse($content, "Failed to read data file '$relativePath'");
+        $json = json_decode($content, true);
+        $this->assertNotNull($json, "Failed to decode JSON from data file '$relativePath'");
+        $this->assertIsArray($json, "Decoded JSON from data file '$relativePath' should be an array");
+
+        return $json;
     }
 
     /**

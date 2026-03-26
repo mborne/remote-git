@@ -1,6 +1,6 @@
 <?php
 
-namespace MBO\RemoteGit\Tests;
+namespace MBO\RemoteGit\Tests\Gogs;
 
 use MBO\RemoteGit\ClientFactory;
 use MBO\RemoteGit\ClientOptions;
@@ -8,6 +8,7 @@ use MBO\RemoteGit\FindOptions;
 use MBO\RemoteGit\Gogs\GogsClient;
 use MBO\RemoteGit\Gogs\GogsProject;
 use MBO\RemoteGit\ProjectVisibility;
+use MBO\RemoteGit\Tests\TestCase;
 
 /**
  * Test GogsClient with gitea.com using the following public projects :
@@ -15,7 +16,7 @@ use MBO\RemoteGit\ProjectVisibility;
  * - https://gitea.com/mborne/sample-composer
  * - https://gitea.com/docker/metadata-action
  */
-class GiteaClientTest extends TestCase
+class GiteaClientFunctionalTest extends TestCase
 {
     /**
      * Create gogs client for gitea.com using GITEA_TOKEN.

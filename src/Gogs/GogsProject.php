@@ -55,9 +55,9 @@ class GogsProject implements ProjectInterface
             return ProjectVisibility::PRIVATE;
         } elseif ($this->rawMetadata['internal']) {
             return ProjectVisibility::INTERNAL;
-        } else {
-            return ProjectVisibility::PUBLIC;
         }
+
+        return ProjectVisibility::PUBLIC;
     }
 
     public function getRawMetadata(): array

@@ -18,15 +18,11 @@ class RequiredFileFilterTest extends TestCase
     {
         $project = $this->createMockProject('test');
 
-        $gitClient = $this->getMockBuilder(ClientInterface::class)
-            ->getMock()
-        ;
+        $gitClient = $this->createMock(ClientInterface::class);
         $gitClient
             ->expects($this->once())
             ->method('getRawFile')
-            ->willThrowException(new \Exception('404 not found'))
-        ;
-        /** @var ClientInterface $gitClient */
+            ->willThrowException(new \Exception('404 not found'));
         $filter = new RequiredFileFilter($gitClient, 'README.md');
         $this->assertFalse($filter->isAccepted($project));
     }
@@ -38,17 +34,9 @@ class RequiredFileFilterTest extends TestCase
     {
         $project = $this->createMockProject('test');
 
-        $gitClient = $this->getMockBuilder(ClientInterface::class)
-            ->getMock()
-        ;
+        $gitClient = $this->createStub(ClientInterface::class);
         $content = 'readme content';
-        $gitClient
-            ->expects($this->any())
-            ->method('getRawFile')
-            // ->with(['composer.json'])
-            ->willReturn(json_encode($content))
-        ;
-        /** @var ClientInterface $gitClient */
+        $gitClient->method('getRawFile')->willReturn(json_encode($content));
         $filter = new RequiredFileFilter($gitClient, 'README.md');
         $this->assertTrue($filter->isAccepted($project));
     }

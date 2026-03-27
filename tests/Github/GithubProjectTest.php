@@ -33,6 +33,23 @@ class GithubProjectTest extends TestCase
         );
     }
 
+    public function testGetDescriptionNull(): void
+    {
+        $project = new GithubProject([
+            'id' => '12345',
+            'description' => null,
+        ]);
+        $this->assertEquals('', $project->getDescription());
+    }
+
+    public function testGetDescriptionUndefined(): void
+    {
+        $project = new GithubProject([
+            'id' => '12345',
+        ]);
+        $this->assertEquals('', $project->getDescription());
+    }
+
     public function testGetTopics(): void
     {
         $this->assertEquals([

@@ -31,7 +31,7 @@ class GithubProject implements ProjectInterface
 
     public function getDescription(): string
     {
-        return $this->rawMetadata['description'];
+        return $this->rawMetadata['description'] ?? '';
     }
 
     public function getTopics(): array

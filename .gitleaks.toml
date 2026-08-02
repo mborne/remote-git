@@ -1,0 +1,31 @@
+# gitleaks config - https://github.com/gitleaks/gitleaks
+# Usage: gitleaks dir .   /   gitleaks git .
+
+[extend]
+useDefault = true
+
+# tests/data/gitlab/sample-composer.json is a capture of the GitLab API
+# response for https://gitlab.com/mborne/sample-composer, including a
+# "runners_token" (committed in f08ad2c, since revoked on GitLab).
+#
+# Allowlisted by value, not by path: any other secret in that file is still
+# reported. Note that a global allowlist "paths" would skip the whole file
+# before rules run. The value is truncated to a prefix + length pattern so the
+# complete token is not written here (GitHub push protection rejects it).
+[[allowlists]]
+description = "Revoked GitLab runner token kept in a test fixture"
+targetRules = ["gitlab-rrt", "generic-api-key"]
+regexes = ['''^GR1348941Cx36\w{16}$''']
+regexTarget = "secret"
+
+# generic-api-key false positives in non-versioned files (see .gitignore):
+# sodium stub names and CURLOPT_SSLKEY* in phpstan.phar, php-cs-fixer hashes.
+[[allowlists]]
+description = "Dependencies and caches"
+paths = [
+    '''^vendor/''',
+    '''^\.php-cs-fixer\.cache$''',
+    '''^\.phpunit\.cache/''',
+    '''^composer\.lock$''',
+    '''^output/''',
+]

@@ -128,7 +128,7 @@
     "ci_push_repository_for_job_token_allowed": false,
     "protect_merge_request_pipelines": false,
     "ci_display_pipeline_variables": false,
-    "runners_token": "GR1348941Cx36Kd2e8V9gxJh6JLQN",
+    "runners_token": "<REDACTED>",
     "ci_config_path": null,
     "public_jobs": true,
     "shared_with_groups": [],

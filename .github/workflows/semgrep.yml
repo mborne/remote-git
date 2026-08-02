@@ -1,0 +1,56 @@
+name: Semgrep
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    # weekly scan (monday, 06:00 UTC) to catch new rules
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  semgrep:
+
+    name: Static analysis (SARIF)
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install semgrep
+      run: python -m pip install --disable-pip-version-check semgrep
+
+    - name: Run semgrep
+      # semgrep exits with a non-zero code when findings are reported,
+      # the SARIF report is uploaded to GitHub code scanning anyway.
+      continue-on-error: true
+      run: |
+        semgrep scan \
+          --config p/php \
+          --config p/security-audit \
+          --exclude vendor \
+          --sarif \
+          --output semgrep.sarif \
+          src tests
+
+    - name: Upload SARIF report to GitHub code scanning
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: semgrep.sarif
+
+    - name: Upload SARIF report as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: semgrep-sarif
+        path: semgrep.sarif

@@ -101,33 +101,11 @@ $projects = $client->find($options);
 * [guzzlehttp/guzzle - 7.x](https://packagist.org/packages/guzzlehttp/guzzle)
 * [psr/log](https://packagist.org/packages/psr/log)
 
+## Contributing
+
+See [CODING.md](CODING.md) for setup, testing and coding style.
 
 ## License
 
 [MIT](LICENSE)
-
-## Testing
-
-* Configure access token for github.com and gitlab.com APIs (optional) :
-
-```bash
-# see https://github.com/settings/tokens
-export GITHUB_TOKEN=AnyGithubToken
-# see https://gitlab.com/-/profile/personal_access_tokens
-export GITLAB_TOKEN=AnyGitlabToken
-# see https://gitea.com/user/settings/applications
-export GITEA_TOKEN=AnyGiteaToken
-```
-
-* Install dependencies and run tests :
-
-```bash
-make test
-# Alternative :
-# composer install
-# vendor/bin/phpunit -c phpunit.xml.dist
-```
-
-Note that an HTML coverage report is generated to `output/coverage/index.html`
-
 

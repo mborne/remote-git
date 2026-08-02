@@ -34,5 +34,42 @@
         "allow-plugins": {
             "phpstan/extension-installer": true
         }
+    },
+    "scripts": {
+        "test": [
+            "@check-style",
+            "@check-rules",
+            "@phpunit"
+        ],
+        "phpunit": [
+            "Composer\\Config::disableProcessTimeout",
+            "@putenv XDEBUG_MODE=coverage",
+            "echo -- Running phpunit... See output/coverage/index.html",
+            "phpunit -c phpunit.xml.dist --log-junit output/junit-report.xml --coverage-clover output/clover.xml --coverage-html output/coverage"
+        ],
+        "check-rules": [
+            "@phpstan"
+        ],
+        "phpstan": [
+            "phpstan analyse -c phpstan.neon --error-format=raw"
+        ],
+        "check-style": [
+            "echo -- Checking coding style using php-cs-fixer, run composer fix-style if it fails",
+            "php-cs-fixer fix src --rules @Symfony,-global_namespace_import -v --dry-run --diff",
+            "php-cs-fixer fix tests --rules @Symfony,-global_namespace_import -v --dry-run --diff"
+        ],
+        "fix-style": [
+            "echo -- Fixing coding style using php-cs-fixer...",
+            "php-cs-fixer fix src --rules @Symfony,-global_namespace_import",
+            "php-cs-fixer fix tests --rules @Symfony,-global_namespace_import"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Check coding style, run static analysis and run tests",
+        "phpunit": "Run tests with coverage report to output/coverage/index.html",
+        "check-rules": "Run static analysis using phpstan",
+        "phpstan": "Run static analysis using phpstan",
+        "check-style": "Check coding style using php-cs-fixer",
+        "fix-style": "Fix coding style using php-cs-fixer"
     }
 }

@@ -55,6 +55,8 @@ class TestCase extends BaseTestCase
         $this->assertNotEmpty($project->getName());
         // should not crash (can be null or empty)
         $project->getDefaultBranch();
+        // no empty repositories in functional tests cases
+        $this->assertFalse($project->isEmpty());
         $this->assertNotEmpty($project->getHttpUrl());
         $this->assertNotEmpty($project->getRawMetadata());
     }

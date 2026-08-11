@@ -52,6 +52,11 @@ interface ProjectInterface
     public function getVisibility(): ?ProjectVisibility;
 
     /**
+     * Indicates if the repository is empty.
+     */
+    public function isEmpty(): bool;
+
+    /**
      * Get hosting service specific properties.
      *
      * @return array<string,mixed>

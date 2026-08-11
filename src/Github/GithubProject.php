@@ -59,6 +59,15 @@ class GithubProject implements ProjectInterface
         return $this->rawMetadata['private'] ? ProjectVisibility::PRIVATE : ProjectVisibility::PUBLIC;
     }
 
+    /**
+     * Note that github API doesn't provide an "empty" property, the repository
+     * size (in kB) is used to detect repositories without content.
+     */
+    public function isEmpty(): bool
+    {
+        return 0 === ($this->rawMetadata['size'] ?? 0);
+    }
+
     public function getRawMetadata(): array
     {
         return $this->rawMetadata;

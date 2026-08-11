@@ -74,6 +74,11 @@ class GitlabProject implements ProjectInterface
         }
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->rawMetadata['empty_repo'] ?? false;
+    }
+
     public function getRawMetadata(): array
     {
         return $this->rawMetadata;

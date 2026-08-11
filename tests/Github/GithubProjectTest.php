@@ -88,6 +88,28 @@ class GithubProjectTest extends TestCase
         $this->assertEquals(ProjectVisibility::PUBLIC, $this->project->getVisibility());
     }
 
+    public function testIsEmpty(): void
+    {
+        $this->assertFalse($this->project->isEmpty());
+    }
+
+    public function testIsEmptyWithoutContent(): void
+    {
+        $project = new GithubProject([
+            'id' => '12345',
+            'size' => 0,
+        ]);
+        $this->assertTrue($project->isEmpty());
+    }
+
+    public function testIsEmptyUndefined(): void
+    {
+        $project = new GithubProject([
+            'id' => '12345',
+        ]);
+        $this->assertTrue($project->isEmpty());
+    }
+
     public function testGetRawMetadata(): void
     {
         $metadata = $this->project->getRawMetadata();

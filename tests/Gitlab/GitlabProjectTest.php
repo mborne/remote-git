@@ -64,6 +64,28 @@ class GitlabProjectTest extends TestCase
         $this->assertEquals(ProjectVisibility::PUBLIC, $this->project->getVisibility());
     }
 
+    public function testIsEmpty(): void
+    {
+        $this->assertFalse($this->project->isEmpty());
+    }
+
+    public function testIsEmptyWithEmptyRepo(): void
+    {
+        $project = new GitlabProject([
+            'id' => '12345',
+            'empty_repo' => true,
+        ]);
+        $this->assertTrue($project->isEmpty());
+    }
+
+    public function testIsEmptyUndefined(): void
+    {
+        $project = new GitlabProject([
+            'id' => '12345',
+        ]);
+        $this->assertFalse($project->isEmpty());
+    }
+
     public function testGetRawMetadata(): void
     {
         $metadata = $this->project->getRawMetadata();

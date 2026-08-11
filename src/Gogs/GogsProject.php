@@ -65,6 +65,11 @@ class GogsProject implements ProjectInterface
         return ProjectVisibility::PUBLIC;
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->rawMetadata['empty'] ?? false;
+    }
+
     public function getRawMetadata(): array
     {
         return $this->rawMetadata;

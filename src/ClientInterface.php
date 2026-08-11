@@ -27,6 +27,14 @@ interface ClientInterface
     public function find(FindOptions $options): array;
 
     /**
+     * Indicates if the repository is empty (no commit).
+     *
+     * Note that an API call may be performed as some hosts don't provide this
+     * information in the project metadata.
+     */
+    public function isEmpty(ProjectInterface $project): bool;
+
+    /**
      * Get raw file.
      *
      * @param ProjectInterface $project  ex : 123456

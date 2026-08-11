@@ -100,6 +100,12 @@ class GogsClient extends AbstractClient
         );
     }
 
+    public function isEmpty(ProjectInterface $project): bool
+    {
+        // ref : https://docs.gitea.com/api/1.20/#tag/repository/operation/repoGet
+        return $project->getRawMetadata()['empty'] ?? false;
+    }
+
     public function getRawFile(
         ProjectInterface $project,
         $filePath,

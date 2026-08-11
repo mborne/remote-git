@@ -11,6 +11,7 @@ use MBO\RemoteGit\Http\TokenType;
 use MBO\RemoteGit\ProjectFilterInterface;
 use MBO\RemoteGit\ProjectInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /**
  * Client implementation for github.
@@ -109,6 +110,41 @@ class GithubClient extends AbstractClient
             '/orgs/'.$org.'/repos',
             $projectFilter
         );
+    }
+
+    public function isEmpty(ProjectInterface $project): bool
+    {
+        $metadata = $project->getRawMetadata();
+
+        /*
+         * github API doesn't provide an "empty" property. The repository size is
+         * expressed in kB and rounded, so that a size of 0 doesn't mean that the
+         * repository is empty (ex : a repository containing a small README.md).
+         */
+        if (0 !== ($metadata['size'] ?? 0)) {
+            return false;
+        }
+
+        /*
+         * Ensure that there is no commit, github replying
+         * "409 Git Repository is empty." for empty repositories.
+         *
+         * @see https://docs.github.com/en/rest/commits/commits#list-commits
+         */
+        $uri = str_replace('{/sha}', '', $metadata['commits_url']).'?per_page=1';
+        $this->getLogger()->debug('GET '.$uri);
+        $response = $this->getHttpClient()->request('GET', $uri, [
+            'http_errors' => false,
+        ]);
+        $statusCode = $response->getStatusCode();
+        switch ($statusCode) {
+            case 409:
+                return true;
+            case 200:
+                return false;
+            default:
+                throw new RuntimeException("Unexpected status code $statusCode for GET $uri");
+        }
     }
 
     public function getRawFile(

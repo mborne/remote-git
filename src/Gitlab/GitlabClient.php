@@ -113,6 +113,12 @@ class GitlabClient extends AbstractClient
         );
     }
 
+    public function isEmpty(ProjectInterface $project): bool
+    {
+        // ref : https://docs.gitlab.com/api/projects/#list-all-projects
+        return $project->getRawMetadata()['empty_repo'] ?? false;
+    }
+
     public function getRawFile(
         ProjectInterface $project,
         string $filePath,

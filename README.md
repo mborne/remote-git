@@ -17,6 +17,7 @@ A lightweight PHP client providing a consistent access to hosted and self-hosted
     * usernames
     * organizations/groups
 * Get raw files from repositories
+* Detect empty repositories (`isEmpty`)
 * Apply custom filter
     * Project contains a given file (`RequiredFileFilter`)
     * Project is a composer project (`ComposerProjectFilter`)
@@ -95,6 +96,22 @@ $filterCollection->addFilter(new RequiredFileFilter(
 $options->setFilter($filterCollection);
 $projects = $client->find($options);
 ```
+
+### Skip empty repositories
+
+```php
+$options = new FindOptions();
+$options->setUsers(array('mborne'));
+foreach ($client->getProjects($options) as $project) {
+    // avoid attempting cloning empty repositories
+    if ($client->isEmpty($project)) {
+        continue;
+    }
+    // ...
+}
+```
+
+Note that `isEmpty` relies on the project metadata for gitlab (`empty_repo`), gitea and gogs (`empty`). As the github API doesn't provide such property, an extra API call is performed for repositories reported with a size of 0 (the size is expressed in kB and rounded, so that a repository containing a single small file is also reported with a size of 0).
 
 ## Dependencies
 

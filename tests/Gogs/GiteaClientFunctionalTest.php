@@ -79,6 +79,9 @@ class GiteaClientFunctionalTest extends TestCase
         /* test isArchived */
         $this->assertFalse($project->isArchived());
 
+        /* test isEmpty */
+        $this->assertFalse($client->isEmpty($project));
+
         /* test getVisibility */
         $this->assertEquals(ProjectVisibility::PUBLIC, $project->getVisibility());
 
